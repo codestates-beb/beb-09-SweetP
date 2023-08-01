@@ -43,3 +43,23 @@ public class WeaponData
     public int weapon_durability;
     public int weapon_upgrade;
 }
+
+[Serializable]
+public class ItemData
+{
+    public int player_id;
+    public int player_gold;
+    public int player_potion;
+}
+
+[Serializable]
+public class MonsterData
+{
+    public MonsterType monsterType;
+    public Transform spawnerPos;
+    public float baseDamage = 20f;
+    public float baseHP = 100f;
+    public float baseSpeed = 1f;
+}
+
+

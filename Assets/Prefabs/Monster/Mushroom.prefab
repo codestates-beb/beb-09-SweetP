@@ -5560,6 +5560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 50
+  healthBarPrefab: {fileID: 4567375823041889851, guid: 723129fde90c8418a9147324ebbcfb83, type: 3}
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 64

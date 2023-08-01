@@ -7,6 +7,11 @@ public enum WeaponNature
     Earth
 }
 
+public enum MonsterType
+{
+    Mushroom
+}
+
 public static class Consts
 {
     public const string BASE_URL = "https://breadmore.azurewebsites.net/api";

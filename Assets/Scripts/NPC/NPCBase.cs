@@ -6,19 +6,18 @@ using TMPro;
 public class NPCBase : MonoBehaviour, INPC
 {
     public Transform player;
-    private float searchPlayerRadius = 3f;
+    private float searchPlayerRadius = 5f;
     private float originalRotationX;
     private Quaternion originalRotation;
     private GameObject ContractPanel;
     private TextMeshProUGUI nameText;
-    private bool IsContract = false;
-    private bool IsOpenPanel = false;
 
     public NPCData npcData;
     private GameObject ThisNPCPanel;
-    
+    public bool IsContract = false;
     public virtual void OnContract()
     {
+        ContractPanel.SetActive(false);
         ThisNPCPanel.SetActive(true);
     }
 
@@ -43,15 +42,14 @@ public class NPCBase : MonoBehaviour, INPC
                 lookDirection.y = 0f;
                 transform.rotation = Quaternion.LookRotation(lookDirection);
                 nameText.text = transform.name;
+                if(!IsContract)
                 ContractPanel.SetActive(true);
                 IsContract = true;
             }
-            else
+            else if(distanceToPlayer > searchPlayerRadius)
             {
                 if (IsContract == true)
                 {
-
-
                     transform.rotation = originalRotation;
                     ContractPanel.SetActive(false);
                     IsContract = false;
@@ -95,17 +93,17 @@ public class NPCBase : MonoBehaviour, INPC
         FindPlayer();
         if(IsContract == true)
         {
-
             if (Input.GetKeyDown(KeyCode.G))
             {
-                if (!IsOpenPanel)
+                if (!UIManager.instance.IsOpenPanel)
                 {
                     print("Contract!" + transform.name);
                     OnContract();
-                    IsOpenPanel = true;
+                    ContractPanel.SetActive(false);
+                    UIManager.instance.IsOpenPanel = true;
 
                 }
-                else
+                else if (UIManager.instance.IsOpenPanel)
                 {
                     OffContract();
                 }

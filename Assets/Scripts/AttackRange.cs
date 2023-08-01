@@ -9,7 +9,6 @@ public class AttackRange : MonoBehaviour
     void Start()
     {
         damage = transform.GetComponentInParent<Enemy>().damage;
-        Debug.Log(damage);
     }
 
     // Update is called once per frame

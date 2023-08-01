@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleNPC : MonoBehaviour
 {
@@ -30,10 +31,9 @@ public class BattleNPC : MonoBehaviour
     {
         print("desert");
         groundMap = GroundMap.Desert;
-        print(player.position);
-        player.position = SpawnPosDesert.position;
-        print(player.position);
+        UIManager.instance.IsOpenPanel = false;
         GroundPanel.SetActive(false);
+        SceneManager.LoadScene("DesertMap");
     }
 
     public void SelectGroundMapForest()

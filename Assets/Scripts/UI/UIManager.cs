@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     public GameObject Inventory;
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI jewelText;
+    public TextMeshProUGUI potionText;
 
     [Header("Weapon Select Panel")]
     public GameObject WeaponSelectPanel;
@@ -50,14 +51,30 @@ public class UIManager : MonoBehaviour
     public GameObject BattlePanel;
     public GameObject ChangePanel;
 
+    public bool IsContract = false;
+    public bool IsOpenPanel = false;
+
     [Header("Battle UI")]
     public GameObject GroundPanel;
     public GameObject RaidPanel;
 
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        potionText.text = ItemManager.instance.itemData.player_potion.ToString();
+        goldText.text = ItemManager.instance.itemData.player_gold.ToString();
     }
 
     public void OpenWeaponInfoPanel(EquipSlot _equipSlot)

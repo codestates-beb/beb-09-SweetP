@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 public class Enemy : LivingEntity
 {
+    public GameObject healthBarPrefab;
+    public Slider healthSlider;
+    private GameObject healthBarInstance;
+
     public LayerMask whatIsTarget; // 추적 대상 레이어
     public BoxCollider AttackRange;
     private LivingEntity targetEntity;
@@ -22,6 +27,8 @@ public class Enemy : LivingEntity
     public float damage = 10f;
     public float timeBetAttack = 5.5f;
     private float lastAttackTime;
+
+
 
     // 추적할 대상이 존재하는지 알려주는 프로퍼티
     private bool hasTarget
@@ -82,6 +89,10 @@ public class Enemy : LivingEntity
         enemyRenderer = GetComponentInChildren<Renderer>();
         lastAttackTime = 0f;
 
+        healthBarInstance = Instantiate(healthBarPrefab, transform.position, Quaternion.identity);
+        healthBarInstance.transform.SetParent(GameObject.Find("DesertCanvas").transform);
+
+        healthSlider = healthBarInstance.GetComponent<Slider>();
     }
 
     // 적 AI의 초기 스펙을 결정하는 셋업 메서드
@@ -92,19 +103,30 @@ public class Enemy : LivingEntity
         damage = newDamage;
         pathFinder.speed = newSpeed;
         enemyRenderer.material.color = skinColor;
+
+        //healthSlider
+        healthSlider.gameObject.SetActive(true);
+        healthSlider.maxValue = startingHealth;
+        healthSlider.value = health;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
         // 게임 오브젝트 활성화와 동시에 AI의 추적 루틴 시작
         StartCoroutine(UpdatePath());
     }
 
     private void Update()
     {
+        Vector3 healthBarPosition = transform.position + new Vector3(0f, 2f, 0f);
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(healthBarPosition);
+        healthBarInstance.transform.position = screenPosition;
+
         enemyAnimator.SetBool("HasTarget", hasTarget);
         Targeting();
+
     }
     private IEnumerator UpdatePath()
     {
@@ -164,6 +186,10 @@ public class Enemy : LivingEntity
             enemyAudioPlayer.PlayOneShot(hitSound);
         }
         base.OnDamage(damage, hitPoint, hitNormal);
+
+        healthSlider.value = health;
+        print(health);
+        print(healthSlider.value);
     }
 
     // 사망 처리
@@ -180,8 +206,10 @@ public class Enemy : LivingEntity
         pathFinder.isStopped = true;
         pathFinder.enabled = false;
 
+        
         enemyAnimator.SetTrigger("Die");
         enemyAudioPlayer.PlayOneShot(deathSound);
+        healthSlider.gameObject.SetActive(false);
     }
 
     void Attack()
