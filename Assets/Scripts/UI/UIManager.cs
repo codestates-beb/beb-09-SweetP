@@ -41,8 +41,19 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI weaponNatureText;
     public TextMeshProUGUI weaponDurText;
     public Image WeaponImage;
-
     private EquipSlot equipSlot;
+
+    [Header("NPC UI")]
+    public GameObject ContractPanel;
+    public TextMeshProUGUI ContractNPCNameText;
+    public GameObject ShopPanel;
+    public GameObject BattlePanel;
+    public GameObject ChangePanel;
+
+    [Header("Battle UI")]
+    public GameObject GroundPanel;
+    public GameObject RaidPanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -84,6 +95,11 @@ public class UIManager : MonoBehaviour
     {
         equipSlot.EquipWeapon();
         WeaponSelectPanel.SetActive(false);
+    }
+
+    public void SelectBattleType()
+    {
+
     }
     // Update is called once per frame
     void Update()
