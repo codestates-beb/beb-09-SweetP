@@ -269,32 +269,6 @@
 		{
 			"inputs": [
 				{
-					"internalType": "uint256",
-					"name": "_tokenId",
-					"type": "uint256"
-				}
-			],
-			"name": "setIsSale_False",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_tokenId",
-					"type": "uint256"
-				}
-			],
-			"name": "setIsSale_True",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
 					"internalType": "address",
 					"name": "sender",
 					"type": "address"
@@ -657,6 +631,62 @@
 		},
 		{
 			"inputs": [],
+			"name": "getSaleNftTokenList",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "uint256",
+							"name": "nftTokenId",
+							"type": "uint256"
+						},
+						{
+							"internalType": "string",
+							"name": "nftTokenURI",
+							"type": "string"
+						}
+					],
+					"internalType": "struct PPC721.NftTokenData[]",
+					"name": "",
+					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_owner",
+					"type": "address"
+				}
+			],
+			"name": "getSaleNftTokenListByAdress",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "uint256",
+							"name": "nftTokenId",
+							"type": "uint256"
+						},
+						{
+							"internalType": "string",
+							"name": "nftTokenURI",
+							"type": "string"
+						}
+					],
+					"internalType": "struct PPC721.NftTokenData[]",
+					"name": "",
+					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
 			"name": "getToken",
 			"outputs": [
 				{
@@ -920,5 +950,5 @@
 			"type": "function"
 		}
 	],
-	"deployedAddress": "0xFfab700bf35Ba0F31d3B401Dd1D44BF6934c402b"
+	"deployedAddress": "0xda55948380acD28C49feD3a79e8D85F291398A54"
 }
