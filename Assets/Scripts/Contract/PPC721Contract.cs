@@ -13,11 +13,14 @@ public class PPC721Contract : MonoBehaviour
     void Awake()
     {
         contractInstance = gameObject.AddComponent<SmartContractInteraction>();
+        contractInstance.Init("PPC721Contract.json");
     }
+    /*
     public void Initialize()
     {
         contractInstance.Init("PPC721Contract.json");
     }
+    */
 
 
     
