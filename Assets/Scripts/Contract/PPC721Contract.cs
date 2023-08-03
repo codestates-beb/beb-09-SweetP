@@ -22,7 +22,11 @@ public class PPC721Contract : MonoBehaviour
     }
     */
 
-
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.N)) {
+            StartCoroutine(MintNFT());
+        }
+    }
     
     public IEnumerator MintNFT()
     {
@@ -30,16 +34,14 @@ public class PPC721Contract : MonoBehaviour
 
         var function = this.contractInstance.contract.GetFunction("mintNFT");
 
-
-        // Transaction Input »ý¼º
+        // Transaction Input ï¿½ï¿½ï¿½ï¿½
         string recipient = "0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8";
         string tokenURI = "https://gateway.pinata.cloud/ipfs/QmP25FavCnPjQpuvM9noxxfZNNRKW6cmUYsEg3LwSJ22gm/1.json";
         System.Numerics.BigInteger nftPrice = new System.Numerics.BigInteger(1);
         var data = function.GetData(recipient, tokenURI, nftPrice);
         decimal ethValue = 0;
-        string senderAddress = "0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8";
 
-        // ½º¸¶Æ® ÄÁÆ®·¢Æ®ÀÇ ¸Þ¼­µå¿¡ Àü´ÞÇÒ Æ®·£Àè¼Ç ÀÔ·Â »ý¼º
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Æ®ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
@@ -57,7 +59,7 @@ public class PPC721Contract : MonoBehaviour
     }
    
     /*
-    // NFT ÅäÅ« µ¥ÀÌÅÍ Å¬·¡½º Á¤ÀÇ
+    // NFT ï¿½ï¿½Å« ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public class NftTokenData
     {
         public BigInteger TokenId { get; set; }
@@ -66,7 +68,7 @@ public class PPC721Contract : MonoBehaviour
         public NftTokenData() { }
     }
 
-    // ½º¸¶Æ® ÄÁÆ®·¢Æ®ÀÇ getNftTokenList ¸Þ¼­µå È£ÃâÀ» Ã³¸®ÇÏ´Â ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Æ®ï¿½ï¿½Æ®ï¿½ï¿½ getNftTokenList ï¿½Þ¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     public IEnumerator GetNftTokenListCoroutine(string ownerAddress)
     {
         Debug.Log(ownerAddress);
@@ -91,9 +93,5 @@ public class PPC721Contract : MonoBehaviour
     }
     */
 
-    private void Start()
-    {
-        StartCoroutine(MintNFT());
-        //StartCoroutine(GetNftTokenListCoroutine(userAddress));
-    }
+    
 }
