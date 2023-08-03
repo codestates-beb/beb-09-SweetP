@@ -17,30 +17,6 @@ public class SweetpDexContract : MonoBehaviour{
         contractInstance.Init("SweetpDexContract.json");
     }
 
-
-    public IEnumerator DepositETH(string fromAddress, decimal valueParam, int gasPriceParam) {
-        var function = this.contractInstance.contract.GetFunction("depositETH");
-        var gasPrice = new HexBigInteger(gasPriceParam);
-        
-        var value = new HexBigInteger(Web3.Convert.ToWei(valueParam));  // 5 Ether 전송
-        var gasLimit = new HexBigInteger(600000); // 예시로 600,000을 사용함
-        var task = function.SendTransactionAsync(fromAddress, gasPrice, gasLimit, value);
-        yield return new WaitUntil(() => task.IsCompleted);
-        
-        if (task.IsFaulted)
-        {
-            // 오류 처리
-            Debug.LogError(task.Exception);
-        }
-        else
-        {
-            //  결과 발행된 트렌젝션 주소 출력
-            var result = task.Result;
-            Debug.Log("Success to execute depositETH function");
-            Debug.Log("Transaction address : " + result);
-        }
-    }
-
     public IEnumerator GetTokenBalance(Action<decimal, Exception> callback) {
         var function = this.contractInstance.contract.GetFunction("getTokenBalance");
         var task = function.CallAsync<BigInteger>();
@@ -80,129 +56,62 @@ public class SweetpDexContract : MonoBehaviour{
         }
     }
 
-    public IEnumerator Swap(string senderAddress, decimal ethValue, decimal x, string tokenSymbol, Action<string, Exception> callback) {
-        var function = this.contractInstance.contract.GetFunction("swap");
+    public IEnumerator Swap(decimal ethValue, decimal x, string tokenSymbol, Action<string, Exception> callback) {
 
-        // Nounce 만들기
-        HexBigInteger nonce = null;
-        yield return FrequentlyUsed.GetNounce(this.contractInstance.web3, senderAddress, (result, err)=>{
-            if(result != null) {
-                nonce = result;
+        var function = this.contractInstance.contract.GetFunction("swap");
+        BigInteger tokenAmount = new BigInteger(x * (decimal)Math.Pow(10, 18));
+        string data = function.GetData(tokenAmount, tokenSymbol);
+
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err)=>{
+            if(contractAddress == null) {
+                callback(null, err);
             }else {
-                Debug.Log(err);
+                callback(contractAddress, null);
             }
         });
-
-        // Transaction Input 생성
-        BigInteger tokenAmount = new BigInteger(x * (decimal)Math.Pow(10, 18));
-        var data = function.GetData(tokenAmount, tokenSymbol);
-
-        var transactionInput = new Nethereum.RPC.Eth.DTOs.TransactionInput() {
-            From = senderAddress,
-            To = this.contractInstance.contractAddress, // Set this to the contract address
-            Value = new HexBigInteger(Web3.Convert.ToWei(ethValue)),
-            Gas = new HexBigInteger(3000000),
-            GasPrice = new HexBigInteger(Nethereum.Util.UnitConversion.Convert.ToWei(2, 9)), // 2 Gwei
-            Nonce = nonce,
-            Data = data
-        };
-
-        // 서명된 트랜잭션 생성
-        var signedTransactionTask = this.contractInstance.web3.TransactionManager.SignTransactionAsync(transactionInput);
-        yield return new WaitUntil(()=> signedTransactionTask.IsCompleted);
-        if(signedTransactionTask.IsFaulted) {
-            callback("", signedTransactionTask.Exception);
-        } else {
-            var signedTransaction = signedTransactionTask.Result;
-            // 서명된 트랜잭션 전송
-            var sendTransactionTask = this.contractInstance.web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransaction);
-            
-            yield return new WaitUntil(()=> sendTransactionTask.IsCompleted);
-            if(sendTransactionTask.IsFaulted) {
-                callback("", sendTransactionTask.Exception);
-            } 
-            // 트랜잭션이 제대로 Success 되었는지 반복해서 확인
-            yield return FrequentlyUsed.CheckTransactionSuccess(this.contractInstance.web3, sendTransactionTask.Result, (transactionAddress, err)=>{
-                if(transactionAddress == null) {
-                    Debug.Log(err);
-                }else {
-                    callback(transactionAddress, null);
-                }
-            });
-        }
+        
+        
     }
 
 
-    public IEnumerator AddLiquidity(string fromAddress, decimal ethValue, Action<string, Exception> callback) {
+    public IEnumerator AddLiquidity(string senderAddress, decimal ethValue, Action<string, Exception> callback) {
+        
         var function = this.contractInstance.contract.GetFunction("addLiquidity");
-        var gas =  new HexBigInteger(500000);
-        var limit = new HexBigInteger(3000000);
-        var value = new HexBigInteger(Web3.Convert.ToWei(ethValue));
-        var task = function.SendTransactionAsync(fromAddress, gas, limit, value);
-        yield return new WaitUntil(()=>task.IsCompleted);
-        if(task.IsFaulted) {
-            callback("", task.Exception);
-        }else {
-            callback(task.Result, null);
-        }
-    }
+        string data = function.GetData();
 
-    public IEnumerator RemoveLiquidity(string fromAddress,  float valueParam, Action<string, Exception> callback) {
-        var function = this.contractInstance.contract.GetFunction("removeLiquidity");
-        var gas = new HexBigInteger(500000);
-        var limit = new HexBigInteger(3000000);
-        var value = new HexBigInteger(Web3.Convert.ToWei(valueParam));
-        var task = function.SendTransactionAsync(fromAddress, gas, limit, value);
-        yield return new WaitUntil(()=>task.IsCompleted);
-        if(task.IsFaulted) {
-            callback("", task.Exception);
-        }else {
-            callback(task.Result, null);
-        }
-    }
-
-    public IEnumerator InitETH(string senderAddress, Action<string, Exception> callback) {
-        var function = this.contractInstance.contract.GetFunction("initETH");
-   
-        var data = function.GetData();
-        var nonceTask = this.contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
-        yield return new WaitUntil(() => nonceTask.IsCompleted);
-
-        if(nonceTask.IsFaulted) {
-            callback("", nonceTask.Exception);
-            yield break;
-        }
-        var nonce = new HexBigInteger(nonceTask.Result.Value);
-        var transactionInput = new Nethereum.RPC.Eth.DTOs.TransactionInput() {
-            From = senderAddress,
-            To = this.contractInstance.contractAddress, // Set this to the contract address
-            Value = new HexBigInteger(Web3.Convert.ToWei(0.01)),
-            Gas = new HexBigInteger(3000000),
-            GasPrice = new HexBigInteger(2000000000),
-            Data = data,
-            Nonce = nonce,
-        };
-        var signedTransactionTask = this.contractInstance.web3.TransactionManager.SignTransactionAsync(transactionInput);
-        
-        yield return new WaitUntil(()=> signedTransactionTask.IsCompleted);
-        
-        if(signedTransactionTask.IsFaulted) {
-            callback("", signedTransactionTask.Exception);
-        } else {
-            var signedTransaction = signedTransactionTask.Result;
-            var sendTransactionTask = this.contractInstance.web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransaction);
-            
-            yield return new WaitUntil(()=> sendTransactionTask.IsCompleted);
-
-            if(sendTransactionTask.IsFaulted) {
-                callback("", sendTransactionTask.Exception);
-            } else {
-                callback(sendTransactionTask.Result, null);
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err)=>{
+            if(contractAddress == null) {
+                callback(null, err);
+            }else {
+                callback(contractAddress, null);
             }
-        }
+        });
     }
 
+    public IEnumerator RemoveLiquidity(string senderAddress, decimal ethValue, Action<string, Exception> callback) {
 
+        var function = this.contractInstance.contract.GetFunction("removeLiquidity");
+        string data = function.GetData();
 
-    
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err)=>{
+            if(contractAddress == null) {
+                callback(null, err);
+            }else {
+                callback(contractAddress, null);
+            }
+        });
+    }
+
+    public IEnumerator InitETH(string senderAddress, decimal ethValue, Action<string, Exception> callback) {
+       var function = this.contractInstance.contract.GetFunction("initETH");
+        string data = function.GetData();
+
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err)=>{
+            if(contractAddress == null) {
+                callback(null, err);
+            }else {
+                callback(contractAddress, null);
+            }
+        });
+    }
 }
