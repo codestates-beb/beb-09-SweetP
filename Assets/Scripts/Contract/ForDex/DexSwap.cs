@@ -165,7 +165,7 @@ public class DexSwap : MonoBehaviour
             });
         }
         else if (swapSymbol == "PPC") {
-            yield return sweetpDex.tokenContract.Approve(SmartContractInteraction.userAccount.Address, sweetpDex.dexContract.contractInstance.contractAddress, StringToDecimal(inputX.text), (result, err)=>{
+            yield return sweetpDex.tokenContract.Approve(sweetpDex.dexContract.contractInstance.contractAddress, StringToDecimal(inputX.text), (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                     sweetpDex.progressCircle.SetActive(false);

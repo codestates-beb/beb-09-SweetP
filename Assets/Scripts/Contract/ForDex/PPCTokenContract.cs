@@ -64,45 +64,34 @@ public class PPCTokenContract: MonoBehaviour{
         }
     }
 
-    public IEnumerator Transfer(string fromAddress, string recipient, decimal amount) 
+    public IEnumerator Transfer(string recipient, decimal amount, Action<string, Exception> callback) 
     {
         var function = this.contractInstance.contract.GetFunction("transfer");
-        var weiAmount = BigInteger.Parse((amount * (decimal)Math.Pow(10, 18)).ToString("0"));
-        var transactionInput = function.CreateTransactionInput(fromAddress, new object[] {recipient, weiAmount});
-        transactionInput.Gas = new HexBigInteger(new BigInteger(3000000)); // 예시로 3000000을 설정했습니다.
+        BigInteger tokenAmount = new BigInteger(amount * (decimal)Math.Pow(10, 18));
+        string data = function.GetData(recipient, tokenAmount);
+
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err)=>{
+            if(contractAddress == null) {
+                callback(null, err);
+            }else {
+                callback(contractAddress, null);
+            }
+        });
         
-        var task = function.SendTransactionAsync(transactionInput);
-        yield return new WaitUntil(() => task.IsCompleted);
-        if (task.IsFaulted) 
-        {
-            Debug.LogError(task.Exception);
-        }
-        else 
-        {
-            Debug.Log("Transfer completed with transaction hash: " + task.Result);
-        }
     }
 
-    public IEnumerator Approve(string fromAddress, string spender, decimal amount, Action<string, Exception> callback) {
-        var function = this.contractInstance.contract.GetFunction("approve");
-        BigInteger amountWei = BigInteger.Multiply(new BigInteger(amount), BigInteger.Pow(10, 18));
-        // var value = new HexBigInteger(valueParam * (decimal)Math.Pow(10, 18));  // 5 Ether 전송
-        var estimateGasTask = function.EstimateGasAsync(fromAddress, null, null, spender, amountWei);
-        yield return new WaitUntil(()=>estimateGasTask.IsCompleted);
-        if(estimateGasTask.IsFaulted) {
-            callback("", estimateGasTask.Exception);
-            yield break;
-        }
-        var gas = estimateGasTask.Result;
-        Debug.Log("EstimatedGas is : " + gas);
-        var gasLimit = new HexBigInteger(3000000);
-        var task = function.SendTransactionAsync(fromAddress, gas, gasLimit, new object[] {spender, amountWei});
-        yield return new WaitUntil(()=>task.IsCompleted);
-        if(task.IsFaulted) {
-            callback("", task.Exception);
-        }else {
-            callback(task.Result, null);
-        }
+    public IEnumerator Approve(string spender, decimal amount, Action<string, Exception> callback) {
+         var function = this.contractInstance.contract.GetFunction("approve");
+        BigInteger tokenAmount = new BigInteger(amount * (decimal)Math.Pow(10, 18));
+        string data = function.GetData(spender, tokenAmount);
+
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err)=>{
+            if(contractAddress == null) {
+                callback(null, err);
+            }else {
+                callback(contractAddress, null);
+            }
+        });
     }
 
 
