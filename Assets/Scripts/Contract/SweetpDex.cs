@@ -27,11 +27,12 @@ public class SweetpDex : MonoBehaviour
     public decimal liquidityShare;
 
     private int preNum;
+    public GameObject progressCircle;
 
     // Start is called before the first frame update
     private void Awake()    
     {
-        userAddress = "0x30018fC76ca452C1522DD9C771017022df8b2321";
+        // userAddress = "0x30018fC76ca452C1522DD9C771017022df8b2321";
         tokenContract.Initialize();
         dexContract.Initialize();
         
@@ -64,6 +65,16 @@ public class SweetpDex : MonoBehaviour
     void Update()
     {
         EnterOrExitDex();
+        if(Input.GetKeyDown(KeyCode.M)) {
+            Debug.Log("---------");
+            StartCoroutine(dexContract.InitETH(SmartContractInteraction.userAccount.Address, (result, err)=>{
+                if(err == null) {
+                    Debug.Log(result);
+                }else {
+                    Debug.Log(err);
+                }
+            }));
+        }
     }
 
     private void EnterOrExitDex() {
@@ -119,7 +130,7 @@ public class SweetpDex : MonoBehaviour
             }
         }));
 
-        yield return StartCoroutine(tokenContract.BalanceOf(SweetpDex.userAddress, (balance, ex)=>{
+        yield return StartCoroutine(tokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (balance, ex)=>{
             if(ex == null) {
                 tokenBalance = balance;
             }
@@ -128,7 +139,7 @@ public class SweetpDex : MonoBehaviour
             }
         }));
 
-        yield return StartCoroutine(tokenContract.GetBalance(SweetpDex.userAddress, (balance, ex)=>{
+        yield return StartCoroutine(tokenContract.GetBalance(SmartContractInteraction.userAccount.Address, (balance, ex)=>{
             if(ex == null) {
                 ethBalance = balance;
             }

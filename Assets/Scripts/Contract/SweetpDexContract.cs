@@ -4,7 +4,10 @@ using Nethereum.Web3;
 using System.Numerics;
 using Nethereum.Hex.HexTypes;
 using System;
+using Nethereum.Signer;
+using Nethereum.Hex.HexConvertors.Extensions;
 
+using Nethereum.RLP;
 
 public class SweetpDexContract : MonoBehaviour{
     
@@ -75,31 +78,86 @@ public class SweetpDexContract : MonoBehaviour{
         if(task.IsFaulted) {
             callback(0, task.Exception);
         } else {
+            Debug.Log(task.Result);
             decimal liquidityShare = (decimal)((double)task.Result / System.Math.Pow(10,18));
             callback(liquidityShare, null);
         }
     }
 
-    public IEnumerator Swap(string fromAddress, decimal ethValue, decimal x, string tokenSymbol, Action<string, Exception> callback) {
+    public IEnumerator Swap(string senderAddress, decimal ethValue, decimal x, string tokenSymbol, Action<string, Exception> callback) {
         var function = this.contractInstance.contract.GetFunction("swap");
-        var gas = new HexBigInteger(500000);
-        var gasLimit = new HexBigInteger(3000000);
-        var value = new HexBigInteger(Web3.Convert.ToWei(ethValue));  // 5 Ether 전송
+        var nonceTask = this.contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
+        yield return new WaitUntil(() => nonceTask.IsCompleted);
+
+        if(nonceTask.IsFaulted) {
+            callback("", nonceTask.Exception);
+            yield break;
+        }
+
+        var nonce = new HexBigInteger(nonceTask.Result.Value);
         BigInteger tokenAmount = new BigInteger(x * (decimal)Math.Pow(10, 18));
-        var task = function.SendTransactionAsync(fromAddress, gas, gasLimit, value, new object[] { tokenAmount, tokenSymbol });
-        yield return new WaitUntil(()=>task.IsCompleted);
-        if(task.IsFaulted) {
-            callback("", task.Exception);
+        var data = function.GetData(tokenAmount, tokenSymbol);
+
+        var transactionInput = new Nethereum.RPC.Eth.DTOs.TransactionInput() {
+            From = senderAddress,
+            To = this.contractInstance.contractAddress, // Set this to the contract address
+            Value = new HexBigInteger(Web3.Convert.ToWei(ethValue)),
+            Gas = new HexBigInteger(3000000),
+            GasPrice = new HexBigInteger(Nethereum.Util.UnitConversion.Convert.ToWei(2, 9)), // 2 Gwei
+            Nonce = nonce,
+            Data = data
+        };
+
+        var signedTransactionTask = this.contractInstance.web3.TransactionManager.SignTransactionAsync(transactionInput);
+        
+        yield return new WaitUntil(()=> signedTransactionTask.IsCompleted);
+        
+        if(signedTransactionTask.IsFaulted) {
+            callback("", signedTransactionTask.Exception);
         } else {
-            callback(task.Result, null);
+            var signedTransaction = signedTransactionTask.Result;
+            var sendTransactionTask = this.contractInstance.web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransaction);
+            
+            yield return new WaitUntil(()=> sendTransactionTask.IsCompleted);
+            if(sendTransactionTask.IsFaulted) {
+                callback("", sendTransactionTask.Exception);
+            } 
+            while (true)
+            {
+                var receiptTask = this.contractInstance.web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(sendTransactionTask.Result);
+                yield return new WaitUntil(() => receiptTask.IsCompleted);
+
+                if (receiptTask.IsFaulted)
+                {
+                    callback("", receiptTask.Exception);
+                    yield break;
+                }
+
+                if (receiptTask.Result != null && receiptTask.Result.Status != null)
+                {
+                    if (receiptTask.Result.Status.Value == 1)
+                    {
+                        callback(sendTransactionTask.Result, null);
+                        yield break;
+                    }
+                    else
+                    {
+                        callback("", new Exception("Transaction failed"));
+                        yield break;
+                    }
+                }
+
+                yield return new WaitForSeconds(5); // Wait for 5 seconds before checking again
+            }
         }
     }
 
-    public IEnumerator AddLiquidity(string fromAddress, decimal valueParam, Action<string, Exception> callback) {
+
+    public IEnumerator AddLiquidity(string fromAddress, decimal ethValue, Action<string, Exception> callback) {
         var function = this.contractInstance.contract.GetFunction("addLiquidity");
         var gas =  new HexBigInteger(500000);
         var limit = new HexBigInteger(3000000);
-        var value = new HexBigInteger(Web3.Convert.ToWei(valueParam));
+        var value = new HexBigInteger(Web3.Convert.ToWei(ethValue));
         var task = function.SendTransactionAsync(fromAddress, gas, limit, value);
         yield return new WaitUntil(()=>task.IsCompleted);
         if(task.IsFaulted) {
@@ -122,4 +180,49 @@ public class SweetpDexContract : MonoBehaviour{
             callback(task.Result, null);
         }
     }
+
+    public IEnumerator InitETH(string senderAddress, Action<string, Exception> callback) {
+        var function = this.contractInstance.contract.GetFunction("initETH");
+   
+        var data = function.GetData();
+        var nonceTask = this.contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
+        yield return new WaitUntil(() => nonceTask.IsCompleted);
+
+        if(nonceTask.IsFaulted) {
+            callback("", nonceTask.Exception);
+            yield break;
+        }
+        var nonce = new HexBigInteger(nonceTask.Result.Value);
+        var transactionInput = new Nethereum.RPC.Eth.DTOs.TransactionInput() {
+            From = senderAddress,
+            To = this.contractInstance.contractAddress, // Set this to the contract address
+            Value = new HexBigInteger(Web3.Convert.ToWei(0.01)),
+            Gas = new HexBigInteger(3000000),
+            GasPrice = new HexBigInteger(2000000000),
+            Data = data,
+            Nonce = nonce,
+        };
+        var signedTransactionTask = this.contractInstance.web3.TransactionManager.SignTransactionAsync(transactionInput);
+        
+        yield return new WaitUntil(()=> signedTransactionTask.IsCompleted);
+        
+        if(signedTransactionTask.IsFaulted) {
+            callback("", signedTransactionTask.Exception);
+        } else {
+            var signedTransaction = signedTransactionTask.Result;
+            var sendTransactionTask = this.contractInstance.web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransaction);
+            
+            yield return new WaitUntil(()=> sendTransactionTask.IsCompleted);
+
+            if(sendTransactionTask.IsFaulted) {
+                callback("", sendTransactionTask.Exception);
+            } else {
+                callback(sendTransactionTask.Result, null);
+            }
+        }
+    }
+
+
+
+    
 }

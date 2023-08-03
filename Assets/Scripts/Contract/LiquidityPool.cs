@@ -209,13 +209,21 @@ public class LiquidityPool : MonoBehaviour
     }
 
     private IEnumerator AddLiquidity() {
-        
-        yield return StartCoroutine(sweetpDex.dexContract.AddLiquidity(SweetpDex.userAddress, StringToDecimal(inputX.text), (result, err)=>{
+        decimal ethValue=0;
+        if(swapSymbol == "ETH") {
+            ethValue = StringToDecimal(inputX.text);
+        }else if (swapSymbol == "PPC") {
+            ethValue = StringToDecimal(inputY.text);
+        }
+        sweetpDex.progressCircle.SetActive(true);
+        yield return StartCoroutine(sweetpDex.dexContract.AddLiquidity(SmartContractInteraction.userAccount.Address, ethValue, (result, err)=>{
             if (string.IsNullOrEmpty(result)) {
                 Debug.Log(err);
+                sweetpDex.progressCircle.SetActive(false);
             }
             else {
                 inputX.text = "";
+                sweetpDex.progressCircle.SetActive(false);
             }
         }));
     }
