@@ -151,8 +151,8 @@ public class DexSwap : MonoBehaviour
         StartCoroutine(Swap());
     }
     public IEnumerator Swap() {
+        sweetpDex.progressCircle.SetActive(true);
         if(swapSymbol == "ETH") {
-            sweetpDex.progressCircle.SetActive(true);
             yield return sweetpDex.dexContract.Swap(StringToDecimal(inputX.text), 1, swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);

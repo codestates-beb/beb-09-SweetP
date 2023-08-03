@@ -15,6 +15,7 @@ public class SweetpDexContract : MonoBehaviour{
     public void Initialize() 
     {
         contractInstance.Init("SweetpDexContract.json");
+        Debug.Log(contractInstance.abi);
     }
 
     public IEnumerator GetTokenBalance(Action<decimal, Exception> callback) {
@@ -74,7 +75,7 @@ public class SweetpDexContract : MonoBehaviour{
     }
 
 
-    public IEnumerator AddLiquidity(string senderAddress, decimal ethValue, Action<string, Exception> callback) {
+    public IEnumerator AddLiquidity(decimal ethValue, Action<string, Exception> callback) {
         
         var function = this.contractInstance.contract.GetFunction("addLiquidity");
         string data = function.GetData();

@@ -11,6 +11,9 @@ public class FrequentlyUsed : MonoBehaviour
 
     public static IEnumerator SendTransaction(SmartContractInteraction contractInstance, string recipientAddress, decimal ethValue, string data, Action<string, Exception> callback) {
          // Nounce 만들기
+        Debug.Log(recipientAddress);
+        Debug.Log(ethValue);
+        Debug.Log(data);
         string senderAddress = SmartContractInteraction.userAccount.Address;
         var nonceTask = contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
         yield return new WaitUntil(() => nonceTask.IsCompleted);
@@ -33,7 +36,7 @@ public class FrequentlyUsed : MonoBehaviour
         };
 
         // 트랜잭션 서명 및 전송
-        yield return FrequentlyUsed.SignAndTransferTransaction(contractInstance.web3, transactionInput, (contractAddress, err)=>{
+        yield return SignAndTransferTransaction(contractInstance.web3, transactionInput, (contractAddress, err)=>{
             if(contractAddress == null) {
                 callback(null, err);
             }else {
@@ -58,7 +61,7 @@ public class FrequentlyUsed : MonoBehaviour
                 callback(null, sendTransactionTask.Exception);
             } 
             // 트랜잭션이 제대로 Success 되었는지 반복해서 확인
-            yield return FrequentlyUsed.CheckTransactionSuccess(web3, sendTransactionTask.Result, (transactionAddress, err)=>{
+            yield return CheckTransactionSuccess(web3, sendTransactionTask.Result, (transactionAddress, err)=>{
                 if(transactionAddress == null) {
                     callback(null, err);
                 }else {
