@@ -1,3 +1,6 @@
+{
+	"contractName": "PPC",
+	"abi":
 [
 	{
 		"anonymous": false,
@@ -219,4 +222,6 @@
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-]
+],
+"deployedAddress": "0xAfdC75da5E1a8eAdb9B5B5c691A4Ed3fd04Fb829"
+}
