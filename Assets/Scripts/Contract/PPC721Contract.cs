@@ -91,7 +91,7 @@ public class PPC721Contract : MonoBehaviour
     }
     */
 
-    private void Start()
+    private void Update()
     {
         StartCoroutine(MintNFT());
         //StartCoroutine(GetNftTokenListCoroutine(userAddress));
