@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -141,6 +141,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contractAddress: 0xAfdC75da5E1a8eAdb9B5B5c691A4Ed3fd04Fb829
+--- !u!114 &93300803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93300797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57070aabeb5caba46a69919e3a180afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractInstance: {fileID: 0}
 --- !u!1 &328559655
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,6 +1444,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7882506165824302946, guid: 70b8241de3bee8543b5132d72080c77d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 93300801}
+    - targetCorrespondingSourceObject: {fileID: 7882506165824302946, guid: 70b8241de3bee8543b5132d72080c77d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 93300803}
   m_SourcePrefab: {fileID: 100100000, guid: 70b8241de3bee8543b5132d72080c77d, type: 3}
 --- !u!1 &1481508013
 GameObject:
