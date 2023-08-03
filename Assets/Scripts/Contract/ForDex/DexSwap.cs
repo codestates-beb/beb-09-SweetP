@@ -23,6 +23,7 @@ public class DexSwap : MonoBehaviour
     public TextMeshProUGUI swapText;
     public Button swapButton;
 
+
     
     // Start is called before the first frame update
 
@@ -151,29 +152,35 @@ public class DexSwap : MonoBehaviour
     }
     public IEnumerator Swap() {
         if(swapSymbol == "ETH") {
-            StartCoroutine(sweetpDex.dexContract.Swap(SmartContractInteraction.userAccount.Address, StringToDecimal(inputX.text), 1, swapSymbol, (result, err)=>{
+            sweetpDex.progressCircle.SetActive(true);
+            yield return sweetpDex.dexContract.Swap(StringToDecimal(inputX.text), 1, swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
+                    sweetpDex.progressCircle.SetActive(false);
                 }else {
                     StartCoroutine(sweetpDex.SetInfo());
                     inputX.text = "";
+                    sweetpDex.progressCircle.SetActive(false);
                 }
-            }));
+            });
         }
         else if (swapSymbol == "PPC") {
-            yield return StartCoroutine(sweetpDex.tokenContract.Approve(SmartContractInteraction.userAccount.Address, sweetpDex.dexContract.contractInstance.contractAddress, StringToDecimal(inputX.text), (result, err)=>{
+            yield return sweetpDex.tokenContract.Approve(sweetpDex.dexContract.contractInstance.contractAddress, StringToDecimal(inputX.text), (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
+                    sweetpDex.progressCircle.SetActive(false);
                 }
-            }));
-            StartCoroutine(sweetpDex.dexContract.Swap(SmartContractInteraction.userAccount.Address, 0, StringToDecimal(inputX.text), swapSymbol, (result, err)=>{
+            });
+            yield return sweetpDex.dexContract.Swap(0, StringToDecimal(inputX.text), swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
+                    sweetpDex.progressCircle.SetActive(false);
                 } else {
                     StartCoroutine(sweetpDex.SetInfo());
                     inputX.text = "";
+                    sweetpDex.progressCircle.SetActive(false);
                 }
-            }));
+            });
         }
         
     }

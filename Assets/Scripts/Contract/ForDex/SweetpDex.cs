@@ -65,16 +65,16 @@ public class SweetpDex : MonoBehaviour
     void Update()
     {
         EnterOrExitDex();
-        if(Input.GetKeyDown(KeyCode.M)) {
-            Debug.Log("---------");
-            StartCoroutine(dexContract.InitETH(SmartContractInteraction.userAccount.Address, (result, err)=>{
-                if(err == null) {
-                    Debug.Log(result);
-                }else {
-                    Debug.Log(err);
-                }
-            }));
-        }
+        // if(Input.GetKeyDown(KeyCode.M)) {
+        //     Debug.Log("---------");
+        //     StartCoroutine(dexContract.InitETH((result, err)=>{
+        //         if(err == null) {
+        //             Debug.Log(result);
+        //         }else {
+        //             Debug.Log(err);
+        //         }
+        //     }));
+        // }
     }
 
     private void EnterOrExitDex() {
