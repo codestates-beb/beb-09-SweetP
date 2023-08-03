@@ -216,7 +216,7 @@ public class LiquidityPool : MonoBehaviour
             ethValue = StringToDecimal(inputY.text);
         }
         sweetpDex.progressCircle.SetActive(true);
-        yield return StartCoroutine(sweetpDex.dexContract.AddLiquidity(SmartContractInteraction.userAccount.Address, ethValue, (result, err)=>{
+        yield return StartCoroutine(sweetpDex.dexContract.AddLiquidity(ethValue, (result, err)=>{
             if (string.IsNullOrEmpty(result)) {
                 Debug.Log(err);
                 sweetpDex.progressCircle.SetActive(false);

@@ -11,7 +11,7 @@ public class SmartContractInteraction : MonoBehaviour
 {
     public Web3 web3;
     string jsonFileName;
-    string abi;
+    public string abi;
     public string contractAddress;
     public static Account userAccount;
     public Nethereum.Contracts.Contract contract;
@@ -71,7 +71,6 @@ public class SmartContractInteraction : MonoBehaviour
             var abiObject = jsonObject["abi"];
             var address = jsonObject["deployedAddress"];
             this.abi = abiObject.ToString();
-            Debug.Log(this.abi);
             this.contractAddress = address.ToString();
         }
         catch(Exception ex) 
