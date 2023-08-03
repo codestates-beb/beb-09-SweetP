@@ -6,6 +6,7 @@ using Nethereum.Web3;
 using Nethereum.HdWallet;
 using Nethereum.Web3.Accounts;
 
+
 public class SmartContractInteraction : MonoBehaviour
 {
     public Web3 web3;
@@ -70,7 +71,6 @@ public class SmartContractInteraction : MonoBehaviour
             var abiObject = jsonObject["abi"];
             var address = jsonObject["deployedAddress"];
             this.abi = abiObject.ToString();
-
             this.contractAddress = address.ToString();
         }
         catch(Exception ex) 
