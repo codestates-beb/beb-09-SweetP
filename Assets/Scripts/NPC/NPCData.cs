@@ -6,8 +6,11 @@ public enum NPCData
 {
     Battle,
     Shop,
-    Change
+    Change,
+    Upgrade
 }
+
+
 
 public enum BattleType
 {
@@ -19,4 +22,10 @@ public enum GroundMap
 {
     Desert,
     Forest
+}
+
+public enum RaidType
+{
+    Mushroom,
+
 }

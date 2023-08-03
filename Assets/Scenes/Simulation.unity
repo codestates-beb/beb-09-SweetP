@@ -11112,7 +11112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 8357626478391633616, guid: 9b35ed9760a8e4efda19ef33f2a8b8ee, type: 3}
-  - {fileID: 8357626478391633616, guid: 9b35ed9760a8e4efda19ef33f2a8b8ee, type: 3}
+  - {fileID: 4372954112948567025, guid: 34c4528d980e2477a9bb1ca8cf4dc306, type: 3}
+  - {fileID: 2386982282745194314, guid: 088563a0dcabd44ed8fff0ef64f2d39c, type: 3}
+  - {fileID: 4688384658038279037, guid: ca3b65b9dd7a14b0a8b2ad7d4a7a3881, type: 3}
   spawnPoint: {fileID: 1076654292}
   baseDamage: 20
   baseHP: 100
@@ -24673,6 +24675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0930caa4e430647cfa932dfbf799686b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsWeaponEquip: 0
   pivotWeaponR: {fileID: 7040543334095462564}
   colliderWeapon: {fileID: 0}
   objWeapon: {fileID: 0}
@@ -24690,6 +24693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 100
   healthSlider: {fileID: 34320477}
+  healthText: {fileID: 0}
   deathClip: {fileID: 0}
   hitClip: {fileID: 0}
 --- !u!137 &5402034496959021938

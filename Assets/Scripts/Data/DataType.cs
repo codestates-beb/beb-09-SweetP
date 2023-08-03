@@ -62,4 +62,23 @@ public class MonsterData
     public float baseSpeed = 1f;
 }
 
+[Serializable]
+public class ItemCost
+{
+    public int potion = 120;
+}
 
+[Serializable]
+public class ScrollData
+{
+    public ScrollType scrollType;
+    public int count;
+    public int IncreseProb;
+}
+
+[Serializable]
+public class ScrollDropTable
+{
+    public ScrollType scrollType;
+    public float dropProb;
+}

@@ -9,9 +9,20 @@ public enum WeaponNature
 
 public enum MonsterType
 {
-    Mushroom
+    RedPoPo,
+    SloppyPunch,
+    Mimicubbie,
+    PinkCells
+
 }
 
+public enum ScrollType
+{
+    Normal,
+    Unique,
+    Legendary,
+    Length
+}
 public static class Consts
 {
     public const string BASE_URL = "https://breadmore.azurewebsites.net/api";

@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
     }
 
     private bool IsInventory = false;
-
+    private ObjectEventSystem eventSystem;
     [Header("Inventory")]
     public GameObject Inventory;
     public TextMeshProUGUI goldText;
@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
     public GameObject ShopPanel;
     public GameObject BattlePanel;
     public GameObject ChangePanel;
+    public GameObject UpgradePanel;
 
     public bool IsContract = false;
     public bool IsOpenPanel = false;
@@ -58,6 +59,17 @@ public class UIManager : MonoBehaviour
     public GameObject GroundPanel;
     public GameObject RaidPanel;
 
+    [Header("Shop UI")]
+    public TextMeshProUGUI ItemCostText;
+    public TextMeshProUGUI ItemCountText;
+    public TextMeshProUGUI MyGoldText;
+
+    [Header("Upgrade UI")]
+    public Image UpgradeWeapon;
+    public Image UpgradeScroll;
+    public TextMeshProUGUI PPCText;
+    public TextMeshProUGUI CurrentUpgrade;
+    public TextMeshProUGUI NextUpgrade;
 
     private void Awake()
     {
@@ -68,17 +80,28 @@ public class UIManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+
+        eventSystem = Inventory.GetComponent<ObjectEventSystem>();
+
+        if (eventSystem != null)
+        {
+            eventSystem.ObjectSetActiveChanged += OnInventorySetActiveChanged;
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        potionText.text = ItemManager.instance.itemData.player_potion.ToString();
+        //UI
+        RefreshPotionCount();
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
+
+
     }
 
     public void OpenWeaponInfoPanel(EquipSlot _equipSlot)
     {
+        
         equipSlot = _equipSlot;
         weaponNameText.text = equipSlot.weaponData.weapon_id.ToString();
         weaponLevelText.text = equipSlot.weaponData.weapon_upgrade.ToString();
@@ -117,6 +140,17 @@ public class UIManager : MonoBehaviour
     public void SelectBattleType()
     {
 
+    }
+
+    private void OnInventorySetActiveChanged(object sender, System.EventArgs e)
+    {
+        goldText.text = ItemManager.instance.itemData.player_gold.ToString();
+        print("asd");
+    }
+
+    public void RefreshPotionCount()
+    {
+        potionText.text = ItemManager.instance.itemData.player_potion.ToString();
     }
     // Update is called once per frame
     void Update()

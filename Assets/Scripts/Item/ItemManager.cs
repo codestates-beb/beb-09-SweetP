@@ -21,7 +21,7 @@ public class ItemManager : MonoBehaviour
     }
 
     public ItemData itemData = new ItemData();
-
+    public List<ScrollData> scrollDataList = new List<ScrollData>();
     private void Awake()
     {
         if(_instance != null && _instance != this)
@@ -32,6 +32,7 @@ public class ItemManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         GetItem();
+        GetScroll();
     }
 
 
@@ -50,6 +51,18 @@ public class ItemManager : MonoBehaviour
         {
             HandleItemData(www);
         });
+    }
+
+    public void GetScroll()
+    {
+        for(int i=0; i<scrollDataList.Count; i++)
+        {
+            scrollDataList[i].count = 5;
+        }
+    }
+    public void PutItem()
+    {
+        
     }
 
     // Start is called before the first frame update

@@ -6,52 +6,80 @@ using TMPro;
 public class ItemSlot : MonoBehaviour
 {
 
-    public WeaponData weaponData;
+    public ScrollData scrollData;
     public Image itemImage;
+    public int itemCount;
+    private ItemSlot itemSlot;
 
     [SerializeField]
-    private TextMeshProUGUI item_Count;
+    private TextMeshProUGUI itemCountText;
     [SerializeField]
-    private GameObject go_CountImage;
+    private GameObject goCountImage;
 
-    private void SetColor(float alpha)
+    private void SetColor(float r, float g, float b, float a)
     {
         Color color = itemImage.color;
-        color.a = alpha;
+        color.r = r;
+        color.g = g;
+        color.b = b;
+        color.a = a;
         itemImage.color = color;
     }
 
-    public void AddWeapon(WeaponData _weaponData)
+    public void AddItem(ScrollData _scrollData, int _count =1)
     {
-        weaponData = _weaponData;
-        switch (weaponData.weapon_type)
+        scrollData = _scrollData;
+        itemCount = _count;
+        goCountImage.SetActive(true);
+        itemCountText.text = itemCount.ToString();
+
+        switch (scrollData.scrollType)
         {
                 //sword
-            case 0:
-                itemImage.sprite = Item.instance.Sword;
+            case (ScrollType)0:
+                itemImage.sprite = Item.instance.Scroll;
+                SetColor(1f, 1f, 1f,1f);
                 break;
-                //bow
-            case 1:
-                itemImage.sprite = Item.instance.Bow;
+            //bow
+            case (ScrollType)1:
+                itemImage.sprite = Item.instance.Scroll;
+                SetColor(0.492f, 0.354f, 1f,1f);
                 break;
-                //magic
-            case 2:
-                itemImage.sprite = Item.instance.Magic;
+            //magic
+            case (ScrollType)2:
+                itemImage.sprite = Item.instance.Scroll;
+                SetColor(0.717f, 0.224f, 0f,1f);
                 break;
         }
 
-        SetColor(1);
+        
+    }
+
+    public void SetSlotCount(int _count)
+    {
+        itemCount += _count;
+        itemCountText.text = itemCount.ToString();
+
+        if (itemCount <= 0)
+            ClearSlot();
     }
 
     private void ClearSlot()
     {
+        scrollData = null;
+        itemCount = 0;
+        itemImage.sprite = null;
+        SetColor(0f, 0f, 0f,0f);
+
+        itemCountText.text = "0";
+        goCountImage.SetActive(false);
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        itemSlot = gameObject.GetComponent<ItemSlot>();
     }
 
     // Update is called once per frame

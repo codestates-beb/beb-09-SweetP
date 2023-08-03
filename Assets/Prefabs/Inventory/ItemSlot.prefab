@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 6203327866586591305}
   - component: {fileID: 6203327866586591311}
   - component: {fileID: 6203327866586591304}
-  - component: {fileID: 6556292862940842655}
+  - component: {fileID: 2264350142092192109}
   m_Layer: 5
   m_Name: ItemSlot
   m_TagString: Untagged
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6556292862940842655
+--- !u!114 &2264350142092192109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -376,18 +376,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6203327866586591306}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1280b6e8d966043c8a9136ef90f454e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 241423997caeb4eb58231d17c880d52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData:
-    weapon_id: 0
-    weapon_type: 0
-    weapon_unique: 0
-    weapon_atk: 0
-    weapon_hp: 0
-    weapon_element: 0
-    weapon_durability: 0
-    weapon_upgrade: 0
   itemImage: {fileID: 8159527703018239964}
-  item_Count: {fileID: 0}
-  go_CountImage: {fileID: 0}
+  itemCount: 0
+  itemCountText: {fileID: 5294601103518015156}
+  goCountImage: {fileID: 5294601102161449530}

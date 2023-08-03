@@ -68,6 +68,7 @@ public class Player : LivingEntity
         {
             //hit sound 
             playerAudioPlayer.PlayOneShot(hitClip);
+            playerAnimator.SetTrigger("GetHit");
         }
         base.OnDamage(damage, hitPoint, hitDirection);
 

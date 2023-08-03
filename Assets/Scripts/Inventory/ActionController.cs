@@ -19,7 +19,13 @@ public class ActionController : MonoBehaviour
 
     [SerializeField]
     private WeaponInventory weaponInventory;
+    [SerializeField]
+    private ItemInventory itemInventory;
 
+    [SerializeField]
+    private WeaponInventory weaponSelectPanel;
+    [SerializeField]
+    private ItemInventory itemSelectPanel;
     private void CanPickUp()
     {
 
@@ -29,9 +35,18 @@ public class ActionController : MonoBehaviour
     {
         for(int i=0; i< WeaponManager.instance.weaponDataList.Count; i++)
         {
-            print("item input");
             weaponInventory.AcquireWeapon(WeaponManager.instance.weaponDataList[i]);
+
+            weaponSelectPanel.AcquireWeapon(WeaponManager.instance.weaponDataList[i]);
         }
+
+        for(int i=0; i < ItemManager.instance.scrollDataList.Count; i++)
+        {
+            itemInventory.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
+
+            itemSelectPanel.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
+        }
+        
     }
 
     // Update is called once per frame

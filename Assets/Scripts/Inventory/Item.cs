@@ -23,6 +23,7 @@ public class Item : MonoBehaviour
     public Sprite Sword;
     public Sprite Bow;
     public Sprite Magic;
+    public Sprite Scroll;
     // Start is called before the first frame update
     void Start()
     {

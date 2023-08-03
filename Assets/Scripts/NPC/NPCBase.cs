@@ -6,6 +6,7 @@ using TMPro;
 public class NPCBase : MonoBehaviour, INPC
 {
     public Transform player;
+    private Animator animator;
     private float searchPlayerRadius = 5f;
     private float originalRotationX;
     private Quaternion originalRotation;
@@ -25,6 +26,7 @@ public class NPCBase : MonoBehaviour, INPC
     public virtual void OffContract()
     {
         ThisNPCPanel.SetActive(false);
+        UIManager.instance.IsOpenPanel = false;
     }
 
     private void FindPlayer()
@@ -35,6 +37,7 @@ public class NPCBase : MonoBehaviour, INPC
 
             if(distanceToPlayer <= searchPlayerRadius)
             {
+                animator.SetTrigger("Hello");
                 Vector3 currentRotation = transform.rotation.eulerAngles;
                 transform.rotation = Quaternion.Euler(originalRotationX, currentRotation.y, currentRotation.z);
 
@@ -50,6 +53,8 @@ public class NPCBase : MonoBehaviour, INPC
             {
                 if (IsContract == true)
                 {
+                    animator.ResetTrigger("Hello");
+                    animator.SetTrigger("GoodBye");
                     transform.rotation = originalRotation;
                     ContractPanel.SetActive(false);
                     IsContract = false;
@@ -70,6 +75,7 @@ public class NPCBase : MonoBehaviour, INPC
         originalRotationX = transform.rotation.eulerAngles.x;
         originalRotation = transform.rotation;
 
+        animator = GetComponent<Animator>();
         switch (npcData)
         {
             //battle
@@ -83,6 +89,10 @@ public class NPCBase : MonoBehaviour, INPC
             //change
             case (NPCData)2:
                 ThisNPCPanel = UIManager.instance.ChangePanel;
+                break;
+            //Upgrade
+            case (NPCData)3:
+                ThisNPCPanel = UIManager.instance.UpgradePanel;
                 break;
         }
     }
@@ -99,7 +109,7 @@ public class NPCBase : MonoBehaviour, INPC
                 {
                     print("Contract!" + transform.name);
                     OnContract();
-                    ContractPanel.SetActive(false);
+                    //ContractPanel.SetActive(false);
                     UIManager.instance.IsOpenPanel = true;
 
                 }

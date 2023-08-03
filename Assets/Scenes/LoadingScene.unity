@@ -804,6 +804,16 @@ MonoBehaviour:
     player_id: 0
     player_gold: 0
     player_potion: 0
+  scrollDataList:
+  - scrollType: 0
+    count: 0
+    IncreseProb: 0
+  - scrollType: 1
+    count: 0
+    IncreseProb: 10
+  - scrollType: 2
+    count: 0
+    IncreseProb: 20
 --- !u!1 &1619449534
 GameObject:
   m_ObjectHideFlags: 0

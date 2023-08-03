@@ -9,8 +9,7 @@ public class BattleNPC : MonoBehaviour
     private GameObject RaidPanel;
     private BattleType battleType;
     private GroundMap groundMap;
-    public Transform SpawnPosDesert;
-    public Transform SpawnPosForest;
+    private RaidType raidType;
     public Transform player;
 
     public void SelectGround()
@@ -29,7 +28,6 @@ public class BattleNPC : MonoBehaviour
 
     public void SelectGroundMapDesert()
     {
-        print("desert");
         groundMap = GroundMap.Desert;
         UIManager.instance.IsOpenPanel = false;
         GroundPanel.SetActive(false);
@@ -39,6 +37,23 @@ public class BattleNPC : MonoBehaviour
     public void SelectGroundMapForest()
     {
         groundMap = GroundMap.Forest;
+        UIManager.instance.IsOpenPanel = false;
+        GroundPanel.SetActive(false);
+        SceneManager.LoadScene("ForestMap");
+    }
+
+    public void SelectRaidMapLeft()
+    {
+        raidType = RaidType.Mushroom;
+        UIManager.instance.IsOpenPanel = false;
+        RaidPanel.SetActive(false);
+
+        SceneManager.LoadScene("RaidScene");
+    }
+
+    public void SelectRaidMapRight()
+    {
+        
     }
 
     // Start is called before the first frame update
