@@ -4,10 +4,6 @@ using Nethereum.Web3;
 using System.Numerics;
 using Nethereum.Hex.HexTypes;
 using System;
-using Nethereum.Signer;
-using Nethereum.Hex.HexConvertors.Extensions;
-
-using Nethereum.RLP;
 
 public class SweetpDexContract : MonoBehaviour{
     
@@ -86,15 +82,18 @@ public class SweetpDexContract : MonoBehaviour{
 
     public IEnumerator Swap(string senderAddress, decimal ethValue, decimal x, string tokenSymbol, Action<string, Exception> callback) {
         var function = this.contractInstance.contract.GetFunction("swap");
-        var nonceTask = this.contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
-        yield return new WaitUntil(() => nonceTask.IsCompleted);
 
-        if(nonceTask.IsFaulted) {
-            callback("", nonceTask.Exception);
-            yield break;
-        }
+        // Nounce 만들기
+        HexBigInteger nonce = null;
+        yield return FrequentlyUsed.GetNounce(this.contractInstance.web3, senderAddress, (result, err)=>{
+            if(result != null) {
+                nonce = result;
+            }else {
+                Debug.Log(err);
+            }
+        });
 
-        var nonce = new HexBigInteger(nonceTask.Result.Value);
+        // Transaction Input 생성
         BigInteger tokenAmount = new BigInteger(x * (decimal)Math.Pow(10, 18));
         var data = function.GetData(tokenAmount, tokenSymbol);
 
@@ -108,47 +107,28 @@ public class SweetpDexContract : MonoBehaviour{
             Data = data
         };
 
+        // 서명된 트랜잭션 생성
         var signedTransactionTask = this.contractInstance.web3.TransactionManager.SignTransactionAsync(transactionInput);
-        
         yield return new WaitUntil(()=> signedTransactionTask.IsCompleted);
-        
         if(signedTransactionTask.IsFaulted) {
             callback("", signedTransactionTask.Exception);
         } else {
             var signedTransaction = signedTransactionTask.Result;
+            // 서명된 트랜잭션 전송
             var sendTransactionTask = this.contractInstance.web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransaction);
             
             yield return new WaitUntil(()=> sendTransactionTask.IsCompleted);
             if(sendTransactionTask.IsFaulted) {
                 callback("", sendTransactionTask.Exception);
             } 
-            while (true)
-            {
-                var receiptTask = this.contractInstance.web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(sendTransactionTask.Result);
-                yield return new WaitUntil(() => receiptTask.IsCompleted);
-
-                if (receiptTask.IsFaulted)
-                {
-                    callback("", receiptTask.Exception);
-                    yield break;
+            // 트랜잭션이 제대로 Success 되었는지 반복해서 확인
+            yield return FrequentlyUsed.CheckTransactionSuccess(this.contractInstance.web3, sendTransactionTask.Result, (transactionAddress, err)=>{
+                if(transactionAddress == null) {
+                    Debug.Log(err);
+                }else {
+                    callback(transactionAddress, null);
                 }
-
-                if (receiptTask.Result != null && receiptTask.Result.Status != null)
-                {
-                    if (receiptTask.Result.Status.Value == 1)
-                    {
-                        callback(sendTransactionTask.Result, null);
-                        yield break;
-                    }
-                    else
-                    {
-                        callback("", new Exception("Transaction failed"));
-                        yield break;
-                    }
-                }
-
-                yield return new WaitForSeconds(5); // Wait for 5 seconds before checking again
-            }
+            });
         }
     }
 
