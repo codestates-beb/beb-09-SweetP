@@ -32,8 +32,7 @@ public class DexSwap : MonoBehaviour
         swapSymbol = "ETH";
         inputXSymbolText.text = "ETH";
         inputYSymbolText.text = "PPC";
-        inputY.interactable = false;
-        
+        inputY.interactable = false; 
         toogleSwap = true;    
     }
 
@@ -152,7 +151,7 @@ public class DexSwap : MonoBehaviour
     }
     public IEnumerator Swap() {
         if(swapSymbol == "ETH") {
-            StartCoroutine(sweetpDex.dexContract.Swap(SweetpDex.userAddress, StringToDecimal(inputX.text), 1, swapSymbol, (result, err)=>{
+            StartCoroutine(sweetpDex.dexContract.Swap(SmartContractInteraction.userAccount.Address, StringToDecimal(inputX.text), 1, swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                 }else {
@@ -162,12 +161,12 @@ public class DexSwap : MonoBehaviour
             }));
         }
         else if (swapSymbol == "PPC") {
-            yield return StartCoroutine(sweetpDex.tokenContract.Approve(SweetpDex.userAddress, sweetpDex.dexContract.contractInstance.address, StringToDecimal(inputX.text), (result, err)=>{
+            yield return StartCoroutine(sweetpDex.tokenContract.Approve(SmartContractInteraction.userAccount.Address, sweetpDex.dexContract.contractInstance.contractAddress, StringToDecimal(inputX.text), (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                 }
             }));
-            StartCoroutine(sweetpDex.dexContract.Swap(SweetpDex.userAddress, 0, StringToDecimal(inputX.text), swapSymbol, (result, err)=>{
+            StartCoroutine(sweetpDex.dexContract.Swap(SmartContractInteraction.userAccount.Address, 0, StringToDecimal(inputX.text), swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                 } else {
