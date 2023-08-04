@@ -8,6 +8,7 @@ public class PlayerTB
 {
     public int player_id;
     public string player_address;
+    public string player_name;
 }
 
 public class PlayerData
@@ -42,6 +43,7 @@ public class WeaponData
     public WeaponNature weapon_element;
     public int weapon_durability;
     public int weapon_upgrade;
+    public int weapon_sale;
 }
 
 [Serializable]
@@ -81,4 +83,17 @@ public class ScrollDropTable
 {
     public ScrollType scrollType;
     public float dropProb;
+}
+
+[Serializable]
+public class MarketData
+{
+    public int weapon_id;
+    public int weapon_cost;
+    public int weapon_owner;
+}
+
+public class WeaponSale
+{
+    public int weapon_Sale;
 }

@@ -24,10 +24,9 @@ public class HTTPClient : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    [SerializeField]
+    GameObject progressSpinner;
+
 
     public void GET(string url, Action<string> callback)
     {
@@ -39,12 +38,30 @@ public class HTTPClient : MonoBehaviour
         StartCoroutine(WaitForRequest(url,input, callback));
     }
 
-    public IEnumerator WaitForRequest(string url, Action<string> callback)
+    public void PUT(string url, string input, Action<string> callback)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        StartCoroutine(WaitForPutRequest(url, input, callback));
+    }
+
+    public void DELETE(string url, Action<string> callback)
+    {
+        StartCoroutine(WaitForDeleteRequest(url, callback));
+    }
+
+    private IEnumerator WaitForPutRequest(string url, string input, Action<string> callback)
+    {
+        progressSpinner.SetActive(true);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
+
+        using (UnityWebRequest www = new UnityWebRequest(url, "PUT"))
         {
+            www.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            www.downloadHandler = new DownloadHandlerBuffer();
+            www.SetRequestHeader("Content-Type", "application/json");
+
             yield return www.SendWebRequest();
 
+            progressSpinner.SetActive(false);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -56,8 +73,51 @@ public class HTTPClient : MonoBehaviour
         }
     }
 
+    public IEnumerator WaitForRequest(string url, Action<string> callback)
+    {
+        progressSpinner.SetActive(true);
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            yield return www.SendWebRequest();
+
+            progressSpinner.SetActive(false);
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError(www.error);
+            }
+            else
+            {
+                callback(www.downloadHandler.text);
+            }
+        }
+    }
+
+    public IEnumerator WaitForDeleteRequest(string url, Action<string> callback)
+    {
+        progressSpinner.SetActive(true);
+        using (UnityWebRequest www = UnityWebRequest.Delete(url))
+        {
+            yield return www.SendWebRequest();
+
+            progressSpinner.SetActive(false);
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError(www.error);
+            }
+            else if (www.result == UnityWebRequest.Result.Success) // 응답 확인
+            {
+                callback(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("DELETE request failed with unknown result.");
+            }
+        }
+    }
+
     private IEnumerator WaitForRequest(string url, string input, Action<string> callback)
     {
+        progressSpinner.SetActive(true);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "POST"))
@@ -67,7 +127,7 @@ public class HTTPClient : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-
+            progressSpinner.SetActive(false);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);

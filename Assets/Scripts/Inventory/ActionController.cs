@@ -26,26 +26,47 @@ public class ActionController : MonoBehaviour
     private WeaponInventory weaponSelectPanel;
     [SerializeField]
     private ItemInventory itemSelectPanel;
+
+    [SerializeField]
+    private WeaponInventory marketWeaponPanel;
     private void CanPickUp()
     {
 
     }
-    // Start is called before the first frame update
-    void Start()
+
+    public void Refresh()
     {
-        for(int i=0; i< WeaponManager.instance.weaponDataList.Count; i++)
+        weaponInventory.ClearWeapon();
+
+        weaponSelectPanel.ClearWeapon();
+
+        marketWeaponPanel.ClearWeapon();
+        
+    }
+
+    public void Init()
+    {
+        for (int i = 0; i < WeaponManager.instance.weaponDataList.Count; i++)
         {
             weaponInventory.AcquireWeapon(WeaponManager.instance.weaponDataList[i]);
 
             weaponSelectPanel.AcquireWeapon(WeaponManager.instance.weaponDataList[i]);
+
+            marketWeaponPanel.AcquireWeapon(WeaponManager.instance.weaponDataList[i]);
         }
 
-        for(int i=0; i < ItemManager.instance.scrollDataList.Count; i++)
+        for (int i = 0; i < ItemManager.instance.scrollDataList.Count; i++)
         {
             itemInventory.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
 
             itemSelectPanel.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
         }
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+        Init();
         
     }
 

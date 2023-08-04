@@ -60,6 +60,21 @@ public class WeaponManager : MonoBehaviour
 
     }
 
+    public void Refresh()
+    {
+        weaponDataList = null;
+    }
+
+    public void ChangeWeaponData(WeaponData weapondata)
+    {
+        for(int i=0; i<weaponDataList.Count; i++)
+        {
+            if(weaponDataList[i].weapon_id == weapondata.weapon_id)
+            {
+                weaponDataList[i] = weapondata;
+            }
+        }
+    }
     private void HandleWeaponTB(string jsonData)
     {
         WeaponTBArray weaponTBArray = JsonUtility.FromJson<WeaponTBArray>("{\"weapons\":"+jsonData+"}");
@@ -86,6 +101,13 @@ public class WeaponManager : MonoBehaviour
     private void HandleWeaponData(string jsonData)
     {
         WeaponData weaponData = JsonUtility.FromJson<WeaponData>(jsonData);
+        for(int i=0; i<weaponDataList.Count; i++)
+        {
+            if(weaponDataList[i].weapon_id == weaponData.weapon_id)
+            {
+                return;
+            }
+        }
         weaponDataList.Add(weaponData);
         print(weaponDataList[0].weapon_id);
 
@@ -93,6 +115,7 @@ public class WeaponManager : MonoBehaviour
 
     public void GetWeaponList()
     {
+        print("get list");
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_TB/owner/" + LoginManager.instance.PlayerID, delegate (string www)
         {
             HandleWeaponTB(www);

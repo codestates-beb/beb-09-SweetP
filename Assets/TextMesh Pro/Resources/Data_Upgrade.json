@@ -1,0 +1,104 @@
+{
+  "시트1": [
+    {
+      "upgrade": "0",
+      "prob": "95",
+      "cost": "10"
+    },
+    {
+      "upgrade": "1",
+      "prob": "90",
+      "cost": "20"
+    },
+    {
+      "upgrade": "2",
+      "prob": "85",
+      "cost": "30"
+    },
+    {
+      "upgrade": "3",
+      "prob": "80",
+      "cost": "40"
+    },
+    {
+      "upgrade": "4",
+      "prob": "75",
+      "cost": "50"
+    },
+    {
+      "upgrade": "5",
+      "prob": "70",
+      "cost": "60"
+    },
+    {
+      "upgrade": "6",
+      "prob": "65",
+      "cost": "70"
+    },
+    {
+      "upgrade": "7",
+      "prob": "60",
+      "cost": "80"
+    },
+    {
+      "upgrade": "8",
+      "prob": "55",
+      "cost": "90"
+    },
+    {
+      "upgrade": "9",
+      "prob": "50",
+      "cost": "100"
+    },
+    {
+      "upgrade": "10",
+      "prob": "45",
+      "cost": "110"
+    },
+    {
+      "upgrade": "11",
+      "prob": "40",
+      "cost": "120"
+    },
+    {
+      "upgrade": "12",
+      "prob": "35",
+      "cost": "130"
+    },
+    {
+      "upgrade": "13",
+      "prob": "30",
+      "cost": "140"
+    },
+    {
+      "upgrade": "14",
+      "prob": "25",
+      "cost": "150"
+    },
+    {
+      "upgrade": "15",
+      "prob": "20",
+      "cost": "160"
+    },
+    {
+      "upgrade": "16",
+      "prob": "15",
+      "cost": "170"
+    },
+    {
+      "upgrade": "17",
+      "prob": "10",
+      "cost": "180"
+    },
+    {
+      "upgrade": "18",
+      "prob": "5",
+      "cost": "190"
+    },
+    {
+      "upgrade": "19",
+      "prob": "2",
+      "cost": "200"
+    }
+  ]
+}

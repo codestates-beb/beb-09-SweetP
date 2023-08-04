@@ -24,10 +24,12 @@ public class UIManager : MonoBehaviour
 
     private bool IsInventory = false;
     private ObjectEventSystem eventSystem;
+    private ObjectEventSystem marketEvent;
+
     [Header("Inventory")]
     public GameObject Inventory;
     public TextMeshProUGUI goldText;
-    public TextMeshProUGUI jewelText;
+    public TextMeshProUGUI ppcText;
     public TextMeshProUGUI potionText;
 
     [Header("Weapon Select Panel")]
@@ -49,7 +51,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI ContractNPCNameText;
     public GameObject ShopPanel;
     public GameObject BattlePanel;
-    public GameObject ChangePanel;
+    public GameObject MarketPanel;
     public GameObject UpgradePanel;
 
     public bool IsContract = false;
@@ -70,7 +72,16 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI PPCText;
     public TextMeshProUGUI CurrentUpgrade;
     public TextMeshProUGUI NextUpgrade;
+    public GameObject DecideOn;
+    public GameObject DecideOff;
 
+    [Header("Market UI")]
+    public GameObject Buy;
+    public GameObject Sell;
+    public GameObject My;
+    public Image Select;
+    public Image UnSelect;
+    public GameObject BuyPanel;
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -82,11 +93,18 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         eventSystem = Inventory.GetComponent<ObjectEventSystem>();
-
+        marketEvent = MarketPanel.GetComponent<ObjectEventSystem>();
         if (eventSystem != null)
         {
             eventSystem.ObjectSetActiveChanged += OnInventorySetActiveChanged;
         }
+
+        if (marketEvent != null)
+        {
+            marketEvent.ObjectSetActiveChanged += OnMarketSetActiveChanged;
+        }
+
+
     }
 
     // Start is called before the first frame update
@@ -95,7 +113,7 @@ public class UIManager : MonoBehaviour
         //UI
         RefreshPotionCount();
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
-
+        ppcText.text = ItemManager.instance.PPC.ToString();
 
     }
 
@@ -145,7 +163,18 @@ public class UIManager : MonoBehaviour
     private void OnInventorySetActiveChanged(object sender, System.EventArgs e)
     {
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
-        print("asd");
+        ppcText.text = ItemManager.instance.PPC.ToString();
+
+        print("in");
+
+        ActionController.instance.Refresh();
+        ActionController.instance.Init();
+    }
+
+    private void OnMarketSetActiveChanged(object sender, System.EventArgs e)
+    {
+        MarketPlace.instance.AcquireSlot();
+        print("market");
     }
 
     public void RefreshPotionCount()

@@ -88,7 +88,7 @@ public class NPCBase : MonoBehaviour, INPC
                 break;
             //change
             case (NPCData)2:
-                ThisNPCPanel = UIManager.instance.ChangePanel;
+                ThisNPCPanel = UIManager.instance.MarketPanel;
                 break;
             //Upgrade
             case (NPCData)3:

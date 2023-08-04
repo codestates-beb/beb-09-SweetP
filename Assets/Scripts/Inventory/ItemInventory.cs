@@ -15,7 +15,6 @@ public class ItemInventory : MonoBehaviour
         {
             if (Islots[i].scrollData.count != 0)  // null 이라면 slots[i].item.itemName 할 때 런타임 에러 나서
             {
-                print("Item Exist");
                 if (Islots[i].scrollData.scrollType == scrollData.scrollType)
                 {
                     Islots[i].SetSlotCount(_count);
@@ -28,7 +27,6 @@ public class ItemInventory : MonoBehaviour
         {
             if (Islots[i].scrollData.count == 0)
             {
-                print("No Item");
                 Islots[i].AddItem(scrollData, _count);
                 return;
             }

@@ -22,25 +22,28 @@ public class EquipSlot : MonoBehaviour
 
     public void AddWeapon(WeaponData _weaponData)
     {
-        print("Slot : Add weapon");
-        weaponData = _weaponData;
-        switch (weaponData.weapon_type)
+        if (_weaponData.weapon_sale == 0)
         {
+            print("Slot : Add weapon" + _weaponData.weapon_id);
+            weaponData = _weaponData;
+            switch (weaponData.weapon_type)
+            {
                 //sword
-            case 0:
-                itemImage.sprite = Item.instance.Sword;
-                break;
+                case 0:
+                    itemImage.sprite = Item.instance.Sword;
+                    break;
                 //bow
-            case 1:
-                itemImage.sprite = Item.instance.Bow;
-                break;
+                case 1:
+                    itemImage.sprite = Item.instance.Bow;
+                    break;
                 //magic
-            case 2:
-                itemImage.sprite = Item.instance.Magic;
-                break;
-        }
+                case 2:
+                    itemImage.sprite = Item.instance.Magic;
+                    break;
+            }
 
-        SetColor(1);
+            SetColor(1);
+        }
     }
 
     public void OpenPanel()
@@ -81,9 +84,9 @@ public class EquipSlot : MonoBehaviour
             }
         }
     }
-    private void ClearSlot()
+    public void ClearSlot()
     {
-        weaponData = null;
+        weaponData = new WeaponData();
         itemImage.sprite = null;
         SetColor(0);
     }

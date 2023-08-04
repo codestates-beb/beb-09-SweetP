@@ -23,26 +23,31 @@ public class WeaponInventory : MonoBehaviour
 
     public void AcquireWeapon(WeaponData weaponData)
     {
-        //for (int i = 0; i < Eslots.Length; i++)
-        //{
-        //    //try this
-        //    if (Eslots[i].weaponData != null)
-        //    {
-        //        if (Eslots[i].weaponData.weapon_id == weaponData.weapon_id)
-        //        {
-        //            return;
-        //        }
-        //    }
-        //}
+        for (int i = 0; i < Eslots.Length; i++)
+        {
+            //try this
+            if (Eslots[i].weaponData.weapon_id == weaponData.weapon_id)
+            {
+                return;
+            }
+            
+        }
 
         for (int i=0; i< Eslots.Length; i++)
         {
             if(Eslots[i].weaponData.weapon_id == 0)
             {
-                print("Weapon Inventory : acquireWeapon");
                 Eslots[i].AddWeapon(weaponData);
                 return;
             }
+        }
+    }
+
+    public void ClearWeapon()
+    {
+        for (int i = 0; i < Eslots.Length; i++)
+        {
+                Eslots[i].ClearSlot();
         }
     }
 }

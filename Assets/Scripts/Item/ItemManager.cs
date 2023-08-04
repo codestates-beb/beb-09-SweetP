@@ -21,6 +21,7 @@ public class ItemManager : MonoBehaviour
     }
 
     public ItemData itemData = new ItemData();
+    public int PPC =99999;
     public List<ScrollData> scrollDataList = new List<ScrollData>();
     private void Awake()
     {
@@ -35,6 +36,10 @@ public class ItemManager : MonoBehaviour
         GetScroll();
     }
 
+    public void UsePPC(int amount)
+    {
+        PPC -= amount;
+    }
 
     private void HandleItemData(string jsonData)
     {

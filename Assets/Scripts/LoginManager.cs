@@ -24,12 +24,14 @@ public class LoginManager : MonoBehaviour
             return _instance;
         }
     }
-    public TextMeshProUGUI PlayerIDText;
+    public TextMeshProUGUI PlayerNameText;
 
     [HideInInspector]
     public string PlayerAddress;
     [HideInInspector]
     public int PlayerID;
+    [HideInInspector]
+    public string PlayerName;
 
     private void Awake()
     {
@@ -48,6 +50,7 @@ public class LoginManager : MonoBehaviour
         PlayerTB playerTB = JsonUtility.FromJson<PlayerTB>(jsonData);
 
         PlayerID = playerTB.player_id;
+        PlayerName = playerTB.player_name;
     }
     
     public void Login()
@@ -57,7 +60,7 @@ public class LoginManager : MonoBehaviour
             HandleData(www);
             print(PlayerID);
 
-            PlayerIDText.text = "Player ID : " + PlayerID;
+            PlayerNameText.text = "Player Name : " + PlayerName;
         });
     }
 }
