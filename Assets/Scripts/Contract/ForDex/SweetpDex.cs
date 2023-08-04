@@ -1,6 +1,7 @@
 using System.Collections;
 // using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 // using System.IO;
 // using System.Threading.Tasks;
 // using Nethereum.Contracts;
@@ -28,6 +29,10 @@ public class SweetpDex : MonoBehaviour
 
     private int preNum;
     public GameObject progressCircle;
+    public bool isLoading;
+
+    public Button SwapCateButton;
+    public Button PoolCateButton;
 
     // Start is called before the first frame update
     private void Awake()    
@@ -65,20 +70,17 @@ public class SweetpDex : MonoBehaviour
     void Update()
     {
         EnterOrExitDex();
-        // if(Input.GetKeyDown(KeyCode.M)) {
-        //     Debug.Log("---------");
-        //     StartCoroutine(dexContract.InitETH((result, err)=>{
-        //         if(err == null) {
-        //             Debug.Log(result);
-        //         }else {
-        //             Debug.Log(err);
-        //         }
-        //     }));
-        // }
+        if(isLoading) {
+           SwapCateButton.interactable = false;
+           PoolCateButton.interactable = false;
+        }else {
+            SwapCateButton.interactable = true;
+            PoolCateButton.interactable = true;
+        }
     }
 
     private void EnterOrExitDex() {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) && !isLoading)
         {
             isOpenUI = !isOpenUI;
             if(isOpenUI){

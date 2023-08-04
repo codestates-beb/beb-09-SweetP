@@ -17,6 +17,8 @@ public class RemoveLiquidity : MonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI myEthAmountText;
     public TextMeshProUGUI myPpcAmountText;
     public TextMeshProUGUI liquidityShareText;
+    public TextMeshProUGUI fillAmountPercent;
+
 
     public string swapSymbol;
     public bool toogleSwap;
@@ -27,6 +29,7 @@ public class RemoveLiquidity : MonoBehaviour, IPointerClickHandler
     public decimal myEthAmount;
     public decimal myPpcAmount;
     public Button removeButton;
+    
 
 
     public void Awake() {
@@ -163,6 +166,7 @@ public class RemoveLiquidity : MonoBehaviour, IPointerClickHandler
         }else {
             removeButton.interactable = true;
         }
+        fillAmountPercent.text = (slice.fillAmount * 100).ToString("N0") + "%";
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -186,13 +190,13 @@ public class RemoveLiquidity : MonoBehaviour, IPointerClickHandler
         if(swapSymbol == "ETH") {
             ethValue = StringToDecimal(inputX.text);
             if(slice.fillAmount == 1) { // 전액을 유동성 회수 할 때 solidity에서 에러뜨는 오류있음
-                ethValue *= (decimal)0.999999f;
-                Debug.Log("eee");
+                ethValue *= (decimal)0.99999f;
             }
         }else if (swapSymbol == "PPC") {
             ethValue = StringToDecimal(inputY.text);
+            Debug.Log(ethValue);
             if(slice.fillAmount == 1) {
-                ethValue *= (decimal)0.999999f;
+                ethValue *= (decimal)0.99999f;
             }
         }
         
