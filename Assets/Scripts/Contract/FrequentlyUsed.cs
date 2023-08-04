@@ -11,9 +11,6 @@ public class FrequentlyUsed : MonoBehaviour
 
     public static IEnumerator SendTransaction(SmartContractInteraction contractInstance, string recipientAddress, decimal ethValue, string data, Action<string, Exception> callback) {
          // Nounce 만들기
-        Debug.Log(recipientAddress);
-        Debug.Log(ethValue);
-        Debug.Log(data);
         string senderAddress = SmartContractInteraction.userAccount.Address;
         var nonceTask = contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
         yield return new WaitUntil(() => nonceTask.IsCompleted);
@@ -92,7 +89,8 @@ public class FrequentlyUsed : MonoBehaviour
                     }
                     else
                     {
-                        callback(null, new Exception("Transaction failed"));
+                        callback(null, receiptTask.Exception);
+                        Debug.Log(transactionAddress);
                         yield break;
                     }
                 }

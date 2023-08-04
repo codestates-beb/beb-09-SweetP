@@ -209,14 +209,23 @@ public class LiquidityPool : MonoBehaviour
     }
 
     private IEnumerator AddLiquidity() {
-        decimal ethValue=0;
+        decimal ethValue = 0;
+        decimal tokenValue = 0;
         if(swapSymbol == "ETH") {
             ethValue = StringToDecimal(inputX.text);
+            tokenValue = StringToDecimal(inputY.text);
         }else if (swapSymbol == "PPC") {
             ethValue = StringToDecimal(inputY.text);
+            tokenValue = StringToDecimal(inputX.text);
         }
         sweetpDex.progressCircle.SetActive(true);
-        yield return StartCoroutine(sweetpDex.dexContract.AddLiquidity(ethValue, (result, err)=>{
+        yield return sweetpDex.tokenContract.Approve(sweetpDex.dexContract.contractInstance.contractAddress, tokenValue * (decimal) 1.001, (result, err)=>{
+                if(string.IsNullOrEmpty(result)) {
+                    Debug.Log(err);
+                    sweetpDex.progressCircle.SetActive(false);
+                }
+            });
+        yield return sweetpDex.dexContract.AddLiquidity(ethValue, (result, err)=>{
             if (string.IsNullOrEmpty(result)) {
                 Debug.Log(err);
                 sweetpDex.progressCircle.SetActive(false);
@@ -224,7 +233,8 @@ public class LiquidityPool : MonoBehaviour
             else {
                 inputX.text = "";
                 sweetpDex.progressCircle.SetActive(false);
+                StartCoroutine(sweetpDex.SetInfo());
             }
-        }));
+        });
     }
 }

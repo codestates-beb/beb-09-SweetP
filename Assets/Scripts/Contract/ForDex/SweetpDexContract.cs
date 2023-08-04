@@ -44,14 +44,14 @@ public class SweetpDexContract : MonoBehaviour{
     }
 
     public IEnumerator GetMyLiquidityShare(Action<decimal, Exception> callback) {
-        var function = this.contractInstance.contract.GetFunction("getMyLiquidityShare");
-        var task = function.CallAsync<BigInteger>();
-        yield return new WaitUntil(()=>task.IsCompleted);
-        if(task.IsFaulted) {
+        var function = this.contractInstance.contract.GetFunction("liquidityShare");
+        var task = function.CallAsync<BigInteger>(SmartContractInteraction.userAccount.Address);
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.IsFaulted) {
             callback(0, task.Exception);
         } else {
-            Debug.Log(task.Result);
-            decimal liquidityShare = (decimal)((double)task.Result / System.Math.Pow(10,18));
+            decimal liquidityShare = (decimal)((double)task.Result / System.Math.Pow(10, 18));
             callback(liquidityShare, null);
         }
     }
@@ -88,12 +88,13 @@ public class SweetpDexContract : MonoBehaviour{
         });
     }
 
-    public IEnumerator RemoveLiquidity(string senderAddress, decimal ethValue, Action<string, Exception> callback) {
+    public IEnumerator RemoveLiquidity(decimal ethValue, Action<string, Exception> callback) {
 
         var function = this.contractInstance.contract.GetFunction("removeLiquidity");
-        string data = function.GetData();
+        BigInteger value = new BigInteger(ethValue * (decimal)Math.Pow(10, 18));
+        string data = function.GetData(value);
 
-        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err)=>{
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err)=>{
             if(contractAddress == null) {
                 callback(null, err);
             }else {
@@ -102,7 +103,7 @@ public class SweetpDexContract : MonoBehaviour{
         });
     }
 
-    public IEnumerator InitETH(string senderAddress, decimal ethValue, Action<string, Exception> callback) {
+    public IEnumerator InitETH(decimal ethValue, Action<string, Exception> callback) {
        var function = this.contractInstance.contract.GetFunction("initETH");
         string data = function.GetData();
 
