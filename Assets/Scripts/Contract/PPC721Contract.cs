@@ -16,22 +16,37 @@ public class PPC721Contract : MonoBehaviour
     {
         contractInstance = gameObject.AddComponent<SmartContractInteraction>();
         contractInstance.Init("PPC721Contract.json");
+
     }
-    /*
+
     public void Initialize()
     {
         contractInstance.Init("PPC721Contract.json");
     }
+
+    /*
+    private IEnumerator UpdateCoroutine()
+    {
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            yield return StartCoroutine(PPC721Contract.GetTokenURI(new System.Numerics.BigInteger(1), (TokenIds, ex) => {
+                if (ex == null)
+                {
+                    string SaleTokenIds = TokenIds;
+                    Debug.Log($"All Nft Ids for Token : {(SaleTokenIds)}");
+                }
+                else
+                {
+                    Debug.Log(ex);
+                }
+            }));
+        }
+
+        //yield return null;
+    }
     */
 
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.N)) {
-            //StartCoroutine(MintNFT());
-            StartCoroutine(GetIsSale(new System.Numerics.BigInteger(1)));
-        }
-    }
-    
-    public IEnumerator MintNFT()
+    public IEnumerator MintNFT(Action<string, Exception> callback)
     {
 
 
@@ -48,12 +63,11 @@ public class PPC721Contract : MonoBehaviour
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
 
@@ -61,27 +75,70 @@ public class PPC721Contract : MonoBehaviour
 
     }
 
-    public IEnumerator UpdataNFT(BigInteger tokenId, string tokenURI)
+    public IEnumerator UpdataNFT(BigInteger tokenId, string tokenURI, BigInteger tokenAmount, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("updataNFT");
 
-        var data = function.GetData(tokenId, tokenURI);
+        var data = function.GetData(tokenId, tokenURI, tokenAmount);
         decimal ethValue = 0;
         // 스마트 컨트랙트의 메서드에 전달할 트랜잭션 입력 생성
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
     }
 
-    public IEnumerator SetToken(string tokenAddress)
+    public IEnumerator BurnNFT(BigInteger tokenId, Action<string, Exception> callback)
+    {
+        var function = this.contractInstance.contract.GetFunction("burnNFT");
+
+        var data = function.GetData(tokenId);
+        decimal ethValue = 0;
+        // 스마트 컨트랙트의 메서드에 전달할 트랜잭션 입력 생성
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
+            if (contractAddress == null)
+            {
+                callback(null, err);
+            }
+            else
+            {
+                callback(contractAddress, null);
+            }
+        });
+    }
+
+    public IEnumerator GetTokenURI(BigInteger tokenId, Action<string, Exception> callback)
+    {
+        var function = this.contractInstance.contract.GetFunction("getTokenURI");
+        var task = function.CallAsync<string>(tokenId);
+
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+        }
+        else
+        {
+            try
+            {
+                string TokenURI = task.Result;
+                callback(TokenURI, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
+        }
+    }
+
+    public IEnumerator SetToken(string tokenAddress, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("setToken");
 
@@ -91,18 +148,17 @@ public class PPC721Contract : MonoBehaviour
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
 
     }
 
-    public IEnumerator SetNftPrice(BigInteger tokenId, BigInteger price)
+    public IEnumerator SetNftPrice(BigInteger tokenId, BigInteger price, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("setNftPrice");
 
@@ -113,17 +169,16 @@ public class PPC721Contract : MonoBehaviour
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
     }
 
-    public IEnumerator GetNftPrice(BigInteger tokenId)
+    public IEnumerator GetNftPrice(BigInteger tokenId, Action<BigInteger, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("getNftPrice");
         var task = function.CallAsync<BigInteger>(tokenId);
@@ -136,12 +191,20 @@ public class PPC721Contract : MonoBehaviour
         }
         else
         {
-            BigInteger Price = task.Result;
-            Debug.Log($"NftPrice for Token {tokenId}: {Price}");
+            try
+            {
+                BigInteger Price = task.Result;
+                callback(Price, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(new System.Numerics.BigInteger(-1), ex);
+            }
+            
         }
     }
 
-    public IEnumerator GetOwnerOfTokenId(BigInteger tokenId)
+    public IEnumerator GetOwnerOfTokenId(BigInteger tokenId, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("getOwnerOfTokenId");
         var task = function.CallAsync<string>(tokenId);
@@ -154,13 +217,20 @@ public class PPC721Contract : MonoBehaviour
         }
         else
         {
-            string Address = task.Result;
-            Debug.Log($"Owner Address for Token {tokenId}: {Address}");
+            try
+            {
+                string Address = task.Result;
+                callback(Address, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
         }
 
     }
 
-    public IEnumerator SaleNftToken(BigInteger tokenId, BigInteger price)
+    public IEnumerator SaleNftToken(BigInteger tokenId, BigInteger price, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("saleNftToken");
 
@@ -170,17 +240,16 @@ public class PPC721Contract : MonoBehaviour
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
     }
 
-    public IEnumerator GetIsSale(BigInteger tokenId)
+    public IEnumerator GetIsSale(BigInteger tokenId, Action<bool, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("getIsSale");
         var task = function.CallAsync<bool>(tokenId);
@@ -193,13 +262,22 @@ public class PPC721Contract : MonoBehaviour
         }
         else
         {
-            bool IsSale = task.Result;
-            Debug.Log($"IsSale for Token {tokenId}: {IsSale}");
+            try
+            {
+                bool IsSale = task.Result;
+                callback(IsSale, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(false, ex);
+            }
+            //bool IsSale = task.Result;
+            //Debug.Log($"IsSale for Token {tokenId}: {IsSale}");
         }
     }
 
 
-    public IEnumerator Approve(string approved, BigInteger tokenId)
+    public IEnumerator Approve(string approved, BigInteger tokenId, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("approve");
         //string approved = "0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8";
@@ -209,18 +287,17 @@ public class PPC721Contract : MonoBehaviour
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
 
     }
 
-    public IEnumerator GetApproved(BigInteger tokenId)
+    public IEnumerator GetApproved(BigInteger tokenId, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("getApproved");
         var task = function.CallAsync<string>(tokenId);
@@ -233,12 +310,19 @@ public class PPC721Contract : MonoBehaviour
         }
         else
         {
-            string approvedAddress = task.Result;
-            Debug.Log($"Approved Address for Token {tokenId}: {approvedAddress}");
+            try
+            {
+                string approvedAddress = task.Result;
+                callback(approvedAddress, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
         }
     }
 
-    public IEnumerator BuyNftToken(BigInteger tokenId)
+    public IEnumerator BuyNftToken(BigInteger tokenId, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("buyNftToken");
 
@@ -247,45 +331,28 @@ public class PPC721Contract : MonoBehaviour
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
             if (contractAddress == null)
             {
-                Debug.Log(err);
+                callback(null, err);
             }
             else
             {
-
-                Debug.Log("contractAddress" + contractAddress);
+                callback(contractAddress, null);
             }
         });
     }
-
-
-
-
-
-
-
-    // NFT 토큰 데이터 클래스 정의
-    public class NftTokenData
+    /*
+    [System.Serializable]
+    public class StringArrayWrapper
     {
-        public NftTokenData() // 기본 생성자 추가
-        {
-        }
-
-        [Parameter("uint256", "nftTokenId", 1, false)]
-        public BigInteger nftTokenId { get; set; }
-
-        [Parameter("string", "nftTokenURI", 2, false)]
-        public string nftTokenURI { get; set; }
+        public int[] array;
     }
+     */
 
-
-
-    // 스마트 컨트랙트의 getNftTokenList 메서드 호출을 처리하는 함수
-    public IEnumerator GetNftTokenList(string ownerAddress)
+    public IEnumerator GetAllNftIds(Action<int[], Exception> callback)
     {
-        Debug.Log(ownerAddress);
-        var function = this.contractInstance.contract.GetFunction("getNftTokenList");
-
-        var task = function.CallAsync<NftTokenData[]>(ownerAddress);
+        char separator = ','; // 구분자
+        var function = this.contractInstance.contract.GetFunction("getAllNftIds");
+        var task = function.CallAsync<string>();
+        // 스마트 컨트랙트 함수 호출
         yield return new WaitUntil(() => task.IsCompleted);
 
         if (task.IsFaulted)
@@ -294,13 +361,169 @@ public class PPC721Contract : MonoBehaviour
         }
         else
         {
-            NftTokenData[] tokenList = task.Result;
-            foreach (var token in tokenList)
+            string NftIds = task.Result;
+            string[] NftIdsArray = NftIds.Split(separator);
+
+            // 문자열 배열을 정수 배열로 변환
+            int[] intNftIdsArray = new int[NftIdsArray.Length];
+            for (int i = 0; i < NftIdsArray.Length; i++)
             {
-                Debug.Log($"Token ID: {token.nftTokenId}, Token URI: {token.nftTokenURI}");
+                if (int.TryParse(NftIdsArray[i], out int parsedValue))
+                {
+                    intNftIdsArray[i] = parsedValue;
+                    //StartCoroutine(GetTokenURI(parsedValue));
+                    //Debug.Log($"parse value: {NftIdsArray[i]}");
+                }
+                else
+                {
+
+                    Debug.LogWarning($"Failed to parse value: {NftIdsArray[i]}");
+                }
             }
+            try
+            {
+                //ethBalance = Web3.Convert.FromWei(task.Result.Value);
+                callback(intNftIdsArray, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
+            Debug.Log($"All Nft Ids for Token : {string.Join(", ", intNftIdsArray)}");
         }
     }
 
+    public IEnumerator GetTokenIdOwner(string owner, Action<int[], Exception> callback)
+    {
+        char separator = ','; // 구분자
+        var function = this.contractInstance.contract.GetFunction("getTokenIdOwner");
+        var task = function.CallAsync<string>(owner);
+        // 스마트 컨트랙트 함수 호출
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+        }
+        else
+        {
+            string NftIds = task.Result;
+            string[] NftIdsArray = NftIds.Split(separator);
+
+            // 문자열 배열을 정수 배열로 변환
+            int[] intNftIdsArray = new int[NftIdsArray.Length];
+            for (int i = 0; i < NftIdsArray.Length; i++)
+            {
+                if (int.TryParse(NftIdsArray[i], out int parsedValue))
+                {
+                    intNftIdsArray[i] = parsedValue;
+                    //Debug.Log($"parse value: {NftIdsArray[i]}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Failed to parse value: {NftIdsArray[i]}");
+                }
+            }
+            try
+            {
+                //ethBalance = Web3.Convert.FromWei(task.Result.Value);
+                callback(intNftIdsArray, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
+            Debug.Log($"All Nft Ids for Token : {string.Join(", ", intNftIdsArray)}");
+        }
+    }
+
+
+    public IEnumerator GetSaleNftTokenIds(Action<int[], Exception> callback)
+    {
+        char separator = ','; // 구분자
+        var function = this.contractInstance.contract.GetFunction("getSaleNftTokenIds");
+        var task = function.CallAsync<string>();
+        // 스마트 컨트랙트 함수 호출
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+        }
+        else
+        {
+            string NftIds = task.Result;
+            string[] NftIdsArray = NftIds.Split(separator);
+
+            // 문자열 배열을 정수 배열로 변환
+            int[] intNftIdsArray = new int[NftIdsArray.Length];
+            for (int i = 0; i < NftIdsArray.Length; i++)
+            {
+                if (int.TryParse(NftIdsArray[i], out int parsedValue))
+                {
+                    intNftIdsArray[i] = parsedValue;
+                    //Debug.Log($"parse value: {NftIdsArray[i]}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Failed to parse value: {NftIdsArray[i]}");
+                }
+            }
+            try
+            {
+                //ethBalance = Web3.Convert.FromWei(task.Result.Value);
+                callback(intNftIdsArray, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
+            Debug.Log($"All Nft Ids for Token : {string.Join(", ", intNftIdsArray)}");
+        }
+    }
+
+    public IEnumerator GetSaleNftTokenIdsByAddress(string owner, Action<int[], Exception> callback)
+    {
+        char separator = ','; // 구분자
+        var function = this.contractInstance.contract.GetFunction("getSaleNftTokenIdsByAddress");
+        var task = function.CallAsync<string>(owner);
+        // 스마트 컨트랙트 함수 호출
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+        }
+        else
+        {
+            string NftIds = task.Result;
+            string[] NftIdsArray = NftIds.Split(separator);
+
+            // 문자열 배열을 정수 배열로 변환
+            int[] intNftIdsArray = new int[NftIdsArray.Length];
+            for (int i = 0; i < NftIdsArray.Length; i++)
+            {
+                if (int.TryParse(NftIdsArray[i], out int parsedValue))
+                {
+                    intNftIdsArray[i] = parsedValue;
+                    //Debug.Log($"parse value: {NftIdsArray[i]}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Failed to parse value: {NftIdsArray[i]}");
+                }
+            }
+            try
+            {
+                //ethBalance = Web3.Convert.FromWei(task.Result.Value);
+                callback(intNftIdsArray, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
+            Debug.Log($"All Nft Ids for Token : {string.Join(", ", intNftIdsArray)}");
+        }
+    }
 
 }
