@@ -6,8 +6,7 @@ public class LoadingManager : MonoBehaviour
 {
     static string nextScene;
 
-    [SerializeField]
-    GameObject progressSpinner;
+    
     [SerializeField]
     GameObject LoadText;
     public static void LoadScene(string sceneName)
@@ -41,7 +40,7 @@ public class LoadingManager : MonoBehaviour
 
             if(op.progress >= 0.9f)
             {
-                progressSpinner.SetActive(false);
+                HTTPClient.instance.spinner.SetActive(false);
                 LoadText.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.Space))
                 {

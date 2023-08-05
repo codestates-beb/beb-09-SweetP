@@ -41,7 +41,11 @@ public class ActionController : MonoBehaviour
         weaponSelectPanel.ClearWeapon();
 
         marketWeaponPanel.ClearWeapon();
-        
+
+        itemInventory.ClearItem();
+
+        itemSelectPanel.ClearItem();
+
     }
 
     public void Init()

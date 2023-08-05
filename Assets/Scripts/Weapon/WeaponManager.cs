@@ -135,6 +135,27 @@ public class WeaponManager : MonoBehaviour
         curruentWeaponData = weaponData;
     }
 
+    public void WeaponUse(WeaponData currentWeapon)
+    {
+        currentWeapon.weapon_durability--;
+        for(int i=0; i < weaponDataList.Count; i++)
+        {
+            if(weaponDataList[i].weapon_id == currentWeapon.weapon_id)
+            {
+                weaponDataList[i] = currentWeapon;
+            }
+        }
+
+        string url = "https://breadmore.azurewebsites.net/api/Weapon_Data/" + currentWeapon.weapon_id;
+        string body = JsonUtility.ToJson(currentWeapon);
+
+        HTTPClient.instance.PUT(url, body, (response) =>
+        {
+            print("PUT Response: " + response);
+            print("hello");
+        });
+    }
+
     public void createWeapon()
     {
         switch (curruentWeaponData.weapon_type)

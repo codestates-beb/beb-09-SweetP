@@ -34,6 +34,13 @@ public class ItemInventory : MonoBehaviour
 
     }
 
+    public void ClearItem()
+    {
+        for (int i = 0; i < Islots.Length; i++)
+        {
+            Islots[i].ClearSlot();
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {

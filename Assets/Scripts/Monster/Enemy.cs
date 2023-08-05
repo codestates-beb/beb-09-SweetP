@@ -219,6 +219,7 @@ public class Enemy : LivingEntity
         enemyAudioPlayer.PlayOneShot(deathSound);
         healthSlider.gameObject.SetActive(false);
         ItemManager.instance.itemData.player_gold += dropGold;
+        WeaponManager.instance.WeaponUse(WeaponManager.instance.curruentWeaponData);
         DropScoll();
     }
 

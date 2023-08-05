@@ -64,9 +64,9 @@ public class ItemSlot : MonoBehaviour
             ClearSlot();
     }
 
-    private void ClearSlot()
+    public void ClearSlot()
     {
-        scrollData = null;
+        scrollData = new ScrollData(); ;
         itemCount = 0;
         itemImage.sprite = null;
         SetColor(0f, 0f, 0f,0f);

@@ -4,6 +4,7 @@ using System;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 public class HTTPClient : MonoBehaviour
 {
     public static HTTPClient _instance;
@@ -27,6 +28,36 @@ public class HTTPClient : MonoBehaviour
     [SerializeField]
     GameObject progressSpinner;
 
+    public GameObject spinner;
+    private void Start()
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+
+        spinner = Instantiate(progressSpinner, canvas.transform);
+
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        LoadFunc();
+    }
+
+    void LoadFunc()
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+
+        spinner = Instantiate(progressSpinner, canvas.transform);
+    }
 
     public void GET(string url, Action<string> callback)
     {
@@ -50,7 +81,7 @@ public class HTTPClient : MonoBehaviour
 
     private IEnumerator WaitForPutRequest(string url, string input, Action<string> callback)
     {
-        progressSpinner.SetActive(true);
+        spinner.SetActive(true);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "PUT"))
@@ -61,7 +92,7 @@ public class HTTPClient : MonoBehaviour
 
             yield return www.SendWebRequest();
 
-            progressSpinner.SetActive(false);
+            spinner.SetActive(false);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
