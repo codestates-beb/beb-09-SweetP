@@ -158,6 +158,32 @@ public class PPC721Contract : MonoBehaviour
 
     }
 
+    public IEnumerator GetToken(Action<string, Exception> callback)
+    {
+        var function = this.contractInstance.contract.GetFunction("getToken");
+        var task = function.CallAsync<string>();
+
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+        }
+        else
+        {
+            try
+            {
+                string tokenAddress = task.Result;
+                callback(tokenAddress, null);
+            }
+            catch (System.Exception ex)
+            {
+                callback(null, ex);
+            }
+
+        }
+    }
+
     public IEnumerator SetNftPrice(BigInteger tokenId, BigInteger price, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("setNftPrice");
