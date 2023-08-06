@@ -26,7 +26,7 @@ public class LoginManager : MonoBehaviour
     }
     public TextMeshProUGUI PlayerNameText;
 
-    [HideInInspector]
+    //[HideInInspector]
     public string PlayerAddress;
     [HideInInspector]
     public int PlayerID;
@@ -58,9 +58,10 @@ public class LoginManager : MonoBehaviour
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/player_tb/address/"+PlayerAddress, delegate (string www)
         {
             HandleData(www);
-            print(PlayerID);
-
+            
             PlayerNameText.text = "Player Name : " + PlayerName;
         });
+
+        print("asdasd");
     }
 }

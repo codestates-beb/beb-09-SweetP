@@ -40,7 +40,23 @@ public class LoadingManager : MonoBehaviour
 
             if(op.progress >= 0.9f)
             {
-                HTTPClient.instance.spinner.SetActive(false);
+                GameObject canvas = GameObject.Find("Canvas");
+
+                int count = canvas.transform.childCount;
+                var remove = new System.Collections.Generic.List<GameObject>();
+                for(int i=0; i<count; i++)
+                {
+                    Transform child = canvas.transform.GetChild(i);
+                    if(child.name == "Spinner(Clone)")
+                    {
+                        remove.Add(child.gameObject);
+                    }
+                }
+
+                foreach(var spinnerClone in remove)
+                {
+                    Destroy(spinnerClone);
+                }
                 LoadText.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.Space))
                 {

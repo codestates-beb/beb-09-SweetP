@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 public class Enemy : LivingEntity
 {
+    //public enum Type { Normal, Boss};
     public GameObject healthBarPrefab;
     public Slider healthSlider;
     private GameObject healthBarInstance;
@@ -22,6 +23,9 @@ public class Enemy : LivingEntity
     private AudioSource enemyAudioPlayer;
     private Renderer enemyRenderer;
 
+    public Transform playerTransform;
+
+    private bool inDistance = false;
     private bool isChase = true;
     private bool isAttack = false;
     public float damage = 10f;
@@ -65,8 +69,10 @@ public class Enemy : LivingEntity
             targetRange,
             LayerMask.GetMask("Player"));
 
-        if(rayHits.Length >0 && !isAttack)
+        if (rayHits.Length >0 && !isAttack)
         {
+            inDistance = true;
+            enemyAnimator.SetBool("InDistance", inDistance);
             if (Time.time >= lastAttackTime + timeBetAttack)
             {
                 enemyAnimator.SetTrigger("Attack");
@@ -79,8 +85,6 @@ public class Enemy : LivingEntity
         {
             isChase = true;
             pathFinder.isStopped = false;
-            //EndAttack();
-            Debug.Log("miss");
 
         }
     }
@@ -96,7 +100,7 @@ public class Enemy : LivingEntity
         lastAttackTime = 0f;
 
         healthBarInstance = Instantiate(healthBarPrefab, transform.position, Quaternion.identity);
-        healthBarInstance.transform.SetParent(GameObject.Find("DesertCanvas").transform);
+        healthBarInstance.transform.SetParent(GameObject.Find("FieldCanvas").transform);
 
         healthSlider = healthBarInstance.GetComponent<Slider>();
 

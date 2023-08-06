@@ -25,15 +25,12 @@ public class HTTPClient : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    GameObject progressSpinner;
-
+    public GameObject progressSpinner;
     public GameObject spinner;
+
     private void Start()
     {
-        GameObject canvas = GameObject.Find("Canvas");
 
-        spinner = Instantiate(progressSpinner, canvas.transform);
 
         if (_instance != null && _instance != this)
         {
@@ -43,25 +40,14 @@ public class HTTPClient : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        LoadFunc();
-    }
 
-    void LoadFunc()
-    {
-        GameObject canvas = GameObject.Find("Canvas");
-
-        spinner = Instantiate(progressSpinner, canvas.transform);
-    }
 
     public void GET(string url, Action<string> callback)
     {
         StartCoroutine(WaitForRequest(url, callback));
+        print("Get" + url);
     }
 
     public void POST(string url, string input, Action<string> callback)
@@ -81,6 +67,9 @@ public class HTTPClient : MonoBehaviour
 
     private IEnumerator WaitForPutRequest(string url, string input, Action<string> callback)
     {
+        GameObject canvas = GameObject.Find("Canvas");
+        spinner = Instantiate(progressSpinner, canvas.transform);
+
         spinner.SetActive(true);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
@@ -92,7 +81,7 @@ public class HTTPClient : MonoBehaviour
 
             yield return www.SendWebRequest();
 
-            spinner.SetActive(false);
+            Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -106,12 +95,15 @@ public class HTTPClient : MonoBehaviour
 
     public IEnumerator WaitForRequest(string url, Action<string> callback)
     {
-        progressSpinner.SetActive(true);
+        GameObject canvas = GameObject.Find("Canvas");
+        spinner = Instantiate(progressSpinner, canvas.transform);
+
+        spinner.SetActive(true);
         using (UnityWebRequest www = UnityWebRequest.Get(url))
         {
             yield return www.SendWebRequest();
 
-            progressSpinner.SetActive(false);
+            Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -125,12 +117,15 @@ public class HTTPClient : MonoBehaviour
 
     public IEnumerator WaitForDeleteRequest(string url, Action<string> callback)
     {
-        progressSpinner.SetActive(true);
+        GameObject canvas = GameObject.Find("Canvas");
+        spinner = Instantiate(progressSpinner, canvas.transform);
+
+        spinner.SetActive(true);
         using (UnityWebRequest www = UnityWebRequest.Delete(url))
         {
             yield return www.SendWebRequest();
 
-            progressSpinner.SetActive(false);
+            Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -148,7 +143,10 @@ public class HTTPClient : MonoBehaviour
 
     private IEnumerator WaitForRequest(string url, string input, Action<string> callback)
     {
-        progressSpinner.SetActive(true);
+        GameObject canvas = GameObject.Find("Canvas");
+        spinner = Instantiate(progressSpinner, canvas.transform);
+
+        spinner.SetActive(true);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "POST"))
@@ -158,7 +156,7 @@ public class HTTPClient : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-            progressSpinner.SetActive(false);
+            Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
