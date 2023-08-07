@@ -22,11 +22,11 @@ public class DexSwap : MonoBehaviour
     public TextMeshProUGUI slipageText;
     public TextMeshProUGUI swapText;
     public Button swapButton;
+    public Button toggleButton;
 
 
     
     // Start is called before the first frame update
-
     private void Awake() {
         inputX.onValueChanged.AddListener(delegate { ResetTimer();});
         inputX.contentType = TMP_InputField.ContentType.DecimalNumber; // 혹은 IntegerNumber
@@ -46,11 +46,18 @@ public class DexSwap : MonoBehaviour
         }else if(swapSymbol == "PPC") {
             balanceText.text = sweetpDex.tokenBalance.ToString("N2") + " PPC";
         }
+        if(sweetpDex.isLoading) {
+            inputX.interactable = false;
+            toggleButton.interactable = false;
+        }else {
+            inputX.interactable = true;
+            toggleButton.interactable = true;
+        }
     }
 
 
     private void UpdateSwapButton() {
-        if(StringToDecimal(inputX.text) == 0) {
+        if(StringToDecimal(inputX.text) == 0 || sweetpDex.isLoading) {
             swapButton.interactable = false;
             swapText.text = "Swap";
             swapText.color = Color.white;
@@ -152,15 +159,18 @@ public class DexSwap : MonoBehaviour
     }
     public IEnumerator Swap() {
         sweetpDex.progressCircle.SetActive(true);
+        sweetpDex.isLoading = true;
         if(swapSymbol == "ETH") {
             yield return sweetpDex.dexContract.Swap(StringToDecimal(inputX.text), 1, swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                     sweetpDex.progressCircle.SetActive(false);
+                    sweetpDex.isLoading = false;
                 }else {
                     StartCoroutine(sweetpDex.SetInfo());
                     inputX.text = "";
                     sweetpDex.progressCircle.SetActive(false);
+                    sweetpDex.isLoading = false;
                 }
             });
         }
@@ -169,16 +179,19 @@ public class DexSwap : MonoBehaviour
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                     sweetpDex.progressCircle.SetActive(false);
+                    sweetpDex.isLoading = false;
                 }
             });
             yield return sweetpDex.dexContract.Swap(0, StringToDecimal(inputX.text), swapSymbol, (result, err)=>{
                 if(string.IsNullOrEmpty(result)) {
                     Debug.Log(err);
                     sweetpDex.progressCircle.SetActive(false);
+                    sweetpDex.isLoading = false;
                 } else {
                     StartCoroutine(sweetpDex.SetInfo());
                     inputX.text = "";
                     sweetpDex.progressCircle.SetActive(false);
+                    sweetpDex.isLoading = false;
                 }
             });
         }
@@ -272,4 +285,6 @@ public class DexSwap : MonoBehaviour
         StartCoroutine(sweetpDex.SetInfo());
         StartCoroutine(GetSwapRatio());
     }
+
+
 }

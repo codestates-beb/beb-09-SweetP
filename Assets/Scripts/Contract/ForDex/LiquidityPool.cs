@@ -25,7 +25,10 @@ public class LiquidityPool : MonoBehaviour
     private decimal pairTokenAmount;
 
     public Button addButton;
+    public Button toggleButton;
+    public Button removeButton;
     public TextMeshProUGUI addText;
+
 
 
     // Start is called before the first frame update
@@ -96,6 +99,12 @@ public class LiquidityPool : MonoBehaviour
     }
 
       private void ChangeInputToRed() { // 계좌 잔액보다 많이 입력시 텍스트색이 레드로 변환
+      if(StringToDecimal(inputX.text) == 0 || sweetpDex.isLoading) {
+            addButton.interactable = false;
+            addText.text = "Add";
+            addText.color = Color.white;
+            return;
+        }
       var isOver1 = false;
       var isOver2 = false;
         if(swapSymbol == "ETH" ) {
@@ -103,25 +112,30 @@ public class LiquidityPool : MonoBehaviour
                 inputX.textComponent.color = Color.red;
                 addText.text = "Insufficent";
                 addText.color = Color.red;
+                addButton.interactable = false;
                 isOver1 = true;
             }
             else {
                 inputX.textComponent.color = Color.white;
+                addButton.interactable = true;
                 isOver1 = false;
             }
             if(StringToDecimal(inputY.text) > sweetpDex.tokenBalance) {
                 inputY.textComponent.color = Color.red;
                 addText.text = "Insufficent";
                 addText.color = Color.red;
+                addButton.interactable = false;
                 isOver2 = true;
             }
             else {
                 inputY.textComponent.color = Color.white;
+                addButton.interactable = true;
                 isOver2 = false;
             }
             if(!isOver1 && !isOver2){
                 addText.text = "Add";
                 addText.color = Color.white;
+                addButton.interactable = true;
             }
         }
         else if(swapSymbol == "PPC" ) {
@@ -129,25 +143,30 @@ public class LiquidityPool : MonoBehaviour
                 inputX.textComponent.color = Color.red;
                 addText.text = "Insufficent";
                 addText.color = Color.red;
+                addButton.interactable = false;
                 isOver1 = true;
             }
             else {
                 inputX.textComponent.color = Color.white;
+                addButton.interactable = true;
                 isOver1 = false;
             }
             if(StringToDecimal(inputY.text) > sweetpDex.ethBalance) {
                 inputY.textComponent.color = Color.red;
                 addText.text = "Insufficent";
                 addText.color = Color.red;
+                addButton.interactable = false;
                 isOver2 = true;
             }
             else {
                 inputY.textComponent.color = Color.white;
                 isOver2 = false;
+                addButton.interactable = true;
             }
             if(!isOver1 && !isOver2){
                 addText.text = "Add";
                 addText.color = Color.white;
+                addButton.interactable = true;
             }
         }
         
@@ -178,7 +197,19 @@ public class LiquidityPool : MonoBehaviour
             addButton.interactable = true;
         }
         inputY.interactable = false;
+        HandleLoading();
+    }
 
+    private void HandleLoading() { 
+        if(sweetpDex.isLoading) {
+            inputX.interactable = false;
+            toggleButton.interactable = false;
+            removeButton.interactable = false;
+        }else {
+            inputX.interactable = true;
+            toggleButton.interactable = true;
+            removeButton.interactable = true;
+        }
     }
 
     
@@ -209,22 +240,36 @@ public class LiquidityPool : MonoBehaviour
     }
 
     private IEnumerator AddLiquidity() {
-        decimal ethValue=0;
+        decimal ethValue = 0;
+        decimal tokenValue = 0;
         if(swapSymbol == "ETH") {
             ethValue = StringToDecimal(inputX.text);
+            tokenValue = StringToDecimal(inputY.text);
         }else if (swapSymbol == "PPC") {
             ethValue = StringToDecimal(inputY.text);
+            tokenValue = StringToDecimal(inputX.text);
         }
         sweetpDex.progressCircle.SetActive(true);
-        yield return StartCoroutine(sweetpDex.dexContract.AddLiquidity(ethValue, (result, err)=>{
+        sweetpDex.isLoading = true;
+        yield return sweetpDex.tokenContract.Approve(sweetpDex.dexContract.contractInstance.contractAddress, tokenValue * (decimal) 1.011, (result, err)=>{
+                if(string.IsNullOrEmpty(result)) {
+                    Debug.Log(err);
+                    sweetpDex.progressCircle.SetActive(false);
+                    sweetpDex.isLoading = false;
+                }
+            });
+        yield return sweetpDex.dexContract.AddLiquidity(ethValue, (result, err)=>{
             if (string.IsNullOrEmpty(result)) {
                 Debug.Log(err);
                 sweetpDex.progressCircle.SetActive(false);
+                sweetpDex.isLoading = false;
             }
             else {
                 inputX.text = "";
                 sweetpDex.progressCircle.SetActive(false);
+                sweetpDex.isLoading = false;
+                StartCoroutine(sweetpDex.SetInfo());
             }
-        }));
+        });
     }
 }

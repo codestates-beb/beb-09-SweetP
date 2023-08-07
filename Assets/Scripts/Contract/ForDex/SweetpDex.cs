@@ -1,6 +1,7 @@
 using System.Collections;
 // using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 // using System.IO;
 // using System.Threading.Tasks;
 // using Nethereum.Contracts;
@@ -14,7 +15,7 @@ public class SweetpDex : MonoBehaviour
     public DexSwap dexSwap;
     public LiquidityPool liquidityPool;
     public static string userAddress;
-    public bool isOpenUI;
+    // public bool isOpenUI;
 
     public Transform swapUI;
     public Transform poolUI;
@@ -28,6 +29,10 @@ public class SweetpDex : MonoBehaviour
 
     private int preNum;
     public GameObject progressCircle;
+    public bool isLoading;
+
+    public Button SwapCateButton;
+    public Button PoolCateButton;
 
     // Start is called before the first frame update
     private void Awake()    
@@ -64,32 +69,37 @@ public class SweetpDex : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnterOrExitDex();
-        // if(Input.GetKeyDown(KeyCode.M)) {
-        //     Debug.Log("---------");
-        //     StartCoroutine(dexContract.InitETH((result, err)=>{
-        //         if(err == null) {
-        //             Debug.Log(result);
-        //         }else {
-        //             Debug.Log(err);
-        //         }
-        //     }));
-        // }
+        if(isLoading) {
+           SwapCateButton.interactable = false;
+           PoolCateButton.interactable = false;
+        }else {
+            SwapCateButton.interactable = true;
+            PoolCateButton.interactable = true;
+        }
     }
 
-    private void EnterOrExitDex() {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            isOpenUI = !isOpenUI;
-            if(isOpenUI){
-                daxMainUI.localPosition = Vector3.zero;
-                StartCoroutine(SetInfo());
-                SwapResetInfo();
-            }
-            else if(!isOpenUI){
-                daxMainUI.localPosition = Vector3.up * 80000;
-            }
-        }
+    // private void EnterOrExitDex() {
+    //     if (Input.GetKeyDown(KeyCode.B) && !isLoading)
+    //     {
+    //         isOpenUI = !isOpenUI;
+    //         if(isOpenUI){
+                
+    //         }
+    //         else if(!isOpenUI){
+                
+    //         }
+    //     }
+    // }
+
+    public void Enter() {
+        daxMainUI.localPosition = Vector3.zero;
+        StartCoroutine(SetInfo());
+        SwapResetInfo();
+    }
+
+    public void Exit() {
+        if(isLoading) return;
+        daxMainUI.localPosition = Vector3.up * 80000;
     }
 
     public void SwapResetInfo() {
