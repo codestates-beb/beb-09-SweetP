@@ -155,7 +155,7 @@ public class RemoveLiquidity : MonoBehaviour, IPointerClickHandler
         myEthAmountText.text = DexSwap.FormatDecimal(sweetpDex.contractEthBalance * sweetpDex.liquidityShare,6);
         myPpcAmountText.text = DexSwap.FormatDecimal(sweetpDex.contractTokenBalance * sweetpDex.liquidityShare,2);
         liquidityShareText.text = DexSwap.FormatDecimal(sweetpDex.liquidityShare * 100,4) + "%";
-        if(swapSymbol == "ETH") {
+        if(swapSymbol == "ETH" && myEthAmount != 0) {
             slice.fillAmount = (float)(StringToDecimal(inputX.text) / myEthAmount);
         }
         else if(swapSymbol == "PPC") {
