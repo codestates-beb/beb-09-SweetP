@@ -44,8 +44,8 @@ public class PPC721 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             //StartCoroutine(GetNftPrice());
-            //StartCoroutine(GetBalanceOf());
-            StartCoroutine(GetSaleWeapons());
+            StartCoroutine(SetToken());
+            //StartCoroutine(GetSaleWeapons());
             //StartCoroutine(BuyWeapon(new System.Numerics.BigInteger(2)));
         }
     }
@@ -105,7 +105,7 @@ public class PPC721 : MonoBehaviour
         yield return StartCoroutine(PPC721Contract.SetToken("0xA3e30c7207b8E9Dfe1B405311cc4C0eDe2C02ac0", (Address, ex) =>
         {
             Debug.Log($"Contract Address: {Address}");
-            GetToken();
+            StartCoroutine(GetToken());
         }));
     }
     //@notion 지정한 ERC20 토큰을 확인하는 함수
@@ -124,6 +124,7 @@ public class PPC721 : MonoBehaviour
         }));
     }
     
+    /*
     public IEnumerator Transfer()
     {
         yield return StartCoroutine(PPCTokenContract.Transfer("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", 1000, (Address, ex) =>
@@ -131,6 +132,7 @@ public class PPC721 : MonoBehaviour
             Debug.Log($"Contract Address: {Address}");
         }));
     }
+    */
 
     //@notion 무기 판매 등록
     //무기 판매 버튼을 누르면 시행되는 함수
@@ -158,38 +160,3 @@ public class PPC721 : MonoBehaviour
         }));
     }
 
-
-
-
-    public IEnumerator GetNftPrice()
-    {
-        yield return StartCoroutine(PPC721Contract.GetNftPrice(new System.Numerics.BigInteger(1), (price, ex) => {
-            if (ex == null)
-            {
-                BigInteger Tokenprice = price;
-                Debug.Log($"Token price for Token : {Tokenprice}");
-            }
-            else
-            {
-                Debug.Log(ex);
-            }
-        }));
-    }
-
-    public IEnumerator GetBalanceOf()
-    {
-        yield return StartCoroutine(PPCTokenContract.BalanceOf("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", (balance, ex) => {
-            if (ex == null)
-            {
-                var tokenBalance = balance;
-                Debug.Log($"token Balance for Token : {tokenBalance}");
-            }
-            else
-            {
-                Debug.Log(ex);
-            }
-        }));
-    }
-
-
-}

@@ -75,11 +75,11 @@ public class PPC721Contract : MonoBehaviour
 
     }
 
-    public IEnumerator UpdataNFT(BigInteger tokenId, string tokenURI, BigInteger tokenAmount, Action<string, Exception> callback)
+    public IEnumerator UpdataNFT(BigInteger tokenId, string tokenURI, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("updataNFT");
 
-        var data = function.GetData(tokenId, tokenURI, tokenAmount);
+        var data = function.GetData(tokenId, tokenURI);
         decimal ethValue = 0;
         // 스마트 컨트랙트의 메서드에 전달할 트랜잭션 입력 생성
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
@@ -182,6 +182,26 @@ public class PPC721Contract : MonoBehaviour
             }
 
         }
+    }
+
+    public IEnumerator PPCTransferFrom(string sender, string recipient, BigInteger amount, Action<string, Exception> callback)
+    {
+        var function = this.contractInstance.contract.GetFunction("setPPCTransferFrom");
+
+        var data = function.GetData(sender, recipient, amount);
+        decimal ethValue = 0;
+        // 스마트 컨트랙트의 메서드에 전달할 트랜잭션 입력 생성
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
+            if (contractAddress == null)
+            {
+                callback(null, err);
+            }
+            else
+            {
+                callback(contractAddress, null);
+            }
+        });
+
     }
 
     public IEnumerator SetNftPrice(BigInteger tokenId, BigInteger price, Action<string, Exception> callback)
