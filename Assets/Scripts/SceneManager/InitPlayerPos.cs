@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InitPlayerPos : MonoBehaviour
 {
+    public GameObject player;
     private Transform playerParent;
     public void SetPlayerPosition(Vector3 position)
     {
@@ -15,13 +16,14 @@ public class InitPlayerPos : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instantiate(player, transform);
         playerParent = GameObject.Find("PlayerParent").transform;
 
-        Transform player = playerParent.Find("Player");
+        //Transform player = playerParent.Find("Player");
 
-        //pos = transform.position;
-        player.position = transform.position;
-        player.rotation = transform.rotation;
+        ////pos = transform.position;
+        //player.position = transform.position;
+        //player.rotation = transform.rotation;
     }
 
     // Update is called once per frame

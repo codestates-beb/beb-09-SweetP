@@ -5,6 +5,7 @@ using TMPro;
 
 public class NPCBase : MonoBehaviour, INPC
 {
+    public Transform playerStartPosition;
     public Transform player;
     private Animator animator;
     private float searchPlayerRadius = 5f;
@@ -70,6 +71,9 @@ public class NPCBase : MonoBehaviour, INPC
     // Start is called before the first frame update
     void Start()
     {
+        Transform playerParentTransform = playerStartPosition.transform.Find("PlayerParent(Clone)");
+        player = playerParentTransform.Find("Player");
+        
         ContractPanel = UIManager.instance.ContractPanel;
         nameText = UIManager.instance.ContractNPCNameText;
         originalRotationX = transform.rotation.eulerAngles.x;

@@ -26,6 +26,14 @@ public class Player : LivingEntity
     // Start is called before the first frame update
     private void Awake()
     {
+        GameObject canvas = GameObject.Find("Canvas");
+        Transform sliderTransform = canvas.transform.Find("HealthSlider");
+        healthSlider = sliderTransform.GetComponent<Slider>();
+
+        Transform fillarea = sliderTransform.transform.Find("Fill Area");
+        Transform healthTextTransform = fillarea.Find("HealthText");
+
+        healthText = healthTextTransform.GetComponent<TextMeshProUGUI>();
         playerAudioPlayer = GetComponent<AudioSource>();
         playerAnimator = GetComponent<Animator>();
     }
