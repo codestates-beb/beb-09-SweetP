@@ -27,6 +27,7 @@ public class HTTPClient : MonoBehaviour
 
     public GameObject progressSpinner;
     public GameObject spinner;
+    public bool IsSpinner =false;
 
     private void Start()
     {
@@ -47,7 +48,6 @@ public class HTTPClient : MonoBehaviour
     public void GET(string url, Action<string> callback)
     {
         StartCoroutine(WaitForRequest(url, callback));
-        print("Get" + url);
     }
 
     public void POST(string url, string input, Action<string> callback)
@@ -65,11 +65,10 @@ public class HTTPClient : MonoBehaviour
         StartCoroutine(WaitForDeleteRequest(url, callback));
     }
 
+
     private IEnumerator WaitForPutRequest(string url, string input, Action<string> callback)
     {
-        GameObject canvas = GameObject.Find("Canvas");
-        //spinner = Instantiate(progressSpinner, canvas.transform);
-        //spinner.SetActive(true);
+
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "PUT"))
@@ -92,17 +91,23 @@ public class HTTPClient : MonoBehaviour
         }
     }
 
-    public IEnumerator WaitForRequest(string url, Action<string> callback)
+    private IEnumerator WaitForRequestTest(string url, Action<string> callback)
     {
         GameObject canvas = GameObject.Find("Canvas");
         spinner = Instantiate(progressSpinner, canvas.transform);
 
-        spinner.SetActive(true);
+        if (!IsSpinner)
+        {
+            print("spinnmererer");
+            spinner.SetActive(true);
+            IsSpinner = true;
+        }
         using (UnityWebRequest www = UnityWebRequest.Get(url))
         {
             yield return www.SendWebRequest();
 
             Destroy(spinner);
+            IsSpinner = false;
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -114,17 +119,40 @@ public class HTTPClient : MonoBehaviour
         }
     }
 
-    public IEnumerator WaitForDeleteRequest(string url, Action<string> callback)
+    private IEnumerator WaitForRequest(string url, System.Action<string> callback)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+                callback?.Invoke(null);
+            }
+            else
+            {
+                callback?.Invoke(webRequest.downloadHandler.text);
+            }
+        }
+    }
+
+    private IEnumerator WaitForDeleteRequest(string url, Action<string> callback)
     {
         GameObject canvas = GameObject.Find("Canvas");
         spinner = Instantiate(progressSpinner, canvas.transform);
 
-        spinner.SetActive(true);
+        if (!IsSpinner)
+        {
+            spinner.SetActive(true);
+            IsSpinner = true;
+        }
         using (UnityWebRequest www = UnityWebRequest.Delete(url))
         {
             yield return www.SendWebRequest();
 
             Destroy(spinner);
+            IsSpinner = false;
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -165,4 +193,6 @@ public class HTTPClient : MonoBehaviour
             }
         }
     }
+
+    
 }

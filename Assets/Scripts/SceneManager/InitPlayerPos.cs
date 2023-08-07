@@ -17,7 +17,6 @@ public class InitPlayerPos : MonoBehaviour
     void Start()
     {
         Instantiate(player, transform);
-        playerParent = GameObject.Find("PlayerParent").transform;
 
         //Transform player = playerParent.Find("Player");
 

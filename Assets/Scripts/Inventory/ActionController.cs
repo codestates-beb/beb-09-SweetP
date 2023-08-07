@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class ActionController : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class ActionController : MonoBehaviour
 
     }
 
-    public void Refresh()
+    public async Task Refresh()
     {
         weaponInventory.ClearWeapon();
 
@@ -48,7 +49,7 @@ public class ActionController : MonoBehaviour
 
     }
 
-    public void Init()
+    public async Task Init()
     {
         for (int i = 0; i < WeaponManager.instance.weaponDataList.Count; i++)
         {
@@ -66,12 +67,16 @@ public class ActionController : MonoBehaviour
             itemSelectPanel.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
         }
     }
-    // Start is called before the first frame update
-    void Start()
+
+    private async void Start()
     {
-        
-        Init();
-        
+        await RefreshAll();
+    }
+
+    public async Task RefreshAll()
+    {
+        await Refresh();
+        await Init();
     }
 
     // Update is called once per frame

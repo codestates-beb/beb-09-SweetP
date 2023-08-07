@@ -111,7 +111,6 @@ public class NPCBase : MonoBehaviour, INPC
             {
                 if (!UIManager.instance.IsOpenPanel)
                 {
-                    print("Contract!" + transform.name);
                     OnContract();
                     //ContractPanel.SetActive(false);
                     UIManager.instance.IsOpenPanel = true;

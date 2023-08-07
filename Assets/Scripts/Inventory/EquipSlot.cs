@@ -24,7 +24,6 @@ public class EquipSlot : MonoBehaviour
     {
         if (_weaponData.weapon_sale == 0)
         {
-            print("Slot : Add weapon" + _weaponData.weapon_id);
             weaponData = _weaponData;
             switch (weaponData.weapon_type)
             {

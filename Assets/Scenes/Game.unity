@@ -47906,6 +47906,7 @@ GameObject:
   - component: {fileID: 1998954441}
   - component: {fileID: 1998954440}
   - component: {fileID: 1998954439}
+  - component: {fileID: 1998954443}
   m_Layer: 5
   m_Name: MarketBG
   m_TagString: Untagged
@@ -48003,6 +48004,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1998954437}
   m_CullTransparentMesh: 1
+--- !u!114 &1998954443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998954437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4dade3dd5e04cb68edadb8e0cfcdc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2001820600 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1069567032315564, guid: bdf8e7438a7816543998181bd3067573, type: 3}

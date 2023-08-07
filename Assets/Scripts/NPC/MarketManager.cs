@@ -43,6 +43,11 @@ public class MarketManager : MonoBehaviour
         });
     }
 
+    public void RefreshMarket()
+    {
+        marketDataList.Clear();
+    }
+
     void Start()
     {
         GetMarket();
