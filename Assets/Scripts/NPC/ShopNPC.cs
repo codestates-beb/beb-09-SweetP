@@ -41,6 +41,12 @@ public class ShopNPC : MonoBehaviour
         UIManager.instance.ShopPanel.SetActive(false);
         UIManager.instance.IsContract = false;
         UIManager.instance.RefreshPotionCount();
+
+        string body = JsonUtility.ToJson(ItemManager.instance.itemData);
+        HTTPClient.instance.PUT("https://breadmore.azurewebsites.net/api/Player_Data/"+LoginManager.instance.PlayerID, body, delegate (string www)
+         {
+             print(www);
+         });
     }
 
     private void OnShopSetActiveChanged(object sender, EventArgs e)

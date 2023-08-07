@@ -47,6 +47,7 @@ public class WeaponManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+        Refresh();
         GetWeaponList();
     }
     void Start()
@@ -62,7 +63,8 @@ public class WeaponManager : MonoBehaviour
 
     public void Refresh()
     {
-        weaponDataList = null;
+        print("weapon Refresh");
+        weaponDataList.Clear();
     }
 
     public void ChangeWeaponData(WeaponData weapondata)
@@ -109,13 +111,10 @@ public class WeaponManager : MonoBehaviour
             }
         }
         weaponDataList.Add(weaponData);
-        print(weaponDataList[0].weapon_id);
-
     }
 
     public void GetWeaponList()
     {
-        print("get list");
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_TB/owner/" + LoginManager.instance.PlayerID, delegate (string www)
         {
             HandleWeaponTB(www);
@@ -172,8 +171,6 @@ public class WeaponManager : MonoBehaviour
 
         HTTPClient.instance.PUT(url, body, (response) =>
         {
-            print("PUT Response: " + response);
-            print("hello");
         });
     }
 

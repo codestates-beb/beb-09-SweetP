@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Threading.Tasks;
+
 public class MarketNPC : MonoBehaviour
 {
     private static MarketNPC _instance;
@@ -93,7 +95,7 @@ public class MarketNPC : MonoBehaviour
         UIManager.instance.BuyPanel.SetActive(false);
     }
 
-    public void BuyThisItem()
+    public async void BuyThisItem()
     {
         
         if (selectMarket.marketData.weapon_cost < ItemManager.instance.PPC)
@@ -108,16 +110,12 @@ public class MarketNPC : MonoBehaviour
             string jsonData = JsonUtility.ToJson(weaponTB);
             HTTPClient.instance.PUT(url, jsonData, (response) =>
             {
-                Debug.Log("PUT Response: " + response);
                 // Process the response here
                 string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market/" + weaponTB.weapon_id;
                 HTTPClient.instance.DELETE(url2, (response) =>
                 {
-                    Debug.Log("PUT Response: " + response);
                     // Process the response here
                 });
-
-                WeaponManager.instance.GetWeaponList();
             });
 
 
@@ -128,28 +126,23 @@ public class MarketNPC : MonoBehaviour
 
             HTTPClient.instance.PUT(url3, jsonData3, (response) =>
             {
-                Debug.Log("PUT Response: " + response);
-
-
-                ActionController.instance.Refresh();
                 // Process the response here
+                WeaponManager.instance.Refresh();
+                WeaponManager.instance.GetWeaponList();
             });
-            //delete market item
 
-            //
             ItemManager.instance.UsePPC(selectMarket.marketData.weapon_cost);
 
+            
+            await ActionController.instance.RefreshAll();
 
         }
 
-
-
-
-
         CloseBuyPanel();
+
     }
 
-    public void SellWeaponToMarket()
+    public async void SellWeaponToMarket()
     {
         MarketData marketData = new MarketData();
         WeaponSale weaponSale = new WeaponSale();
@@ -165,10 +158,8 @@ public class MarketNPC : MonoBehaviour
         string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market"; // Change this to your specific API endpoint
 
 
-
         HTTPClient.instance.POST(url2, jsonData2, (response) =>
           {
-              Debug.Log("POST Response: " + response);
               // Sending a PUT request
 
               string jsonData = JsonUtility.ToJson(weaponSale);
@@ -176,17 +167,22 @@ public class MarketNPC : MonoBehaviour
 
               HTTPClient.instance.PUT(url, jsonData, (response) =>
               {
-                  Debug.Log("PUT Response: " + response);
                   weaponSale.weapon_Sale = 1;
                   equipSlot.ClearSlot();
-                  WeaponManager.instance.ChangeWeaponData(selectWeapon);
 
-                  ActionController.instance.Refresh();
+                  WeaponManager.instance.ChangeWeaponData(selectWeapon);
+                  WeaponManager.instance.Refresh();
+                  WeaponManager.instance.GetWeaponList();
                   // Process the response here
               });
 
+
           });
+        await ActionController.instance.RefreshAll();
+        UIManager.instance.MarketPanel.SetActive(false);
     }
+
+
     // Start is called before the first frame update
     void Start()
     {

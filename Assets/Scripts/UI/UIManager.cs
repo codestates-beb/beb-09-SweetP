@@ -24,8 +24,6 @@ public class UIManager : MonoBehaviour
 
     private bool IsInventory = false;
     private ObjectEventSystem eventSystem;
-    private ObjectEventSystem marketEvent;
-
     [Header("Inventory")]
     public GameObject Inventory;
     public TextMeshProUGUI goldText;
@@ -93,17 +91,10 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         eventSystem = Inventory.GetComponent<ObjectEventSystem>();
-        marketEvent = MarketPanel.GetComponent<ObjectEventSystem>();
         if (eventSystem != null)
         {
             eventSystem.ObjectSetActiveChanged += OnInventorySetActiveChanged;
         }
-
-        if (marketEvent != null)
-        {
-            marketEvent.ObjectSetActiveChanged += OnMarketSetActiveChanged;
-        }
-
 
     }
 
@@ -160,22 +151,15 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void OnInventorySetActiveChanged(object sender, System.EventArgs e)
+    private async void OnInventorySetActiveChanged(object sender, System.EventArgs e)
     {
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
         ppcText.text = ItemManager.instance.PPC.ToString();
 
-        print("in");
-
-        ActionController.instance.Refresh();
-        ActionController.instance.Init();
+        await ActionController.instance.RefreshAll();
     }
 
-    private void OnMarketSetActiveChanged(object sender, System.EventArgs e)
-    {
-        MarketPlace.instance.AcquireSlot();
-        print("market");
-    }
+ 
 
     public void RefreshPotionCount()
     {
