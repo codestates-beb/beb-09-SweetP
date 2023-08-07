@@ -1,6 +1,7 @@
 
 public enum WeaponNature
 {
+    None,
     Fire,
     Water,
     Thunder,

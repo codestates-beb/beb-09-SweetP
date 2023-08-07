@@ -36,22 +36,29 @@ public class WeaponData
 {
     public int weapon_id;
     [HideInInspector]
-    public int weapon_type;
-    public int weapon_unique;
-    public int weapon_atk;
-    public int weapon_hp;
-    public WeaponNature weapon_element;
-    public int weapon_durability;
-    public int weapon_upgrade;
-    public int weapon_sale;
+    public int weapon_type =0;
+    public int weapon_unique = 0;
+    public int weapon_atk = 20;
+    public int weapon_hp =20 ;
+    public WeaponNature weapon_element = WeaponNature.None;
+    public int weapon_durability = 100;
+    public int weapon_upgrade = 0;
+    public int weapon_sale =0;
 }
 
+[Serializable]
+public class WeaponDropTable
+{
+    public int weapon_type;
+    public float dropProb;
+    public float dropWeaponUpgrade;
+}
 [Serializable]
 public class ItemData
 {
     public int player_id;
-    public int player_gold;
-    public int player_potion;
+    public int player_gold =0;
+    public int player_potion =0;
 }
 
 [Serializable]
@@ -62,6 +69,12 @@ public class MonsterData
     public float baseDamage = 20f;
     public float baseHP = 100f;
     public float baseSpeed = 1f;
+    public bool IsAlive = false;
+    public Enemy currentEnemyInstance;
+    public MonsterData(Transform pos)
+    {
+        spawnerPos = pos;
+    }
 }
 
 [Serializable]

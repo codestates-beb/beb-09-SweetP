@@ -44,6 +44,9 @@ public class BattleNPC : MonoBehaviour
 
     public void SelectRaidMapLeft()
     {
+        if (WeaponManager.instance.curruentWeaponData.weapon_atk < 120)
+            return;
+
         raidType = RaidType.Mushroom;
         UIManager.instance.IsOpenPanel = false;
         RaidPanel.SetActive(false);

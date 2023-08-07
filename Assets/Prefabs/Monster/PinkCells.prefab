@@ -1374,14 +1374,22 @@ MonoBehaviour:
   hitEffect: {fileID: 3742246115982174996}
   deathSound: {fileID: 0}
   hitSound: {fileID: 0}
+  playerTransform: {fileID: 0}
+  CantAction: 0
   damage: 120
   timeBetAttack: 1.5
+  attackDistance: 5
+  isBoss: 0
+  currentTimeForScore: 0
   dropGold: 865
   dropGoldMin: 865
   dropGoldMax: 865
   scrollDropTables:
   - scrollType: 0
     dropProb: 0.005
+  weaponDropTables:
+  - weapon_type: 0
+    dropProb: 0.00003
 --- !u!54 &2386982282745194316
 Rigidbody:
   m_ObjectHideFlags: 0

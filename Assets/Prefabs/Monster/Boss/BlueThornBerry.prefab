@@ -7329,15 +7329,24 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   hitSound: {fileID: 0}
   playerTransform: {fileID: 0}
+  CantAction: 0
   damage: 10
   timeBetAttack: 3
   attackDistance: 3
   isBoss: 0
   currentTimeForScore: 0
-  dropGold: 0
-  dropGoldMin: 10
-  dropGoldMax: 25
-  scrollDropTables: []
+  dropGold: 4000
+  dropGoldMin: 4000
+  dropGoldMax: 4000
+  scrollDropTables:
+  - scrollType: 0
+    dropProb: 0.01
+  - scrollType: 1
+    dropProb: 0.001
+  weaponDropTables:
+  - weapon_type: 0
+    dropProb: 0.00008
+    dropWeaponUpgrade: 0
 --- !u!114 &7034614605168221127
 MonoBehaviour:
   m_ObjectHideFlags: 0

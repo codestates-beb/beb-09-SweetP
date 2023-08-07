@@ -48,7 +48,9 @@ public class Enemy : LivingEntity
 
     [Header("Drop Scroll")]
     public List<ScrollDropTable> scrollDropTables = new List<ScrollDropTable>();
-    
+
+    [Header("Drop Weapon")]
+    public List<WeaponDropTable> weaponDropTables = new List<WeaponDropTable>();
     // 추적할 대상이 존재하는지 알려주는 프로퍼티
     private bool hasTarget
     {
@@ -241,6 +243,9 @@ public class Enemy : LivingEntity
         ItemManager.instance.itemData.player_gold += dropGold;
         WeaponManager.instance.WeaponUse(WeaponManager.instance.curruentWeaponData);
         DropScoll();
+        DropWeapon();
+
+        Destroy(gameObject);
     }
 
     public void RecordScore()
@@ -307,6 +312,40 @@ public class Enemy : LivingEntity
                     }
                 }
             }
+
+        }
+    }
+
+    private void DropWeapon()
+    {
+        
+        for (int i = 0; i < weaponDropTables.Count; i++)
+        {
+            WeaponTB weaponTB = new WeaponTB();
+            if (weaponDropTables[i].dropProb != 0)
+            {
+                if(Random.value < (weaponDropTables[i].dropProb / 100))
+                {
+                    switch (weaponDropTables[i].weapon_type)
+                    {
+                        case 0:
+                            print("hello");
+                            weaponTB.weapon_owner = LoginManager.instance.PlayerID;
+                            string body = JsonUtility.ToJson(weaponTB);
+                            HTTPClient.instance.POST("https://breadmore.azurewebsites.net/api/Weapon_tb", body, delegate (string www)
+                             {
+                                 print(www);
+                             });
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                    }
+                }
+            }
+
+            
 
         }
     }
