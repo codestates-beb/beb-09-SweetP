@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Numerics;
 
 public class UpgradeNPC : MonoBehaviour
 {
+    //@notion 컨트랙트 컴포넌트
+    public PPC721Contract PPC721Contract;
+    public PPCTokenContract PPCTokenContract;
+
     public GameObject WeaponSelectPanel;
     public GameObject ScrollSelectPanel;
 
@@ -22,7 +27,9 @@ public class UpgradeNPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        upgradeData = GetComponent<UpgradeData>();
+        //@notion 컨트랙트 연결
+        PPCTokenContract.Initialize();
+        upgradeData = GetComponent<UpgradeData>(); 
     }
 
     // Update is called once per frame
@@ -60,6 +67,9 @@ public class UpgradeNPC : MonoBehaviour
     }
     private void Awake()
     {
+        //@notion 컨트랙트 초기화
+        PPCTokenContract = GetComponent<PPCTokenContract>();
+        PPC721Contract = GetComponent<PPC721Contract>();
 
         eventSystem = UIManager.instance.UpgradePanel.GetComponent<ObjectEventSystem>();
 
@@ -127,6 +137,7 @@ public class UpgradeNPC : MonoBehaviour
 
     public void UpgradeWeapon()
     {
+        StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
 
         //Upgrade
         float upgradeProb = upgradeData.GetProbForUpgrade(selectWeaponUpgrade) + selectIncreaseProb;
@@ -164,4 +175,32 @@ public class UpgradeNPC : MonoBehaviour
         selectWeapon = weaponData;
         selectWeaponUpgrade = selectWeapon.weapon_upgrade;
     }
+
+    public IEnumerator payToken(string sender, string recipient, BigInteger amount)
+    {
+        yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
+        {
+            Debug.Log($"SetToken Contract Address: {Address}");
+            //StartCoroutine(GetToken());
+        }));
+
+        yield return StartCoroutine(PPCTokenContract.Approve("0x52923645D1a2706c3B40C3F1Dc6AA170f7BEf10D", 10, (Address, ex) =>
+        {
+            Debug.Log($"Approve Contract Address: {Address}");
+        }));
+
+        yield return StartCoroutine(PPC721Contract.PPCTransferFrom(sender, recipient, amount, (Address, ex) =>
+        {
+            Debug.Log($"PPCTransferFrom Contract Address: {Address}");
+        }));
+    }
+
+    public IEnumerator UpdateDnft(BigInteger tokenId, string tokenURI)
+    {
+        yield return StartCoroutine(PPC721Contract.UpdataNFT(tokenId, tokenURI, (Address, ex) =>
+        {
+            Debug.Log($"UpdataNFT Contract Address: {Address}");
+        }));
+    }
+
 }
