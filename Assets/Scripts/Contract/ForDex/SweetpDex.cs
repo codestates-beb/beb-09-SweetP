@@ -15,7 +15,7 @@ public class SweetpDex : MonoBehaviour
     public DexSwap dexSwap;
     public LiquidityPool liquidityPool;
     public static string userAddress;
-    public bool isOpenUI;
+    // public bool isOpenUI;
 
     public Transform swapUI;
     public Transform poolUI;
@@ -69,7 +69,6 @@ public class SweetpDex : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnterOrExitDex();
         if(isLoading) {
            SwapCateButton.interactable = false;
            PoolCateButton.interactable = false;
@@ -79,19 +78,28 @@ public class SweetpDex : MonoBehaviour
         }
     }
 
-    private void EnterOrExitDex() {
-        if (Input.GetKeyDown(KeyCode.B) && !isLoading)
-        {
-            isOpenUI = !isOpenUI;
-            if(isOpenUI){
-                daxMainUI.localPosition = Vector3.zero;
-                StartCoroutine(SetInfo());
-                SwapResetInfo();
-            }
-            else if(!isOpenUI){
-                daxMainUI.localPosition = Vector3.up * 80000;
-            }
-        }
+    // private void EnterOrExitDex() {
+    //     if (Input.GetKeyDown(KeyCode.B) && !isLoading)
+    //     {
+    //         isOpenUI = !isOpenUI;
+    //         if(isOpenUI){
+                
+    //         }
+    //         else if(!isOpenUI){
+                
+    //         }
+    //     }
+    // }
+
+    public void Enter() {
+        daxMainUI.localPosition = Vector3.zero;
+        StartCoroutine(SetInfo());
+        SwapResetInfo();
+    }
+
+    public void Exit() {
+        if(isLoading) return;
+        daxMainUI.localPosition = Vector3.up * 80000;
     }
 
     public void SwapResetInfo() {

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoldExchange : MonoBehaviour
+public class Exchange : MonoBehaviour
 {
-    public Transform mainUI;
+    public Transform exchangeEnterUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,16 +15,12 @@ public class GoldExchange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void Enter() {
-        mainUI.localPosition = Vector2.zero;
+        if(Input.GetKeyDown(KeyCode.B)) {
+            exchangeEnterUI.localPosition = Vector2.zero;
+        }
     }
 
     public void Exit() {
-        mainUI.localPosition = Vector3.up * 80000;
+        exchangeEnterUI.localPosition = Vector2.up * 80000;
     }
-
-
 }
