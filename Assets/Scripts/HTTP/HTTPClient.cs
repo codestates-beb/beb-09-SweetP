@@ -68,9 +68,8 @@ public class HTTPClient : MonoBehaviour
     private IEnumerator WaitForPutRequest(string url, string input, Action<string> callback)
     {
         GameObject canvas = GameObject.Find("Canvas");
-        spinner = Instantiate(progressSpinner, canvas.transform);
-
-        spinner.SetActive(true);
+        //spinner = Instantiate(progressSpinner, canvas.transform);
+        //spinner.SetActive(true);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "PUT"))
@@ -81,7 +80,7 @@ public class HTTPClient : MonoBehaviour
 
             yield return www.SendWebRequest();
 
-            Destroy(spinner);
+            //Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
@@ -144,9 +143,8 @@ public class HTTPClient : MonoBehaviour
     private IEnumerator WaitForRequest(string url, string input, Action<string> callback)
     {
         GameObject canvas = GameObject.Find("Canvas");
-        spinner = Instantiate(progressSpinner, canvas.transform);
-
-        spinner.SetActive(true);
+        //spinner = Instantiate(progressSpinner, canvas.transform);
+        //spinner.SetActive(true);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "POST"))
@@ -156,7 +154,7 @@ public class HTTPClient : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-            Destroy(spinner);
+            //Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);

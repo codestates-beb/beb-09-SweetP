@@ -25,12 +25,21 @@ public class Enemy : LivingEntity
 
     public Transform playerTransform;
 
+    public bool CantAction = false;
     private bool inDistance = false;
     private bool isChase = true;
     private bool isAttack = false;
     public float damage = 10f;
     public float timeBetAttack = 5.5f;
+    public float attackDistance = 5f;
     private float lastAttackTime;
+
+    [HideInInspector]
+    public bool isBoss = false;
+    private int score = 0;
+    [HideInInspector]
+    public float currentTimeForScore;
+
 
     [Header("Gold")]
     public int dropGold = 0;
@@ -61,24 +70,26 @@ public class Enemy : LivingEntity
 
 
         float targetRadius = 1.5f;
-        float targetRange =0f;
     RaycastHit[] rayHits =
             Physics.SphereCastAll(transform.position,
             targetRadius,
             transform.forward,
-            targetRange,
+            attackDistance,
             LayerMask.GetMask("Player"));
 
-        if (rayHits.Length >0 && !isAttack)
+        if (rayHits.Length > 0 && !isAttack)
         {
             inDistance = true;
             enemyAnimator.SetBool("InDistance", inDistance);
-            if (Time.time >= lastAttackTime + timeBetAttack)
+            if (!CantAction)
             {
-                enemyAnimator.SetTrigger("Attack");
-                isChase = false;
-                pathFinder.isStopped = true;
-                isAttack = true;
+                if (Time.time >= lastAttackTime + timeBetAttack)
+                {
+                    enemyAnimator.SetTrigger("Attack");
+                    isChase = false;
+                    pathFinder.isStopped = true;
+                    isAttack = true;
+                }
             }
         }
         if(hasTarget && rayHits.Length <= 0 && isChase == false)
@@ -210,6 +221,11 @@ public class Enemy : LivingEntity
         // LivingEntity의 Die()를 실행하여 기본 사망 처리 실행
         base.Die();
 
+        if (isBoss)
+        {
+            RecordScore();
+        }
+
         Collider enemyCollider= GetComponent<Collider>();
 
         enemyCollider.enabled = false;
@@ -225,6 +241,32 @@ public class Enemy : LivingEntity
         ItemManager.instance.itemData.player_gold += dropGold;
         WeaponManager.instance.WeaponUse(WeaponManager.instance.curruentWeaponData);
         DropScoll();
+    }
+
+    public void RecordScore()
+    {
+        score = (int)(Time.time - currentTimeForScore);
+        
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Player_Record/" + LoginManager.instance.PlayerID, delegate (string www)
+        {
+            PlayerRecord _playerRecord = JsonUtility.FromJson<PlayerRecord>(www);
+
+            int maxScore = _playerRecord.player_score;
+
+            if (maxScore > score)
+            {
+                PlayerRecord playerRecord = new PlayerRecord();
+                playerRecord.player_id = LoginManager.instance.PlayerID;
+                playerRecord.player_score = score;
+
+                string body = JsonUtility.ToJson(playerRecord);
+                print(body);
+                HTTPClient.instance.PUT("https://breadmore.azurewebsites.net/api/Player_Record/" + LoginManager.instance.PlayerID, body, delegate (string www)
+                {
+                    print("Record");
+                });
+            }
+        });
     }
 
     void Attack()

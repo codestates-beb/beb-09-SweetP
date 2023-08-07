@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     {
         //weapon check
 
-        if (WeaponManager.instance.weaponDataList[0] != null)
+        if (WeaponManager.instance.curruentWeaponData.weapon_id ==0)
         {
             WeaponManager.instance.EquipWeapon(WeaponManager.instance.weaponDataList[0]);
         }

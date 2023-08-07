@@ -133,6 +133,27 @@ public class WeaponManager : MonoBehaviour
     public void EquipWeapon(WeaponData weaponData)
     {
         curruentWeaponData = weaponData;
+        switch (curruentWeaponData.weapon_type)
+        {
+            case 0:
+                GameObject weapon = Instantiate(Sword, PlayerAttack.instance.pivotWeaponR);
+
+                PlayerAttack.instance.objWeapon = PlayerAttack.instance.pivotWeaponR.GetChild(0).gameObject;
+                PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
+
+                PlayerAttack.instance.colliderWeapon.enabled = false;
+                PlayerAttack.instance.IsWeaponEquip = true;
+                Player.instance.ChangeHealthWithWeapon();
+                break;
+
+            //bow
+            case 1:
+                break;
+
+            //magic
+            case 2:
+                break;
+        }
     }
 
     public void WeaponUse(WeaponData currentWeapon)

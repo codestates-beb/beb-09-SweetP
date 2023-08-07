@@ -61,27 +61,7 @@ public class EquipSlot : MonoBehaviour
         if (weaponData.weapon_id != 0)
         {
             WeaponManager.instance.EquipWeapon(weaponData);
-            switch (WeaponManager.instance.curruentWeaponData.weapon_type)
-            {
-                case 0:
-                    GameObject weapon = Instantiate(WeaponManager.instance.Sword, PlayerAttack.instance.pivotWeaponR);
-
-                    PlayerAttack.instance.objWeapon = PlayerAttack.instance.pivotWeaponR.GetChild(0).gameObject;
-                    PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
-
-                    PlayerAttack.instance.colliderWeapon.enabled = false;
-                    PlayerAttack.instance.IsWeaponEquip = true;
-                    Player.instance.ChangeHealthWithWeapon();
-                    break;
-
-                //bow
-                case 1:
-                    break;
-
-                //magic
-                case 2:
-                    break;
-            }
+            
         }
     }
     public void ClearSlot()

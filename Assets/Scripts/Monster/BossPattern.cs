@@ -5,6 +5,7 @@ using UnityEngine;
 public class BossPattern : MonoBehaviour
 {
     private Animator animator;
+    private Enemy enemy;
 
     public float attackAngle = 60f;
     public float attackDistance = 5f;
@@ -24,8 +25,14 @@ public class BossPattern : MonoBehaviour
     private MeshFilter circleMeshFilter;
     private Mesh redCircleMesh;
 
+    private float currentTime;
+    private int score;
     private void Start()
     {
+        enemy = gameObject.GetComponent<Enemy>();
+        enemy.isBoss = true;
+        enemy.currentTimeForScore = Time.time;
+
         animator = GetComponent<Animator>();
 
         warningColor = new Color(1f, 0f, 0f, 0.5f);
@@ -69,11 +76,11 @@ public class BossPattern : MonoBehaviour
 
     private IEnumerator StartRandomPattern()
     {
-        while (true)
+        while (!enemy.dead)
         {
             //float randomTime = Random.Range(5f, 15f); // 5초에서 15초 사이의 랜덤한 시간을 지정
-            yield return new WaitForSeconds(15f);
-
+            yield return new WaitForSeconds(5f);
+            enemy.CantAction = true;
             // 패턴을 랜덤으로 선택하여 실행
             int randomPattern = Random.Range(1, 3); // 1 또는 2 중 랜덤한 패턴을 선택
             switch (randomPattern)
@@ -93,13 +100,18 @@ public class BossPattern : MonoBehaviour
 
     private IEnumerator PatternOne()
     {
-        animator.SetTrigger("Pattern1");
+        UpdateWedgeMesh();
+        print("charge1");
+        animator.SetTrigger("Charge1");
         // 패턴 1 실행: 부채꼴 범위 그리기
 
-        UpdateWedgeMesh();
+        
 
         // 대기 시간
         yield return new WaitForSeconds(warningDuration);
+
+        animator.SetTrigger("Pattern1");
+        print("Patter1!");
         CheckPlayerInWedgeMesh();
         // 플레이어가 여전히 범위 안에 있는지 확인하여 데미지를 입히기
         if (isPlayerInPattern)
@@ -109,20 +121,28 @@ public class BossPattern : MonoBehaviour
 
         // 범위 비활성화
         wedgeObject.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+        enemy.CantAction = false;
     }
 
     private IEnumerator PatternTwo()
     {
-        animator.SetTrigger("Pattern2");
+        UpdateCircleMesh();
+        print("charge2");
+        animator.SetTrigger("Charge2");
+
         // 패턴 2 실행: 원ㅎ 범위 그리기
         
-        UpdateCircleMesh();
+        
 
         // 대기 시간
         yield return new WaitForSeconds(warningDuration);
-
+        animator.SetTrigger("Pattern2");
+        print("Patter1!");
         CheckPlayerInCircleMesh();
         // 플레이어가 여전히 범위 안에 있는지 확인하여 데미지를 입히기
+
         if (isPlayerInPattern)
         {
             InflictDamageToPlayer(patternTwoDamage);
@@ -131,6 +151,8 @@ public class BossPattern : MonoBehaviour
         // 범위 비활성화
         circleObject.SetActive(false);
 
+        yield return new WaitForSeconds(1f);
+        enemy.CantAction = false;
     }
 
     private Mesh CreateWedgeMesh(float angle, float distance)
@@ -210,7 +232,7 @@ public class BossPattern : MonoBehaviour
         Quaternion rotationToPlayer = Quaternion.LookRotation(directionToPlayer, Vector3.up);
 
         // 부채꼴을 보스 위치에 생성하고 플레이어 방향으로 펼치도록 설정합니다.
-        wedgeObject.transform.position = transform.position;
+        wedgeObject.transform.position = transform.position + new Vector3(0,0.5f,0);
         wedgeObject.transform.rotation = Quaternion.Euler(rotationToPlayer.eulerAngles.x, rotationToPlayer.eulerAngles.y, rotationToPlayer.eulerAngles.z);
         wedgeMeshFilter.mesh = redWedgeMesh;
 
@@ -220,7 +242,7 @@ public class BossPattern : MonoBehaviour
     private void UpdateCircleMesh()
     {
         Vector3 playerPosition = GetPlayerPosition();
-        circleObject.transform.position = playerPosition;
+        circleObject.transform.position = playerPosition + new Vector3(0, 0.5f, 0);
         circleMeshFilter.mesh = redCircleMesh;
 
         circleObject.transform.localRotation = Quaternion.Euler(180f, 0f, 0f);
