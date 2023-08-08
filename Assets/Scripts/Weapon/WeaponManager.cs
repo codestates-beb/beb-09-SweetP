@@ -110,7 +110,6 @@ public class WeaponManager : MonoBehaviour
                 return;
             }
         }
-        WeaponDataWithUpgrade(weaponData);
         weaponDataList.Add(weaponData);
     }
 
@@ -122,12 +121,7 @@ public class WeaponManager : MonoBehaviour
         });
     }
 
-    public void WeaponDataWithUpgrade(WeaponData weaponData)
-    {
-        int statWithUpgrade = 20;
-        weaponData.weapon_atk += weaponData.weapon_upgrade * statWithUpgrade;
-        weaponData.weapon_hp += weaponData.weapon_upgrade * statWithUpgrade;
-    }
+
     public void GetWeaponData(int weapon_id)
     {
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/weapon/" + weapon_id, delegate (string www)

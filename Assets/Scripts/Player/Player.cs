@@ -52,7 +52,7 @@ public class Player : LivingEntity
 
     public void ChangeHealthWithWeapon()
     {
-        health = WeaponManager.instance.curruentWeaponData.weapon_hp;
+        health = WeaponManager.instance.curruentWeaponData.weapon_hp + (WeaponManager.instance.curruentWeaponData.weapon_upgrade * 20);
         healthSlider.maxValue = health;
         healthSlider.value = health;
         healthText.text = healthSlider.value + "/" + healthSlider.maxValue;
