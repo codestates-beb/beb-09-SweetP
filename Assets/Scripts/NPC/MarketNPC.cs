@@ -199,6 +199,9 @@ public class MarketNPC : MonoBehaviour
                   WeaponManager.instance.GetWeaponList();
                   // Process the response here
                   print($"sellweapon data : {response}");
+
+                  string jsonData = JsonUtility.ToJson(selectWeapon);
+                  
               });
 
 
