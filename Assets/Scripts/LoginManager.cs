@@ -93,7 +93,7 @@ public class LoginManager : MonoBehaviour
             loginPanel.SetActive(false);
             newAccountButton.SetActive(false);
         });
-        //StartCoroutine(setToken());
+        StartCoroutine(setToken());
 
 
     }

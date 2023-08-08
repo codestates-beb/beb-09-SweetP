@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -556,6 +556,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PPC721Contract: {fileID: 0}
+  NSC: {fileID: 0}
+  body: 
   PlayerNameText: {fileID: 1481508014}
   PlayerAddress: 
   PlayerID: 0
@@ -2532,7 +2534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065c6827f9897421eadfc1f44ff365f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDcwZTgyOEIwNTMyYmUxYTRCNDNFNTI4RjNGZGYwMmM0ZUNjNUIzMjMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5MTQ3NDM2MDAzMSwibmFtZSI6IlN3ZWV0UCJ9.aMmjf3GA_rVEQ7CgEfhMRTaNFoLIIqNSAUqftSW5YHA
+  apiToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQxRjg4MDRiZGM3MzRGRUFkN0I2NjZiODM3Y0EzNDkxRDVEMGQ3ODQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5MTQ4MjU5OTM5MCwibmFtZSI6IlBQQyJ9.nngyuodYz5kOYLr3LYXtij5PpSsBV5yyIQ_gE42jzeI
 --- !u!4 &1211117345
 Transform:
   m_ObjectHideFlags: 0
