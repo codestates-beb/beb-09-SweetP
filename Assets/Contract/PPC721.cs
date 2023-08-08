@@ -163,6 +163,7 @@ public class PPC721 : MonoBehaviour
         }));
     }
 
+    /*
     public IEnumerable blanceOf()
     {
         yield return StartCoroutine(PPCTokenContract.BalanceOf("0x30018fC76ca452C1522DD9C771017022df8b2321", (balance, ex) => {
@@ -176,4 +177,5 @@ public class PPC721 : MonoBehaviour
             }
         }));
     }
+    */
 }
