@@ -110,6 +110,7 @@ public class WeaponManager : MonoBehaviour
                 return;
             }
         }
+        WeaponDataWithUpgrade(weaponData);
         weaponDataList.Add(weaponData);
     }
 
@@ -121,6 +122,12 @@ public class WeaponManager : MonoBehaviour
         });
     }
 
+    public void WeaponDataWithUpgrade(WeaponData weaponData)
+    {
+        int statWithUpgrade = 20;
+        weaponData.weapon_atk += weaponData.weapon_upgrade * statWithUpgrade;
+        weaponData.weapon_hp += weaponData.weapon_upgrade * statWithUpgrade;
+    }
     public void GetWeaponData(int weapon_id)
     {
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/weapon/" + weapon_id, delegate (string www)
@@ -163,7 +170,11 @@ public class WeaponManager : MonoBehaviour
             if(weaponDataList[i].weapon_id == currentWeapon.weapon_id)
             {
                 weaponDataList[i] = currentWeapon;
-                DestroyWeapon();
+                if(DestroyWeapon(weaponDataList[i]))
+                {
+                    weaponDataList[i] = null;
+                    return;
+                }
             }
         }
 
@@ -197,9 +208,16 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void DestroyWeapon()
+    public bool DestroyWeapon(WeaponData weaponData)
     {
+        if (weaponData.weapon_durability <= 0)
+        {
+            string url = "https://breadmore.azurewebsites.net/api/Weapon_Data/" + weaponData.weapon_id;
+            HTTPClient.instance.DELETE(url, delegate (string www) { });
 
+            return true;
+        }
+        return false;
     }
 
     public string GetJSONWeaponData(int weaponId)

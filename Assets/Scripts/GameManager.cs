@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+    public GameObject NPC;
 
     public bool IsUI= false;
 
@@ -43,6 +46,24 @@ public class GameManager : MonoBehaviour
         if (WeaponManager.instance.curruentWeaponData.weapon_id ==0)
         {
             WeaponManager.instance.EquipWeapon(WeaponManager.instance.weaponDataList[0]);
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name != "Game")
+        {
+            NPC.SetActive(false);
         }
     }
 

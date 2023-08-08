@@ -21,6 +21,12 @@ public class WeaponInventory : MonoBehaviour
         
     }
 
+    private void OnDisable()
+    {
+        WeaponManager.instance.Refresh();
+        WeaponManager.instance.GetWeaponList();
+    }
+
     public void AcquireWeapon(WeaponData weaponData)
     {
         for (int i = 0; i < Eslots.Length; i++)

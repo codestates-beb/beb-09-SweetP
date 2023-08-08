@@ -153,8 +153,10 @@ public class UIManager : MonoBehaviour
 
     private async void OnInventorySetActiveChanged(object sender, System.EventArgs e)
     {
+        
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
         ppcText.text = ItemManager.instance.PPC.ToString();
+
 
         await ActionController.instance.RefreshAll();
     }
