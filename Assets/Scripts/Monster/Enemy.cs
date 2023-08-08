@@ -334,9 +334,13 @@ public class Enemy : LivingEntity
                             string body = JsonUtility.ToJson(weaponTB);
                             HTTPClient.instance.POST("https://breadmore.azurewebsites.net/api/Weapon_tb", body, delegate (string www)
                              {
-                                 print(www);
-                                 string jsonData = GetJsonWeaponData(HandleWeaponTB(www));
-                                 print(jsonData);
+                                 HandleWeaponTB(www, (weaponData) =>
+                                 {
+                                     // 여기서 반환된 weaponData를 활용하여 원하는 작업 수행
+                                     // 예: Debug.Log(weaponData.weapon_id);
+                                     string jsonData = GetJsonWeaponData(weaponData);
+                                     print(jsonData);
+                                 });
                              });
                             break;
                         case 1:
@@ -352,18 +356,19 @@ public class Enemy : LivingEntity
         }
     }
 
-    private WeaponData HandleWeaponTB(string www)
+    private void HandleWeaponTB(string www, System.Action<WeaponData> callback)
     {
         WeaponTB weaponTb = JsonUtility.FromJson<WeaponTB>(www);
-        WeaponData weaponData = new WeaponData();
 
-        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_tb/" + weaponTb.weapon_id, delegate (string www)
+        // GET 요청 보내기
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/" + weaponTb.weapon_id, delegate (string response)
         {
-            weaponData = JsonUtility.FromJson<WeaponData>(www);
+            // 응답 데이터를 WeaponData 객체로 변환
+            WeaponData weaponData = JsonUtility.FromJson<WeaponData>(response);
+
+            // 콜백 호출하여 WeaponData 객체를 반환
+            callback?.Invoke(weaponData);
         });
-
-
-        return weaponData;
     }
 
     private string GetJsonWeaponData(WeaponData weaponData)
