@@ -128,6 +128,9 @@ public class MarketNPC : MonoBehaviour
 
             string url = "https://breadmore.azurewebsites.net/api/Weapon_TB/" + weaponTB.weapon_id;
             string jsonData = JsonUtility.ToJson(weaponTB);
+
+            StartCoroutine(BuyWeapon(selectWeapon.weapon_id));
+
             HTTPClient.instance.PUT(url, jsonData, (response) =>
             {
                 // Process the response here
@@ -177,6 +180,7 @@ public class MarketNPC : MonoBehaviour
         string jsonData2 = JsonUtility.ToJson(marketData);
         string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market"; // Change this to your specific API endpoint
 
+        StartCoroutine(SaleWeapon(selectWeapon.weapon_id,marketData.weapon_cost));
 
         HTTPClient.instance.POST(url2, jsonData2, (response) =>
           {
@@ -200,6 +204,9 @@ public class MarketNPC : MonoBehaviour
           });
         await ActionController.instance.RefreshAll();
         UIManager.instance.MarketPanel.SetActive(false);
+
+        
+
     }
 
     //@notion 무기거래소 UI켜면 실행되는 함수

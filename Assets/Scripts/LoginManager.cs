@@ -96,11 +96,23 @@ public class LoginManager : MonoBehaviour
         newstartPanel.SetActive(true);
     }
 
+    public PlayerTB HandleNewAccountInfo(string www)
+    {
+        return JsonUtility.FromJson<PlayerTB>(www);
+    }
+
+    public WeaponData HandleNewAccountWeapon(string www)
+    {
+        return JsonUtility.FromJson<WeaponData>(www);
+    }
     public void NewStart()
     {
+
         PlayerTB playerTB = new PlayerTB();
         playerTB.player_address = inputAddress.text;
         playerTB.player_name = inputName.text;
+
+        PlayerTB newPlayerInfo = new PlayerTB();
 
         if(inputAddress.text.Length == 0 || inputName.text.Length == 0)
         {
@@ -115,9 +127,24 @@ public class LoginManager : MonoBehaviour
         HTTPClient.instance.POST("https://breadmore.azurewebsites.net/api/player_tb", body, delegate (string www)
         {
             print("new account!");
+            newPlayerInfo = HandleNewAccountInfo(www);
+                
         });
 
         newstartPanel.SetActive(false);
 
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/weapon_tb/owner/" + newPlayerInfo.player_id,
+            delegate (string www)
+            {
+                // new Weapon
+                WeaponData newWeapon = HandleNewAccountWeapon(www);
+
+                //NFT MINTING
+
+                // json data : wwww
+                // weapon class data : newWeapon
+
+
+            });
     }
 }
