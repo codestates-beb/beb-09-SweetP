@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-<<<<<<< HEAD
 using System.Numerics;
-=======
 using System.Threading.Tasks;
 
->>>>>>> 70d86fce1170aacf394e0f45990c11964b2e3f3a
 public class MarketNPC : MonoBehaviour
 {
 
@@ -307,7 +304,6 @@ public class MarketNPC : MonoBehaviour
         }));
     }
 
-    // Start is called before the first frame update
     
 
     // Update is called once per frame
