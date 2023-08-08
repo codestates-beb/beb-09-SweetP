@@ -25,6 +25,9 @@ public class LoginManager : MonoBehaviour
             return _instance;
         }
     }
+    //@notion 컨트랙트 컴포넌트
+    public PPC721Contract PPC721Contract;
+
     public TextMeshProUGUI PlayerNameText;
 
     //[HideInInspector]
@@ -48,6 +51,7 @@ public class LoginManager : MonoBehaviour
     public TMP_InputField inputLoginAddress;
     private void Awake()
     {
+        PPC721Contract = GetComponent<PPC721Contract>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -64,25 +68,25 @@ public class LoginManager : MonoBehaviour
         PlayerID = playerTB.player_id;
         PlayerName = playerTB.player_name;
     }
-    
+
     public void Login()
     {
-        if(inputLoginAddress.text.Length == 0)
+        if (inputLoginAddress.text.Length == 0)
         {
             return;
         }
         PlayerAddress = inputLoginAddress.text;
-        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/player_tb/address/"+PlayerAddress, delegate (string www)
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/player_tb/address/" + PlayerAddress, delegate (string www)
         {
             HandleData(www);
-            
+
             PlayerNameText.text = "Player Name : " + PlayerName;
             loginButton.SetActive(false);
             loginPanel.SetActive(false);
             newAccountButton.SetActive(false);
         });
+        StartCoroutine(setToken());
 
-        
 
     }
 
@@ -114,13 +118,13 @@ public class LoginManager : MonoBehaviour
 
         PlayerTB newPlayerInfo = new PlayerTB();
 
-        if(inputAddress.text.Length == 0 || inputName.text.Length == 0)
+        if (inputAddress.text.Length == 0 || inputName.text.Length == 0)
         {
             print("nope");
             return;
         }
 
-        
+
         string body = JsonUtility.ToJson(playerTB);
 
 
@@ -128,7 +132,7 @@ public class LoginManager : MonoBehaviour
         {
             print("new account!");
             newPlayerInfo = HandleNewAccountInfo(www);
-                
+
         });
 
         newstartPanel.SetActive(false);
@@ -146,5 +150,13 @@ public class LoginManager : MonoBehaviour
 
 
             });
+    }
+
+    public IEnumerator setToken()
+    {
+        yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
+        {
+            Debug.Log($"SetToken Contract Address: {Address}");
+        }));
     }
 }
