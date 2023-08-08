@@ -43,7 +43,24 @@ public class HTTPClient : MonoBehaviour
 
     }
 
+    public void StartSpinner()
+    {
+        if (!IsSpinner)
+        {
+            IsSpinner = true;
+            GameObject canvas = GameObject.Find("Canvas");
+            spinner = Instantiate(progressSpinner, canvas.transform);
+        }
+    }
 
+    public void EndSpinner()
+    {
+        if (IsSpinner)
+        {
+            Destroy(spinner);
+            IsSpinner = false;
+        }
+    }
 
     public void GET(string url, Action<string> callback)
     {

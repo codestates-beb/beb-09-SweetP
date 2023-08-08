@@ -47,6 +47,8 @@ public class LoginManager : MonoBehaviour
     [HideInInspector]
     public string PlayerName;
 
+    public GameObject inGameButton;
+
     [Header("New Account")]
     public GameObject newstartPanel;
     public GameObject newAccountButton;
@@ -58,6 +60,7 @@ public class LoginManager : MonoBehaviour
     public GameObject loginPanel;
     public GameObject loginButton;
     public TMP_InputField inputLoginAddress;
+
     private void Awake()
     {
         PPC721Contract = GetComponent<PPC721Contract>();
@@ -69,6 +72,22 @@ public class LoginManager : MonoBehaviour
     {
         metaDataWeapon = new MetaDataWeapon();
         //test user
+    }
+
+    private void Update()
+    {
+        if (HTTPClient.instance.IsSpinner)
+        {
+            inGameButton.GetComponent<Button>().enabled = false;
+            loginButton.GetComponent<Button>().enabled = false;
+            newAccountButton.GetComponent<Button>().enabled = false;
+        }
+        else
+        {
+            inGameButton.GetComponent<Button>().enabled = true;
+            loginButton.GetComponent<Button>().enabled = true;
+            newAccountButton.GetComponent<Button>().enabled = true;
+        }
     }
 
     private void HandleData(string jsonData)
@@ -115,21 +134,23 @@ public class LoginManager : MonoBehaviour
         return JsonUtility.FromJson<PlayerTB>(www);
     }
 
-    public WeaponData HandleNewAccountWeapon(string www)
+    private void HandleWeaponTB(string www, System.Action<WeaponData> callback)
     {
+        print("www "+www);
         string jsonData = RemoveSquareBrackets(www);
-        print(jsonData);
-        WeaponTB weaponTB = JsonUtility.FromJson<WeaponTB>(jsonData);
-        WeaponData weaponData = new WeaponData();
+        WeaponTB weaponTb = JsonUtility.FromJson<WeaponTB>(jsonData);
 
-        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/" + weaponTB.weapon_id, delegate (string www) {
-
-            weaponData = JsonUtility.FromJson<WeaponData>(www);
-
+        //// GET 요청 보내기
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/" + weaponTb.weapon_id, delegate (string response)
+        {
+            // 응답 데이터를 WeaponData 객체로 변환
+            WeaponData weaponData = JsonUtility.FromJson<WeaponData>(response);
+            print("rererer"+response);
+            // 콜백 호출하여 WeaponData 객체를 반환
+            callback?.Invoke(weaponData);
         });
-
-        return weaponData;
     }
+
 
     private string RemoveSquareBrackets(string jsonString)
     {
@@ -141,7 +162,7 @@ public class LoginManager : MonoBehaviour
 
     public void NewStart()
     {
-
+        HTTPClient.instance.StartSpinner();
         PlayerTB playerTB = new PlayerTB();
         playerTB.player_address = inputAddress.text;
         playerTB.player_name = inputName.text;
@@ -169,12 +190,15 @@ public class LoginManager : MonoBehaviour
             HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/weapon_tb/owner/" + newPlayerInfo.player_id,
             delegate (string result)
             {
-                newWeapon = HandleNewAccountWeapon(result);
-                newWeaponJsonData = JsonUtility.ToJson(newWeapon);
+                HandleWeaponTB(result, (weaponData)=>
+                {
+                    print("weapon "+weaponData);
+                    newWeaponJsonData = JsonUtility.ToJson(weaponData);
+                    print(newWeaponJsonData);
+                    setIPFS(newWeaponJsonData);
 
-                print(newWeaponJsonData);
-                //here
-                setIPFS(newWeaponJsonData);
+                });
+                
             });
 
         });
@@ -210,10 +234,12 @@ public class LoginManager : MonoBehaviour
             Debug.Log("Uploaded CID: " + uploadedCID);
             StartCoroutine(MintNFT("0x30018fC76ca452C1522DD9C771017022df8b2321", ipfsUrl));
             // 이제 uploadedCID를 사용하여 IPFS 네트워크에서 데이터를 가져오거나 공유할 수 있습니다.
+
         }
         else
         {
             Debug.Log("Error uploading JSON data or retrieving CID.");
+            HTTPClient.instance.EndSpinner();
         }
     }
 
@@ -222,6 +248,7 @@ public class LoginManager : MonoBehaviour
         yield return StartCoroutine(PPC721Contract.MintNFT(recipient , tokenURI ,(Address, ex) =>
         {
             Debug.Log($"MintNFT Contract Address: {Address}");
+            HTTPClient.instance.EndSpinner();
         }));
     }
 }
