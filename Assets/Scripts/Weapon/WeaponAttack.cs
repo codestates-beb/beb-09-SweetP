@@ -10,6 +10,7 @@ public class WeaponAttack : MonoBehaviour
     {
         weaponData = new WeaponData();
         weaponData = WeaponManager.instance.curruentWeaponData;
+        weaponData.weapon_atk += (weaponData.weapon_upgrade * 20);
     }
 
     // Update is called once per frame
