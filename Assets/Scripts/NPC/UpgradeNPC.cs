@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Numerics;
-
+using System.Threading.Tasks;
 public class UpgradeNPC : MonoBehaviour
 {
-    //@notion 컨트랙트 컴포넌트
+    //@notion ???????? ????????
     public PPC721Contract PPC721Contract;
     public PPCTokenContract PPCTokenContract;
 
@@ -23,11 +23,11 @@ public class UpgradeNPC : MonoBehaviour
     private int selectIncreaseProb;
     private ObjectEventSystem eventSystem;
     private UpgradeData upgradeData;
-
+    private bool isTaskEnd = false;
     // Start is called before the first frame update
     void Start()
     {
-        //@notion 컨트랙트 연결
+        //@notion ???????? ????
         PPCTokenContract.Initialize();
         upgradeData = GetComponent<UpgradeData>(); 
     }
@@ -67,7 +67,7 @@ public class UpgradeNPC : MonoBehaviour
     }
     private void Awake()
     {
-        //@notion 컨트랙트 초기화
+        //@notion ???????? ??????
         PPCTokenContract = GetComponent<PPCTokenContract>();
         PPC721Contract = GetComponent<PPC721Contract>();
 
@@ -137,24 +137,59 @@ public class UpgradeNPC : MonoBehaviour
 
     public void UpgradeWeapon()
     {
-        StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
+        StartCoroutine(PayTokenAndUpgrade());
+    }
 
-        //Upgrade
-        float upgradeProb = upgradeData.GetProbForUpgrade(selectWeaponUpgrade) + selectIncreaseProb;
-        if (upgradeProb > 100)
-            upgradeProb = 100;
-        upgradeProb /= 100f;
+    public IEnumerator PayTokenAndUpgrade()
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+       HTTPClient.instance.spinner = Instantiate(HTTPClient.instance.progressSpinner, canvas.transform);
 
-        if(Random.value < upgradeProb)
+        HTTPClient.instance.spinner.SetActive(true);
+        yield return StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
+
+        if (isTaskEnd)
         {
-            UpgradeSuccess(selectWeapon);
+            print("tt");
+            //Upgrade
+            float upgradeProb = upgradeData.GetProbForUpgrade(selectWeaponUpgrade) + selectIncreaseProb;
+            if (upgradeProb > 100)
+                upgradeProb = 100;
+            upgradeProb /= 100f;
+
+            if (Random.value < upgradeProb)
+            {
+                UpgradeSuccess(selectWeapon);
+            }
+            else
+            {
+                UpgradeFail(selectWeapon);
+            }
+            ItemManager.instance.UsePPC(upgradeData.GetCostForUpgrade(selectWeaponUpgrade));
+
+
+            ChangeNature(selectWeapon);
+            RefreshPanel();
+
+            
+
+            string body = JsonUtility.ToJson(selectWeapon);
+
+            HTTPClient.instance.PUT("https://breadmore.azurewebsites.net/api/Weapon_Data/" + selectWeapon.weapon_id,
+                body,
+                delegate(string www)
+                { HTTPClient.instance.spinner.SetActive(false);
+                });
         }
-        else
+    }
+
+    public void ChangeNature(WeaponData weaponData)
+    {
+        if (weaponData.weapon_upgrade >= 10)
         {
-            UpgradeFail(selectWeapon);
+            int rand = Random.Range(0, 5);
+            weaponData.weapon_element = (WeaponNature)rand;
         }
-        ItemManager.instance.UsePPC(upgradeData.GetCostForUpgrade(selectWeaponUpgrade));
-        RefreshPanel();
     }
 
     private void UpgradeFail(WeaponData weaponData)
@@ -178,6 +213,8 @@ public class UpgradeNPC : MonoBehaviour
 
     public IEnumerator payToken(string sender, string recipient, BigInteger amount)
     {
+        print("task on");
+        isTaskEnd = false;
         yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
         {
             Debug.Log($"SetToken Contract Address: {Address}");
@@ -193,6 +230,8 @@ public class UpgradeNPC : MonoBehaviour
         {
             Debug.Log($"PPCTransferFrom Contract Address: {Address}");
         }));
+        print("task off");
+        isTaskEnd = true;
     }
 
     public IEnumerator UpdateDnft(BigInteger tokenId, string tokenURI)

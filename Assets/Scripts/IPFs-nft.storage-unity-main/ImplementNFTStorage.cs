@@ -16,6 +16,11 @@ public class ImplementNFTStorage : MonoBehaviour
             ScreenCapture.CaptureScreenshot(fullPath);
         }
 
+
+
+
+        //WeaponManager.instance.GetJSONWeaponData(1);
+
         if (Input.GetKey(KeyCode.P))
         {
             NSC.UploadDataFromStringUnityWebrequest(fullPath);

@@ -193,4 +193,18 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
+    public string GetJSONWeaponData(int weaponId)
+    {
+        for(int i=0; i<weaponDataList.Count; i++)
+        {
+            if(weaponDataList[i].weapon_id == weaponId)
+            {
+
+                return JsonUtility.ToJson(weaponDataList[i]);
+            }
+        }
+
+        return null;
+    }
+
 }
