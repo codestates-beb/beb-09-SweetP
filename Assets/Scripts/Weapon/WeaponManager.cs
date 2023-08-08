@@ -163,6 +163,7 @@ public class WeaponManager : MonoBehaviour
             if(weaponDataList[i].weapon_id == currentWeapon.weapon_id)
             {
                 weaponDataList[i] = currentWeapon;
+                DestroyWeapon();
             }
         }
 
@@ -171,7 +172,10 @@ public class WeaponManager : MonoBehaviour
 
         HTTPClient.instance.PUT(url, body, (response) =>
         {
+
         });
+
+
     }
 
     public void createWeapon()
@@ -191,6 +195,11 @@ public class WeaponManager : MonoBehaviour
             case 2:
                 break;
         }
+    }
+
+    public void DestroyWeapon()
+    {
+
     }
 
     public string GetJSONWeaponData(int weaponId)
