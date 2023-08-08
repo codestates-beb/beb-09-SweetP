@@ -119,7 +119,7 @@ namespace NFTStorage
     // This is the main class for communicating with nft.storage and IPFS
     public class NFTStorageClient : MonoBehaviour
     {
-        // nft.storage API endpoint
+        // nft.storage endpoint
         private static readonly string nftStorageApiUrl = "https://api.nft.storage/";
 
         // HTTP client to communicate with nft.storage

@@ -821,6 +821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressSpinner: {fileID: 7593214434758039823, guid: 6b48cf077816b4658af67d8d65894ab5, type: 3}
   spinner: {fileID: 0}
+  IsSpinner: 0
 --- !u!4 &529212010
 Transform:
   m_ObjectHideFlags: 0
@@ -2517,7 +2518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1211117344
 MonoBehaviour:
   m_ObjectHideFlags: 0

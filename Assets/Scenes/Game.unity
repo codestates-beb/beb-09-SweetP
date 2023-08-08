@@ -56717,6 +56717,8 @@ GameObject:
   - component: {fileID: 1041171626}
   - component: {fileID: 1041171627}
   - component: {fileID: 95664688350142382}
+  - component: {fileID: 95664688350142384}
+  - component: {fileID: 95664688350142383}
   m_Layer: 0
   m_Name: MarketNPC
   m_TagString: Untagged
@@ -63011,6 +63013,32 @@ MonoBehaviour:
   durText: {fileID: 1813666129}
   inputPrice: {fileID: 1891950280}
   selectMarket: {fileID: 0}
+--- !u!114 &95664688350142383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965106580914023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57070aabeb5caba46a69919e3a180afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractInstance: {fileID: 0}
+--- !u!114 &95664688350142384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965106580914023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c15a54821ea78f4185d72ae7fb25699, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractInstance: {fileID: 0}
 --- !u!95 &95979637563797829
 Animator:
   serializedVersion: 5
