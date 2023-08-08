@@ -153,6 +153,14 @@ public class Enemy : LivingEntity
 
     private void Update()
     {
+        if (CantAction)
+        {
+            pathFinder.isStopped = true;
+        }
+        else
+        {
+            pathFinder.isStopped = false;
+        }
         Vector3 healthBarPosition = transform.position + new Vector3(0f, 2f, 0f);
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(healthBarPosition);
         healthBarInstance.transform.position = screenPosition;
