@@ -556,6 +556,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PPC721Contract: {fileID: 0}
+  NSC: {fileID: 0}
+  body: 
   PlayerNameText: {fileID: 1481508014}
   PlayerAddress: 
   PlayerID: 0
@@ -2519,7 +2521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1211117344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2560,7 +2562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f1308e65de74b6e973f4316507de5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NSC: {fileID: 1211117344}
+  NSC: {fileID: 0}
   body: 
 --- !u!1 &1421140765
 GameObject:

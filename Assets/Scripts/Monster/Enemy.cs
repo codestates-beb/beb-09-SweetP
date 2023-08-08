@@ -8,13 +8,9 @@ public class Enemy : LivingEntity
     //@notion 컨트랙트 컴포넌트
     public PPC721Contract PPC721Contract;
 
-    //@IPFS
-    string fullPath;
-    public NFTStorage.NFTStorageClient NSC;
-
     public string body;
     private MetaDataWeapon metaDataWeapon;
-
+    
     //public enum Type { Normal, Boss};
     public GameObject healthBarPrefab;
     public Slider healthSlider;
@@ -396,10 +392,11 @@ public class Enemy : LivingEntity
             metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
             metaDataWeapon.image = "https://naver.com";
             metaDataWeapon.name = "SweetP Weapon";
-            print(metaDataWeapon.weaponData);
+            print(metaDataWeapon.weaponData.weapon_id);
         
         string jsonData = JsonUtility.ToJson(metaDataWeapon);
-        await NSC.UploadDataFromJsonHttpClient(jsonData);
+        print("json: "+jsonData);
+        await  ImplementNFTStorage.instance.NSC.UploadDataFromJsonHttpClient(jsonData);
     }
 
     public IEnumerator MintNFT()
