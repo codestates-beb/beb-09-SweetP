@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
-
+using Newtonsoft.Json;
 public class LoginManager : MonoBehaviour
 {
     public static LoginManager _instance;
@@ -115,8 +115,28 @@ public class LoginManager : MonoBehaviour
 
     public WeaponData HandleNewAccountWeapon(string www)
     {
-        return JsonUtility.FromJson<WeaponData>(www);
+        string jsonData = RemoveSquareBrackets(www);
+        print(jsonData);
+        WeaponTB weaponTB = JsonUtility.FromJson<WeaponTB>(jsonData);
+        WeaponData weaponData = new WeaponData();
+
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/" + weaponTB.weapon_id, delegate (string www) {
+
+            weaponData = JsonUtility.FromJson<WeaponData>(www);
+
+        });
+
+        return weaponData;
     }
+
+    private string RemoveSquareBrackets(string jsonString)
+    {
+        // 문자열에서 대괄호 제거
+        string result = jsonString.Trim('[', ']');
+
+        return result;
+    }
+
     public void NewStart()
     {
 
@@ -125,7 +145,8 @@ public class LoginManager : MonoBehaviour
         playerTB.player_name = inputName.text;
 
         PlayerTB newPlayerInfo = new PlayerTB();
-
+        WeaponData newWeapon = new WeaponData();
+        
         if (inputAddress.text.Length == 0 || inputName.text.Length == 0)
         {
             print("nope");
@@ -135,30 +156,28 @@ public class LoginManager : MonoBehaviour
 
         string body = JsonUtility.ToJson(playerTB);
 
+        string newWeaponJsonData;
 
         HTTPClient.instance.POST("https://breadmore.azurewebsites.net/api/player_tb", body, delegate (string www)
         {
             print("new account!");
             newPlayerInfo = HandleNewAccountInfo(www);
 
+            print(www);
+            HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/weapon_tb/owner/" + newPlayerInfo.player_id,
+            delegate (string result)
+            {
+                newWeapon = HandleNewAccountWeapon(result);
+                newWeaponJsonData = JsonUtility.ToJson(newWeapon);
+
+                print(newWeaponJsonData);
+            });
+
         });
 
         newstartPanel.SetActive(false);
 
-        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/weapon_tb/owner/" + newPlayerInfo.player_id,
-            delegate (string www)
-            {
-                // new Weapon
-                WeaponData newWeapon = HandleNewAccountWeapon(www);
-                print(www);
-
-                //NFT MINTING
-
-                // json data : wwww
-                // weapon class data : newWeapon
-
-                //StartCoroutine(MintNFT());
-            });
+      
     }
 
     public IEnumerator setToken()
