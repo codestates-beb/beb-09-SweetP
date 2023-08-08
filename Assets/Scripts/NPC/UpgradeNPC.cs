@@ -146,8 +146,9 @@ public class UpgradeNPC : MonoBehaviour
        HTTPClient.instance.spinner = Instantiate(HTTPClient.instance.progressSpinner, canvas.transform);
 
         HTTPClient.instance.spinner.SetActive(true);
-        yield return StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
-
+        yield return new WaitForSeconds(1f);
+        //yield return StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
+        isTaskEnd = true;
         if (isTaskEnd)
         {
             print("tt");
@@ -178,7 +179,8 @@ public class UpgradeNPC : MonoBehaviour
             HTTPClient.instance.PUT("https://breadmore.azurewebsites.net/api/Weapon_Data/" + selectWeapon.weapon_id,
                 body,
                 delegate(string www)
-                { HTTPClient.instance.spinner.SetActive(false);
+                {
+                    HTTPClient.instance.spinner.SetActive(false);
                 });
         }
     }
