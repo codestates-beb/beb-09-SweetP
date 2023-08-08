@@ -205,15 +205,9 @@ public class MarketNPC : MonoBehaviour
         UIManager.instance.MarketPanel.SetActive(false);
     }
 
-
-<<<<<<< HEAD
     //@notion 무기거래소 UI켜면 실행되는 함수
     //1.판매로 올라온 무기 리스트 띄우기
     public IEnumerator GetSaleWeapons()
-=======
-    // Start is called before the first frame update
-    void Start()
->>>>>>> 70d86fce1170aacf394e0f45990c11964b2e3f3a
     {
         StartCoroutine(SetToken());
         yield return StartCoroutine(PPC721Contract.GetSaleNftTokenIds((Weapons, ex) =>
