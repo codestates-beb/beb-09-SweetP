@@ -5,6 +5,16 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 public class Enemy : LivingEntity
 {
+    //@notion 컨트랙트 컴포넌트
+    public PPC721Contract PPC721Contract;
+
+    //@IPFS
+    string fullPath;
+    public NFTStorage.NFTStorageClient NSC;
+
+    public string body;
+    private MetaDataWeapon metaDataWeapon;
+
     //public enum Type { Normal, Boss};
     public GameObject healthBarPrefab;
     public Slider healthSlider;
@@ -105,6 +115,8 @@ public class Enemy : LivingEntity
     private void Awake()
     {
         // 초기화
+        PPC721Contract = GetComponent<PPC721Contract>();
+
         pathFinder = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         enemyAudioPlayer = GetComponent<AudioSource>();
@@ -138,7 +150,7 @@ public class Enemy : LivingEntity
     // Start is called before the first frame update
     void Start()
     {
-
+        metaDataWeapon = new MetaDataWeapon();
         // 게임 오브젝트 활성화와 동시에 AI의 추적 루틴 시작
         StartCoroutine(UpdatePath());
     }
@@ -340,6 +352,7 @@ public class Enemy : LivingEntity
                                      // 예: Debug.Log(weaponData.weapon_id);
                                      string jsonData = GetJsonWeaponData(weaponData);
                                      print(jsonData);
+                                     setIPFS(jsonData);
                                  });
                              });
                             break;
@@ -377,4 +390,24 @@ public class Enemy : LivingEntity
 
         return jsonData;
     }
+
+    private async void setIPFS(string www)
+    {
+            metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
+            metaDataWeapon.image = "https://naver.com";
+            metaDataWeapon.name = "SweetP Weapon";
+            print(metaDataWeapon.weaponData);
+        
+        string jsonData = JsonUtility.ToJson(metaDataWeapon);
+        await NSC.UploadDataFromJsonHttpClient(jsonData);
+    }
+
+    public IEnumerator MintNFT()
+    {
+        yield return StartCoroutine(PPC721Contract.MintNFT((Address, ex) =>
+        {
+            Debug.Log($"MintNFT Contract Address: {Address}");
+        }));
+    }
+
 }
