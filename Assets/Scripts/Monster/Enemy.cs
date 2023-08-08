@@ -335,6 +335,7 @@ public class Enemy : LivingEntity
                             HTTPClient.instance.POST("https://breadmore.azurewebsites.net/api/Weapon_tb", body, delegate (string www)
                              {
                                  print(www);
+                                 string jsonData = GetJsonWeaponData(HandleWeaponTB(www));
                              });
                             break;
                         case 1:
@@ -350,4 +351,22 @@ public class Enemy : LivingEntity
         }
     }
 
-}
+    private WeaponData HandleWeaponTB(string www)
+    {
+        WeaponTB weaponTb = JsonUtility.FromJson<WeaponTB>(www);
+        WeaponData weaponData = new WeaponData();
+
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_tb/" + weaponTb.weapon_id, delegate (string www) {
+            weaponData = JsonUtility.FromJson<WeaponData>(www);
+        });
+
+
+        return weaponData;
+    }
+
+    private string GetJsonWeaponData(WeaponData weaponData)
+    {
+        string jsonData = JsonUtility.ToJson(weaponData);
+
+        return jsonData;
+    }
