@@ -72,12 +72,12 @@ public class Enemy : LivingEntity
 
 
         float targetRadius = 1.5f;
-    RaycastHit[] rayHits =
-            Physics.SphereCastAll(transform.position,
-            targetRadius,
-            transform.forward,
-            attackDistance,
-            LayerMask.GetMask("Player"));
+        RaycastHit[] rayHits =
+                Physics.SphereCastAll(transform.position,
+                targetRadius,
+                transform.forward,
+                attackDistance,
+                LayerMask.GetMask("Player"));
 
         if (rayHits.Length > 0 && !isAttack)
         {
@@ -94,7 +94,7 @@ public class Enemy : LivingEntity
                 }
             }
         }
-        if(hasTarget && rayHits.Length <= 0 && isChase == false)
+        if (hasTarget && rayHits.Length <= 0 && isChase == false)
         {
             isChase = true;
             pathFinder.isStopped = false;
@@ -117,7 +117,7 @@ public class Enemy : LivingEntity
 
         healthSlider = healthBarInstance.GetComponent<Slider>();
 
-        
+
     }
 
     // 적 AI의 초기 스펙을 결정하는 셋업 메서드
@@ -228,10 +228,10 @@ public class Enemy : LivingEntity
             RecordScore();
         }
 
-        Collider enemyCollider= GetComponent<Collider>();
+        Collider enemyCollider = GetComponent<Collider>();
 
         enemyCollider.enabled = false;
-        
+
 
         pathFinder.isStopped = true;
         pathFinder.enabled = false;
@@ -251,7 +251,7 @@ public class Enemy : LivingEntity
     public void RecordScore()
     {
         score = (int)(Time.time - currentTimeForScore);
-        
+
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Player_Record/" + LoginManager.instance.PlayerID, delegate (string www)
         {
             PlayerRecord _playerRecord = JsonUtility.FromJson<PlayerRecord>(www);
@@ -290,7 +290,7 @@ public class Enemy : LivingEntity
 
     private void DropScoll()
     {
-        for(int i=0; i< scrollDropTables.Count; i++)
+        for (int i = 0; i < scrollDropTables.Count; i++)
         {
             if (scrollDropTables[i].dropProb != 0)
             {
@@ -318,13 +318,13 @@ public class Enemy : LivingEntity
 
     private void DropWeapon()
     {
-        
+
         for (int i = 0; i < weaponDropTables.Count; i++)
         {
             WeaponTB weaponTB = new WeaponTB();
             if (weaponDropTables[i].dropProb != 0)
             {
-                if(Random.value < (weaponDropTables[i].dropProb / 100))
+                if (Random.value < (weaponDropTables[i].dropProb / 100))
                 {
                     switch (weaponDropTables[i].weapon_type)
                     {
@@ -336,6 +336,7 @@ public class Enemy : LivingEntity
                              {
                                  print(www);
                                  string jsonData = GetJsonWeaponData(HandleWeaponTB(www));
+                                 print(jsonData);
                              });
                             break;
                         case 1:
@@ -346,7 +347,7 @@ public class Enemy : LivingEntity
                 }
             }
 
-            
+
 
         }
     }
@@ -356,7 +357,8 @@ public class Enemy : LivingEntity
         WeaponTB weaponTb = JsonUtility.FromJson<WeaponTB>(www);
         WeaponData weaponData = new WeaponData();
 
-        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_tb/" + weaponTb.weapon_id, delegate (string www) {
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_tb/" + weaponTb.weapon_id, delegate (string www)
+        {
             weaponData = JsonUtility.FromJson<WeaponData>(www);
         });
 
@@ -370,3 +372,4 @@ public class Enemy : LivingEntity
 
         return jsonData;
     }
+}
