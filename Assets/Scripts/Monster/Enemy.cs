@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using NFTStorage.JSONSerialization;
-
+using System.Threading.Tasks;
 
 
 public class Enemy : LivingEntity
 {
+    public float currentTime;
+
     //@notion 컨트랙트 컴포넌트
     public PPC721Contract PPC721Contract;
 
@@ -115,7 +117,7 @@ public class Enemy : LivingEntity
     private void Awake()
     {
         // 초기화
-        PPC721Contract = GetComponent<PPC721Contract>();
+        PPC721Contract =  GameObject.FindGameObjectWithTag("Contract").GetComponent<PPC721Contract>();
 
         pathFinder = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
@@ -157,20 +159,23 @@ public class Enemy : LivingEntity
 
     private void Update()
     {
-        if (CantAction)
+        if (!dead)
         {
-            pathFinder.isStopped = true;
-        }
-        else
-        {
-            pathFinder.isStopped = false;
-        }
-        Vector3 healthBarPosition = transform.position + new Vector3(0f, 2f, 0f);
-        Vector3 screenPosition = Camera.main.WorldToScreenPoint(healthBarPosition);
-        healthBarInstance.transform.position = screenPosition;
+            if (CantAction)
+            {
+                pathFinder.isStopped = true;
+            }
+            else
+            {
+                pathFinder.isStopped = false;
+            }
+            Vector3 healthBarPosition = transform.position + new Vector3(0f, 2f, 0f);
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(healthBarPosition);
+            healthBarInstance.transform.position = screenPosition;
 
-        enemyAnimator.SetBool("HasTarget", hasTarget);
-        Targeting();
+            enemyAnimator.SetBool("HasTarget", hasTarget);
+            Targeting();
+        }
 
     }
     private IEnumerator UpdatePath()
@@ -238,7 +243,7 @@ public class Enemy : LivingEntity
     }
 
     // 사망 처리
-    public override void Die()
+    public override async void Die()
     {
         // LivingEntity의 Die()를 실행하여 기본 사망 처리 실행
         base.Die();
@@ -262,9 +267,24 @@ public class Enemy : LivingEntity
         healthSlider.gameObject.SetActive(false);
         ItemManager.instance.itemData.player_gold += dropGold;
         WeaponManager.instance.WeaponUse(WeaponManager.instance.curruentWeaponData);
-        DropScoll();
-        DropWeapon();
 
+        InvisiableEnemy();
+
+        await DropScoll();
+        await DropWeapon();
+        StartCoroutine(DestroyEnemy());
+    }
+
+    private void InvisiableEnemy()
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        
+        renderer.material = UIManager.instance.material;
+    }
+
+    private IEnumerator DestroyEnemy()
+    {
+        yield return new WaitForSeconds(25f);
         Destroy(gameObject);
     }
 
@@ -308,7 +328,7 @@ public class Enemy : LivingEntity
         //Debug.Log("Last Attack : "+lastAttackTime);
     }
 
-    private void DropScoll()
+    private async Task DropScoll()
     {
         for (int i = 0; i < scrollDropTables.Count; i++)
         {
@@ -336,7 +356,7 @@ public class Enemy : LivingEntity
         }
     }
 
-    private void DropWeapon()
+    private async Task DropWeapon()
     {
 
         for (int i = 0; i < weaponDropTables.Count; i++)
@@ -402,6 +422,7 @@ public class Enemy : LivingEntity
 
     private async void setIPFS(string www)
     {
+        currentTime = Time.time;
             metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
             metaDataWeapon.image = "https://bafkreiezrpaxfumy7rbv4234krmboniyyuh5unnved2tf5btgfo7hy76iq.ipfs.nftstorage.link/";
             metaDataWeapon.name = "SweetP Weapon";
@@ -430,6 +451,9 @@ public class Enemy : LivingEntity
         yield return StartCoroutine(PPC721Contract.MintNFT(recipient, tokenURI, (Address, ex) =>
         {
             Debug.Log($"MintNFT Contract Address: {Address}");
+
+            currentTime = Time.time - currentTime;
+            print(currentTime);
         }));
     }
 

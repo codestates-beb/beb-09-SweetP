@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
             return _instance;
         }
     }
-
     private bool IsInventory = false;
     private ObjectEventSystem eventSystem;
     [Header("Inventory")]
@@ -80,6 +79,9 @@ public class UIManager : MonoBehaviour
     public Image Select;
     public Image UnSelect;
     public GameObject BuyPanel;
+
+    [Header("Monster")]
+    public Material material;
     private void Awake()
     {
         if (_instance != null && _instance != this)

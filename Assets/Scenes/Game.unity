@@ -2319,6 +2319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8805867a3d7443e6af0eb994cc533ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  test: 1
   Inventory: {fileID: 754638481}
   goldText: {fileID: 810304536}
   ppcText: {fileID: 2135773863}
@@ -2358,6 +2359,7 @@ MonoBehaviour:
   Select: {fileID: 0}
   UnSelect: {fileID: 0}
   BuyPanel: {fileID: 1507023439}
+  material: {fileID: 2100000, guid: 78cb6104fddad4ad68788a7bc902dba7, type: 2}
 --- !u!114 &92223798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21535,6 +21537,107 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 264414c28ea0fbb41b924fd17d9228b3, type: 3}
+--- !u!1 &842551476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 842551482}
+  - component: {fileID: 842551481}
+  - component: {fileID: 842551480}
+  - component: {fileID: 842551479}
+  - component: {fileID: 842551478}
+  - component: {fileID: 842551477}
+  m_Layer: 0
+  m_Name: ContractManager
+  m_TagString: Contract
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &842551477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842551476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2706c65f936434bc48a2f9b5c901789e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &842551478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842551476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8255d1abaadcf17498183edebbfc39d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PPC721Contract: {fileID: 0}
+  PPCTokenContract: {fileID: 0}
+--- !u!114 &842551479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842551476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c15a54821ea78f4185d72ae7fb25699, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractInstance: {fileID: 0}
+--- !u!114 &842551480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842551476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57070aabeb5caba46a69919e3a180afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractInstance: {fileID: 0}
+--- !u!114 &842551481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842551476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd341ad004c7854d923773e1ae6068d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractAddress: 0xAfdC75da5E1a8eAdb9B5B5c691A4Ed3fd04Fb829
+--- !u!4 &842551482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842551476}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.4406643, y: 2.3916135, z: 9.0503645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &844517399
 GameObject:
   m_ObjectHideFlags: 0
