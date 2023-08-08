@@ -110,3 +110,11 @@ public class WeaponSale
 {
     public int weapon_Sale;
 }
+
+public class MetaDataWeapon
+{
+    public string image;
+    public string name;
+    public WeaponData weaponData;
+    
+}

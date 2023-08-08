@@ -2518,7 +2518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1211117344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2531,7 +2531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065c6827f9897421eadfc1f44ff365f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGRmMzU0NzQ3MTgwZDJGRDhGMjg0NTA2ZkQwMjQ3ZjBjQWFiZjUxQkQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5MTQwNTExMDc4NSwibmFtZSI6IlN3ZWV0UCJ9.ltnNt33Mfhr5FFFwIfWD-r_aM3RHunE1MLxSjihGPBQ
+  apiToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDcwZTgyOEIwNTMyYmUxYTRCNDNFNTI4RjNGZGYwMmM0ZUNjNUIzMjMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5MTQ3NDM2MDAzMSwibmFtZSI6IlN3ZWV0UCJ9.aMmjf3GA_rVEQ7CgEfhMRTaNFoLIIqNSAUqftSW5YHA
 --- !u!4 &1211117345
 Transform:
   m_ObjectHideFlags: 0
@@ -2560,6 +2560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NSC: {fileID: 1211117344}
+  body: 
 --- !u!1 &1421140765
 GameObject:
   m_ObjectHideFlags: 0

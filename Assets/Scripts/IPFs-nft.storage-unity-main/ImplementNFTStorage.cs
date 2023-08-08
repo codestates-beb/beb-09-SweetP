@@ -7,13 +7,27 @@ public class ImplementNFTStorage : MonoBehaviour
     string fullPath;
     public NFTStorage.NFTStorageClient NSC;
 
-    private void Update()
+    public string body;
+    private MetaDataWeapon metaDataWeapon;
+
+
+    private void Start()
     {
-        if (Input.GetKey(KeyCode.C))
+        metaDataWeapon = new MetaDataWeapon();
+    }
+
+    private async void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            fullPath = Application.persistentDataPath + "/myImage " + System.DateTime.Now.ToString("yy-MM-dd") + ".png";
-            print(fullPath);
-            ScreenCapture.CaptureScreenshot(fullPath);
+            print("hello");
+            HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/2", delegate (string www) {
+                body =www;
+                metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
+                metaDataWeapon.image = "https://naver.com";
+                metaDataWeapon.name = "SweetP Weapon";
+                print(www);
+            });
         }
 
 
@@ -21,9 +35,10 @@ public class ImplementNFTStorage : MonoBehaviour
 
         //WeaponManager.instance.GetJSONWeaponData(1);
 
-        if (Input.GetKey(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            NSC.UploadDataFromStringUnityWebrequest(fullPath);
+            string jsonData = JsonUtility.ToJson(metaDataWeapon);
+            await NSC.UploadDataFromJsonHttpClient(jsonData);
         }
     }
 }
