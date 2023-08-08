@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using NFTStorage.JSONSerialization;
+
+
+
 public class Enemy : LivingEntity
 {
     //@notion 컨트랙트 컴포넌트
@@ -357,6 +361,7 @@ public class Enemy : LivingEntity
                                      string jsonData = GetJsonWeaponData(weaponData);
                                      print(jsonData);
                                      setIPFS(jsonData);
+                                     
                                  });
                              });
                             break;
@@ -398,18 +403,31 @@ public class Enemy : LivingEntity
     private async void setIPFS(string www)
     {
             metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
-            metaDataWeapon.image = "https://naver.com";
+            metaDataWeapon.image = "https://bafkreiezrpaxfumy7rbv4234krmboniyyuh5unnved2tf5btgfo7hy76iq.ipfs.nftstorage.link/";
             metaDataWeapon.name = "SweetP Weapon";
             print(metaDataWeapon.weaponData.weapon_id);
         
         string jsonData = JsonUtility.ToJson(metaDataWeapon);
         print("json: "+jsonData);
-        await  ImplementNFTStorage.instance.NSC.UploadDataFromJsonHttpClient(jsonData);
+        NFTStorageUploadResponse uploadResponse = await ImplementNFTStorage.instance.NSC.UploadDataFromJsonHttpClient(jsonData);
+
+        if (uploadResponse != null && uploadResponse.ok)
+        {
+            string uploadedCID = uploadResponse.value.cid;
+            string ipfsUrl = "https://" + uploadedCID + ".ipfs.nftstorage.link/";
+            Debug.Log("Uploaded CID: " + uploadedCID);
+            StartCoroutine(MintNFT("0x30018fC76ca452C1522DD9C771017022df8b2321", ipfsUrl));
+            // 이제 uploadedCID를 사용하여 IPFS 네트워크에서 데이터를 가져오거나 공유할 수 있습니다.
+        }
+        else
+        {
+            Debug.Log("Error uploading JSON data or retrieving CID.");
+        }
     }
 
-    public IEnumerator MintNFT()
+    public IEnumerator MintNFT(string recipient, string tokenURI)
     {
-        yield return StartCoroutine(PPC721Contract.MintNFT((Address, ex) =>
+        yield return StartCoroutine(PPC721Contract.MintNFT(recipient, tokenURI, (Address, ex) =>
         {
             Debug.Log($"MintNFT Contract Address: {Address}");
         }));

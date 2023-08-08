@@ -198,6 +198,7 @@ public class MarketNPC : MonoBehaviour
                   WeaponManager.instance.Refresh();
                   WeaponManager.instance.GetWeaponList();
                   // Process the response here
+                  print($"sellweapon data : {response}");
               });
 
 
@@ -213,7 +214,6 @@ public class MarketNPC : MonoBehaviour
     //1.판매로 올라온 무기 리스트 띄우기
     public IEnumerator GetSaleWeapons()
     {
-        StartCoroutine(SetToken());
         yield return StartCoroutine(PPC721Contract.GetSaleNftTokenIds((Weapons, ex) =>
         {
             if (ex == null)
@@ -258,32 +258,6 @@ public class MarketNPC : MonoBehaviour
     }
 
 
-    //@notion 토큰으로 거래하기위해 ERC20 토큰을 지정하는 함수
-    public IEnumerator SetToken()
-    {
-        yield return StartCoroutine(PPC721Contract.SetToken("0xA3e30c7207b8E9Dfe1B405311cc4C0eDe2C02ac0", (Address, ex) =>
-        {
-            Debug.Log($"Contract Address: {Address}");
-            StartCoroutine(GetToken());
-        }));
-    }
-    //@notion 지정한 ERC20 토큰을 확인하는 함수
-    public IEnumerator GetToken()
-    {
-        yield return StartCoroutine(PPC721Contract.GetToken((Address, ex) =>
-        {
-            if (ex == null)
-            {
-                string TokenAddress = Address;
-                Debug.Log($"TokenAddress : {TokenAddress}");
-            }
-            else
-            {
-                Debug.Log(ex);
-            }
-        }));
-    }
-
     //@notion 무기 판매 등록
     //무기 판매 버튼을 누르면 시행되는 함수
     public IEnumerator SaleWeapon(BigInteger tokenId, BigInteger price)
@@ -311,7 +285,18 @@ public class MarketNPC : MonoBehaviour
         }));
     }
 
-    
+
+    //@notion weapon metadata update
+
+    public IEnumerator UpdateDnft(BigInteger tokenId, string tokenURI)
+    {
+        yield return StartCoroutine(PPC721Contract.UpdataNFT(tokenId, tokenURI, (Address, ex) =>
+        {
+            Debug.Log($"UpdataNFT Contract Address: {Address}");
+        }));
+    }
+
+
 
     // Update is called once per frame
     void Update()

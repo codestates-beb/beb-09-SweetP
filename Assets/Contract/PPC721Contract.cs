@@ -46,15 +46,15 @@ public class PPC721Contract : MonoBehaviour
     }
     */
 
-    public IEnumerator MintNFT(Action<string, Exception> callback)
+    public IEnumerator MintNFT(string recipient, string tokenURI, Action<string, Exception> callback)
     {
 
 
         var function = this.contractInstance.contract.GetFunction("mintNFT");
 
         // Transaction Input 생성
-        string recipient = "0x30018fC76ca452C1522DD9C771017022df8b2321";
-        string tokenURI = "https://gateway.pinata.cloud/ipfs/QmP25FavCnPjQpuvM9noxxfZNNRKW6cmUYsEg3LwSJ22gm/1.json";
+        //string recipient = "0x30018fC76ca452C1522DD9C771017022df8b2321";
+        //string tokenURI = "https://gateway.pinata.cloud/ipfs/QmP25FavCnPjQpuvM9noxxfZNNRKW6cmUYsEg3LwSJ22gm/1.json";
         System.Numerics.BigInteger nftPrice = new System.Numerics.BigInteger(1);
         var data = function.GetData(recipient, tokenURI, nftPrice);
         decimal ethValue = 0;
@@ -184,7 +184,7 @@ public class PPC721Contract : MonoBehaviour
         }
     }
 
-    public IEnumerator PPCTransferFrom(string sender, string recipient, BigInteger amount, Action<string, Exception> callback)
+    public IEnumerator PPCTransferFrom(string sender, string recipient, decimal amount, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("setPPCTransferFrom");
 

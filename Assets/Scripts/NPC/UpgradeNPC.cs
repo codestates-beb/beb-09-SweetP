@@ -146,9 +146,13 @@ public class UpgradeNPC : MonoBehaviour
        HTTPClient.instance.spinner = Instantiate(HTTPClient.instance.progressSpinner, canvas.transform);
 
         HTTPClient.instance.spinner.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        //yield return StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
-        isTaskEnd = true;
+        //@notion Testcode
+        //yield return new WaitForSeconds(1f);
+        //isTaskEnd = true;
+        
+        //@notion paytoken
+        yield return StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
+
         if (isTaskEnd)
         {
             print("tt");
@@ -213,17 +217,12 @@ public class UpgradeNPC : MonoBehaviour
         selectWeaponUpgrade = selectWeapon.weapon_upgrade;
     }
 
-    public IEnumerator payToken(string sender, string recipient, BigInteger amount)
+    public IEnumerator payToken(string sender, string recipient, decimal amount)
     {
         print("task on");
         isTaskEnd = false;
-        yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
-        {
-            Debug.Log($"SetToken Contract Address: {Address}");
-            //StartCoroutine(GetToken());
-        }));
 
-        yield return StartCoroutine(PPCTokenContract.Approve("0x52923645D1a2706c3B40C3F1Dc6AA170f7BEf10D", 10, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Approve("0x52923645D1a2706c3B40C3F1Dc6AA170f7BEf10D", amount, (Address, ex) =>
         {
             Debug.Log($"Approve Contract Address: {Address}");
         }));
