@@ -28,6 +28,13 @@ public class LoginManager : MonoBehaviour
     //@notion 컨트랙트 컴포넌트
     public PPC721Contract PPC721Contract;
 
+    //@IPFS
+    string fullPath;
+    public NFTStorage.NFTStorageClient NSC;
+
+    public string body;
+    private MetaDataWeapon metaDataWeapon;
+
     public TextMeshProUGUI PlayerNameText;
 
     //[HideInInspector]
@@ -58,6 +65,7 @@ public class LoginManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        metaDataWeapon = new MetaDataWeapon();
         //test user
     }
 
@@ -142,13 +150,14 @@ public class LoginManager : MonoBehaviour
             {
                 // new Weapon
                 WeaponData newWeapon = HandleNewAccountWeapon(www);
+                print(www);
 
                 //NFT MINTING
 
                 // json data : wwww
                 // weapon class data : newWeapon
 
-
+                //StartCoroutine(MintNFT());
             });
     }
 
@@ -157,6 +166,27 @@ public class LoginManager : MonoBehaviour
         yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
         {
             Debug.Log($"SetToken Contract Address: {Address}");
+        }));
+    }
+
+    private async void setIPFS(string www)
+    {
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Weapon_Data/2", delegate (string www) {
+            body = www;
+            metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
+            metaDataWeapon.image = "https://naver.com";
+            metaDataWeapon.name = "SweetP Weapon";
+            print(www);
+        });
+        string jsonData = JsonUtility.ToJson(metaDataWeapon);
+        await NSC.UploadDataFromJsonHttpClient(jsonData);
+    }
+
+    public IEnumerator MintNFT()
+    {
+        yield return StartCoroutine(PPC721Contract.MintNFT((Address, ex) =>
+        {
+            Debug.Log($"MintNFT Contract Address: {Address}");
         }));
     }
 }
