@@ -93,7 +93,7 @@ public class LoginManager : MonoBehaviour
             loginPanel.SetActive(false);
             newAccountButton.SetActive(false);
         });
-        StartCoroutine(setToken());
+        //StartCoroutine(setToken());
 
 
     }
@@ -171,6 +171,7 @@ public class LoginManager : MonoBehaviour
                 newWeaponJsonData = JsonUtility.ToJson(newWeapon);
 
                 print(newWeaponJsonData);
+                //here
             });
 
         });
