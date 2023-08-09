@@ -52,7 +52,7 @@ public class MarketNPC : MonoBehaviour
 
     public TMP_InputField inputPrice;
 
-    private WeaponData selectWeapon;
+    public WeaponData selectWeapon;
     private EquipSlot equipSlot;
 
     public MarketSlot selectMarket;

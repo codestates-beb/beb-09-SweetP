@@ -48,7 +48,7 @@ public class SmartContractInteraction : MonoBehaviour
             //var wallet = new Wallet(seedPhrase, "");
             //var privateKey = wallet.GetAccount(0).PrivateKey;
             
-            userAccount = new Account(privateKey3);
+            userAccount = new Account(privateKey2);
             this.web3 = new Web3(userAccount, url);
             // 'this.web3' 필드에 'Web3' 인스턴스를 할당
             // ABI와 스마트 컨트랙트 주소로 스마트 컨트랙트 인스턴스 생성

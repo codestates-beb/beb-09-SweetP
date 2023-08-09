@@ -32,7 +32,7 @@ public class PPCTokenContract: MonoBehaviour{
         }
         else {
             try {
-                var tokenBalance = ((decimal)task.Result)/ (decimal)System.Math.Pow(10, 18);
+                var tokenBalance = ((decimal)task.Result);
                 callback(tokenBalance, null);
             }
             catch (System.OverflowException ex) {
@@ -91,7 +91,7 @@ public class PPCTokenContract: MonoBehaviour{
     public IEnumerator Transfer(string recipient, decimal amount, Action<string, Exception> callback) 
     {
         var function = this.contractInstance.contract.GetFunction("transfer");
-        BigInteger tokenAmount = new BigInteger(amount * (decimal)Math.Pow(10, 18));
+        BigInteger tokenAmount = new BigInteger(amount);
         string data = function.GetData(recipient, tokenAmount);
 
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err)=>{
@@ -125,7 +125,7 @@ public class PPCTokenContract: MonoBehaviour{
 
     public IEnumerator Approve(string spender, decimal amount, Action<string, Exception> callback) {
          var function = this.contractInstance.contract.GetFunction("approve");
-        BigInteger tokenAmount = new BigInteger(amount * (decimal)Math.Pow(10, 18));
+        BigInteger tokenAmount = new BigInteger(amount);
         string data = function.GetData(spender, tokenAmount);
 
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err)=>{
@@ -158,7 +158,7 @@ public class PPCTokenContract: MonoBehaviour{
     public IEnumerator transferFromSpecified(string sender, string recipient, decimal amount, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("transferFromSpecified");
-        BigInteger tokenAmount = new BigInteger(amount * (decimal)Math.Pow(10, 18));
+        BigInteger tokenAmount = new BigInteger(amount);
         string data = function.GetData(sender, recipient, tokenAmount);
 
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err) => {
