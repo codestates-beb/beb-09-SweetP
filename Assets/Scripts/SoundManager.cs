@@ -26,7 +26,6 @@ public class SoundManager : MonoBehaviour
     }
     public AudioSource audioSource;
     public AudioClip buttonClick;
-    public AudioClip potionClick;
     public List<Button> buttons = new List<Button>();
 
     private void Awake()
