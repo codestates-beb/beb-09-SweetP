@@ -40,10 +40,14 @@ public class SmartContractInteraction : MonoBehaviour
         }
         
         try {
-            string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4"; // Ethereum 노드 또는 Infura 엔드포인트 URL
-            var wallet = new Wallet(seedPhrase, "");
-            var privateKey = wallet.GetAccount(0).PrivateKey;
-            userAccount = new Account(privateKey);
+            //string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4";
+            string url = "http://127.0.0.1:8545";
+            string privateKey = "5b4d0a80997d8816329efef5b803bffb9bdc758577a3ae10fef7839f53f1c987";
+            string privateKey2 = "c1ee916e10ea495eba17f52d13549b52f8059a33f78c3ee43ceadec3a697cf07";
+            string privateKey3 = "41980a25576d8f1144b41ca42f90c5c64f8fad016036f4b5fa74acd561a6678b";
+            //var wallet = new Wallet(seedPhrase, "");
+            //var privateKey = wallet.GetAccount(0).PrivateKey;
+            userAccount = new Account(privateKey2);
             this.web3 = new Web3(userAccount, url);
             // 'this.web3' 필드에 'Web3' 인스턴스를 할당
             // ABI와 스마트 컨트랙트 주소로 스마트 컨트랙트 인스턴스 생성
