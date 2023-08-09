@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Text.Json;
 
+
 public class GoldExchange : MonoBehaviour
 {
     public Transform mainUI;
@@ -38,7 +39,9 @@ public class GoldExchange : MonoBehaviour
 
     // Update is called once per frameEventSystem.current.SetSelectedGameObject(null);
     void ResetTimer(){ // 0.2초전에 타입시 GetSwapRatio 실행 방지를 위한 코드
-        if(swapSymbol == "Gold") {
+        //Debug.Log(inputX.text);
+        if (string.IsNullOrEmpty(inputX.text)) return;
+        if (swapSymbol == "Gold") {
                 if(int.Parse(inputX.text) > ItemManager.instance.itemData.player_gold) {
                     inputX.text = ItemManager.instance.itemData.player_gold.ToString();
                     // 입력 필드의 포커스를 제거
@@ -176,7 +179,8 @@ public class GoldExchange : MonoBehaviour
             if(data.player_gold < XBalance) yield break;
 
             yield return tokenContract.transferFromSpecified("0x176feB0F409cecFd3362CD4C10fF730814368EfE", SmartContractInteraction.userAccount.Address, YBalance, (result, err) =>{
-                    if(err != null) {
+                /*
+                if(err != null) {
                         Debug.Log(err);
                         isGotProblem = true;
                         HTTPClient.instance.EndSpinner();
@@ -186,7 +190,11 @@ public class GoldExchange : MonoBehaviour
                         StartCoroutine(sweetpDex.SetInfo());
                         HTTPClient.instance.EndSpinner();
                     }
-                });
+                */
+                inputX.text = "";
+                StartCoroutine(sweetpDex.SetInfo());
+                HTTPClient.instance.EndSpinner();
+            });
              if(isGotProblem) yield break;
             data.player_gold -= XBalance;
             string jsonPayload = JsonUtility.ToJson(data);
