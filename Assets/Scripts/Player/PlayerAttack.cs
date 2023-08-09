@@ -30,6 +30,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void AttackColliderOn()
     {
+        AudioSource.PlayClipAtPoint(Player.instance.attackClip, transform.position);
         colliderWeapon.enabled = true;
     }
 

@@ -6,6 +6,9 @@ using System.Numerics;
 using System.Threading.Tasks;
 public class UpgradeNPC : MonoBehaviour
 {
+    private AudioSource audioSource;
+    public AudioClip upgradeClip;
+    public AudioClip failClip;
     //@notion ???????? ????????
     public PPC721Contract PPC721Contract;
     public PPCTokenContract PPCTokenContract;
@@ -27,6 +30,7 @@ public class UpgradeNPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         //@notion ???????? ????
         PPCTokenContract.Initialize();
         upgradeData = GetComponent<UpgradeData>(); 
@@ -200,16 +204,21 @@ public class UpgradeNPC : MonoBehaviour
 
     private void UpgradeFail(WeaponData weaponData)
     {
-        if(weaponData.weapon_upgrade>0)
-        weaponData.weapon_upgrade--;
+        audioSource.PlayOneShot(failClip);
+        if (weaponData.weapon_upgrade > 0)
+        {
+            weaponData.weapon_upgrade--;
 
-        WeaponManager.instance.ChangeWeaponData(weaponData);
-        selectWeapon = weaponData;
-        selectWeaponUpgrade = selectWeapon.weapon_upgrade;
+            WeaponManager.instance.ChangeWeaponData(weaponData);
+            selectWeapon = weaponData;
+            selectWeaponUpgrade = selectWeapon.weapon_upgrade;
+        }
+        else return;
     }
 
     private void UpgradeSuccess(WeaponData weaponData)
     {
+        audioSource.PlayOneShot(upgradeClip);
         weaponData.weapon_upgrade++;
 
         WeaponManager.instance.ChangeWeaponData(weaponData);

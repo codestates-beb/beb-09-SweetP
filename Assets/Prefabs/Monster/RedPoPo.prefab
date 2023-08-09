@@ -5573,7 +5573,8 @@ MonoBehaviour:
   targetEntity: {fileID: 0}
   hitEffect: {fileID: 7513614745934917364}
   deathSound: {fileID: 0}
-  hitSound: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  dropSound: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
   playerTransform: {fileID: 0}
   CantAction: 0
   damage: 12
