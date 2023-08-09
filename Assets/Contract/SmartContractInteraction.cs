@@ -40,9 +40,11 @@ public class SmartContractInteraction : MonoBehaviour
         }
         
         try {
-            string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4"; // Ethereum 노드 또는 Infura 엔드포인트 URL
-            var wallet = new Wallet(seedPhrase, "");
-            var privateKey = wallet.GetAccount(0).PrivateKey;
+            //string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4";
+            string url = "http://127.0.0.1:8545";
+            string privateKey = "5b4d0a80997d8816329efef5b803bffb9bdc758577a3ae10fef7839f53f1c987";
+            //var wallet = new Wallet(seedPhrase, "");
+            //var privateKey = wallet.GetAccount(0).PrivateKey;
             userAccount = new Account(privateKey);
             this.web3 = new Web3(userAccount, url);
             // 'this.web3' 필드에 'Web3' 인스턴스를 할당
