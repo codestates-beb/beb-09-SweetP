@@ -94,6 +94,25 @@ public class PPCTokenContract: MonoBehaviour{
         });
     }
 
+    public IEnumerator transferFromSpecified(string sender, string recipient, decimal amount, Action<string, Exception> callback)
+    {
+        var function = this.contractInstance.contract.GetFunction("transferFromSpecified");
+        //BigInteger tokenAmount = new BigInteger(amount * (decimal)Math.Pow(10, 18));
+        string data = function.GetData(sender, recipient, amount);
+
+        yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, 0, data, (contractAddress, err) => {
+            if (contractAddress == null)
+            {
+                callback(null, err);
+            }
+            else
+            {
+                callback(contractAddress, null);
+            }
+        });
+
+    }
+
 
 
 

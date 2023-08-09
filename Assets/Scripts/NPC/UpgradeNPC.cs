@@ -276,12 +276,7 @@ public class UpgradeNPC : MonoBehaviour
         print("task on");
         isTaskEnd = false;
 
-        yield return StartCoroutine(PPCTokenContract.Approve("0x3Ed4eEbD59a4a71E255d7888e5C3A14AdB577114", amount, (Address, ex) =>
-        {
-            Debug.Log($"Approve Contract Address: {Address}");
-        }));
-
-        yield return StartCoroutine(PPC721Contract.PPCTransferFrom(sender, recipient, amount, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Transfer("5b4d0a80997d8816329efef5b803bffb9bdc758577a3ae10fef7839f53f1c987", amount, (Address, ex) =>
         {
             Debug.Log($"PPCTransferFrom Contract Address: {Address}");
         }));
