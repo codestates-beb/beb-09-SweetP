@@ -57,6 +57,8 @@ public class MarketNPC : MonoBehaviour
 
     public MarketSlot selectMarket;
 
+    private bool isCoroutineRunning = false;
+
     private void Awake()
     {
         //@notion 컨트랙트 초기화
@@ -69,6 +71,7 @@ public class MarketNPC : MonoBehaviour
     {
         //@notion 컨트랙트 연결
         PPCTokenContract.Initialize();
+        metaDataWeapon = new MetaDataWeapon();
     }
 
     public void UnSelect()
@@ -187,7 +190,7 @@ public class MarketNPC : MonoBehaviour
         string jsonData2 = JsonUtility.ToJson(marketData);
         string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market"; // Change this to your specific API endpoint
 
-        StartCoroutine(SaleWeapon(selectWeapon.weapon_id, marketData.weapon_cost));
+        //StartCoroutine(SaleWeapon(selectWeapon.weapon_id, marketData.weapon_cost));
 
         HTTPClient.instance.POST(url2, jsonData2, (response) =>
           {
@@ -208,7 +211,9 @@ public class MarketNPC : MonoBehaviour
                   
 
                   string jsonData = JsonUtility.ToJson(selectWeapon);
+
                   print($"sellweapon data : {jsonData}");
+                  print($"sellweapon id : {selectWeapon.weapon_id}");
                   setIPFS(jsonData, selectWeapon.weapon_id);
 
               });
@@ -216,11 +221,13 @@ public class MarketNPC : MonoBehaviour
 
           });
         await ActionController.instance.RefreshAll();
-        UIManager.instance.MarketPanel.SetActive(false);
+        //UIManager.instance.MarketPanel.SetActive(false);
 
         
 
     }
+
+
 
     //@notion 무기거래소 UI켜면 실행되는 함수
     //1.판매로 올라온 무기 리스트 띄우기
@@ -261,16 +268,16 @@ public class MarketNPC : MonoBehaviour
         print(amount);
         print("test");
         //@notion 무기를토큰으로 사기위한 721컨트랙트에 토큰꺼낼수 있는양 정함
-        yield return StartCoroutine(PPCTokenContract.Approve("0x3Ed4eEbD59a4a71E255d7888e5C3A14AdB577114", amount, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Approve("0x55BFe17d92C87218BFDc341C97007C66dF466740", amount, (Address, ex) =>
         {
-            Debug.Log($"Contract Address: {Address}");
+            Debug.Log($"Approve Contract Address: {Address}");
         }));
         yield return StartCoroutine(PPC721Contract.BuyNftToken(tokenId, (Address, ex) =>
         {
-            Debug.Log($"Contract Address: {Address}");
+            Debug.Log($"BuyNftToken Contract Address: {Address}");
         }));
 
-        yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
+        yield return StartCoroutine(PPCTokenContract.BalanceOfNo(SmartContractInteraction.userAccount.Address, (Token, ex) =>
         {
             decimal BalanceToken = Token;
             Debug.Log($"Token Balance: {BalanceToken}");
@@ -311,6 +318,8 @@ public class MarketNPC : MonoBehaviour
 
     public IEnumerator UpdateDnft(BigInteger tokenId, string tokenURI)
     {
+        //print(tokenId);
+        print(tokenURI);
         yield return StartCoroutine(PPC721Contract.UpdataNFT(tokenId, tokenURI, (Address, ex) =>
         {
             Debug.Log($"UpdataNFT Contract Address: {Address}");
@@ -319,6 +328,8 @@ public class MarketNPC : MonoBehaviour
 
     private async void setIPFS(string www, BigInteger tokenId)
     {
+        print(www);
+        print(tokenId);
         metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
         metaDataWeapon.image = "https://bafkreiezrpaxfumy7rbv4234krmboniyyuh5unnved2tf5btgfo7hy76iq.ipfs.nftstorage.link/";
         metaDataWeapon.name = "SweetP Weapon";

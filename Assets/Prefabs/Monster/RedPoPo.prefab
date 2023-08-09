@@ -5592,7 +5592,7 @@ MonoBehaviour:
     dropProb: 100
   weaponDropTables:
   - weapon_type: 0
-    dropProb: 0.00001
+    dropProb: 100
     dropWeaponUpgrade: 0
   - weapon_type: 2
     dropProb: 0.00001

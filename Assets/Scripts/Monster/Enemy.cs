@@ -460,7 +460,7 @@ public class Enemy : LivingEntity
             string uploadedCID = uploadResponse.value.cid;
             string ipfsUrl = "https://" + uploadedCID + ".ipfs.nftstorage.link/";
             Debug.Log("Uploaded CID: " + uploadedCID);
-            StartCoroutine(MintNFT("0x30018fC76ca452C1522DD9C771017022df8b2321", ipfsUrl));
+            StartCoroutine(MintNFT(SmartContractInteraction.userAccount.Address, ipfsUrl));
             // 이제 uploadedCID를 사용하여 IPFS 네트워크에서 데이터를 가져오거나 공유할 수 있습니다.
         }
         else

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 281094500}
-  m_IndirectSpecularColor: {r: 0.50275064, g: 0.43771297, b: 0.43947506, a: 1}
+  m_IndirectSpecularColor: {r: 0.50275195, g: 0.43771425, b: 0.43947664, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4787,6 +4787,10 @@ PrefabInstance:
     - target: {fileID: 7034614605168221128, guid: 452c458ed23234015810d07b37ea4c27, type: 3}
       propertyPath: m_Name
       value: BlueThornBerry
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034614605168221131, guid: 452c458ed23234015810d07b37ea4c27, type: 3}
+      propertyPath: startingHealth
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7697821759418122610, guid: 452c458ed23234015810d07b37ea4c27, type: 3}
       propertyPath: m_RootOrder
@@ -9990,6 +9994,8 @@ MonoBehaviour:
   hitEffect: {fileID: 5048774913203882679}
   deathSound: {fileID: 0}
   hitSound: {fileID: 0}
+  dropSound: {fileID: 0}
+  attackSound: {fileID: 0}
   playerTransform: {fileID: 0}
   CantAction: 0
   damage: 12
