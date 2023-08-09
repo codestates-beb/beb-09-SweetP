@@ -118,7 +118,6 @@ public class MarketNPC : MonoBehaviour
         natureText.text = selectWeapon.weapon_element.ToString();
         durText.text = selectWeapon.weapon_durability.ToString();
 
-        print(selectWeapon.weapon_id);
     }
 
     public void CloseBuyPanel()
@@ -214,6 +213,7 @@ public class MarketNPC : MonoBehaviour
 
                   print($"sellweapon data : {jsonData}");
                   print($"sellweapon id : {selectWeapon.weapon_id}");
+
                   setIPFS(jsonData, selectWeapon.weapon_id);
 
               });
@@ -281,6 +281,7 @@ public class MarketNPC : MonoBehaviour
         yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
         {
             decimal BalanceToken = Token;
+            ItemManager.instance.PPC = (int)BalanceToken;
             Debug.Log($"Token Balance: {BalanceToken}");
         }));
 

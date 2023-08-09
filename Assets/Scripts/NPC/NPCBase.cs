@@ -8,7 +8,6 @@ public class NPCBase : MonoBehaviour, INPC
     private AudioSource audioSource;
     public AudioClip helloClip;
     public AudioClip byeClip;
-    public Transform playerStartPosition;
     public Transform player;
     private Animator animator;
     private float searchPlayerRadius = 5f;
@@ -20,6 +19,8 @@ public class NPCBase : MonoBehaviour, INPC
     public NPCData npcData;
     private GameObject ThisNPCPanel;
     public bool IsContract = false;
+    private bool playerLoaded = false;
+
     public virtual void OnContract()
     {
         audioSource.PlayOneShot(helloClip);
@@ -68,21 +69,12 @@ public class NPCBase : MonoBehaviour, INPC
                 }
             }
         }
-                
-        
-        
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-
+        IsContract = false;
         audioSource = GetComponent<AudioSource>();
-
-        Transform playerParentTransform = playerStartPosition.transform.Find("PlayerParent(Clone)");
-        player = playerParentTransform.Find("Player");
-        
         ContractPanel = UIManager.instance.ContractPanel;
         nameText = UIManager.instance.ContractNPCNameText;
         originalRotationX = transform.rotation.eulerAngles.x;
@@ -110,9 +102,30 @@ public class NPCBase : MonoBehaviour, INPC
         }
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!playerLoaded)
+        {
+            if (NPCLoad.instance.player != null)
+            {
+
+
+                player = NPCLoad.instance.player.transform;
+                playerLoaded = true; // Set the flag to true to prevent further execution       
+            }
+        }
+
+        if (player == null)
+        {
+            playerLoaded = false;
+        }
         FindPlayer();
         if(IsContract == true)
         {

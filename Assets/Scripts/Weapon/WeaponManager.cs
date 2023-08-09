@@ -33,7 +33,7 @@ public class WeaponManager : MonoBehaviour
 
     public WeaponData curruentWeaponData;
     private bool currentWeaponCheck = false;
-
+    private bool Init = false;
     public GameObject Sword;
     public GameObject Bow;
     public GameObject Magic;
@@ -49,8 +49,7 @@ public class WeaponManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        Refresh();
-        GetWeaponList();
+        
 
         //SceneManager.sceneLoaded += OnSeneLoaded;
 
@@ -62,7 +61,13 @@ public class WeaponManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(!Init)
+        if (LoginManager.instance.PlayerID != 0)
+        {
+            Refresh();
+            GetWeaponList();
+                Init = true;
+        }
     }
 
     public void Refresh()
@@ -161,6 +166,7 @@ public class WeaponManager : MonoBehaviour
                 break;
         }
 
+        
         PlayerAttack.instance.objWeapon = weapon;
         PlayerAttack.instance.objWeapon.GetComponent<MeshRenderer>().material = upgradeColor[weaponData.weapon_upgrade / 2];
         PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
@@ -168,6 +174,7 @@ public class WeaponManager : MonoBehaviour
         UpgradeParticle(weaponData, PlayerAttack.instance.objWeapon);
         PlayerAttack.instance.colliderWeapon.enabled = false;
         PlayerAttack.instance.IsWeaponEquip = true;
+        print("test");
         Player.instance.ChangeHealthWithWeapon();
     }
 

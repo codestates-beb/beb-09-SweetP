@@ -44,6 +44,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI weaponHPText;
     public TextMeshProUGUI weaponNatureText;
     public TextMeshProUGUI weaponDurText;
+    public TextMeshProUGUI addATKText;
+    public TextMeshProUGUI addHPText;
     public Image WeaponImage;
     private EquipSlot equipSlot;
 
@@ -129,6 +131,8 @@ public class UIManager : MonoBehaviour
         weaponNatureText.text = equipSlot.weaponData.weapon_element.ToString();
         weaponDurText.text = equipSlot.weaponData.weapon_durability.ToString();
         WeaponImage.sprite = equipSlot.itemImage.sprite;
+        addATKText.text = "+"+(equipSlot.weaponData.weapon_upgrade * 20).ToString();
+        addHPText.text = "+" + (equipSlot.weaponData.weapon_upgrade * 20).ToString();
         WeaponInfoPanel.SetActive(true);
     }
 

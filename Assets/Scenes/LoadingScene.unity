@@ -784,6 +784,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5115219272410838381, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
       propertyPath: Magic
       value: 
@@ -908,6 +912,10 @@ PrefabInstance:
     - target: {fileID: 6575638339212320072, guid: 93e5d85ee729b4d0e8f24a97eb2cd7ae, type: 3}
       propertyPath: m_Name
       value: ItemManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6575638339212320072, guid: 93e5d85ee729b4d0e8f24a97eb2cd7ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6575638339212320073, guid: 93e5d85ee729b4d0e8f24a97eb2cd7ae, type: 3}
       propertyPath: m_RootOrder

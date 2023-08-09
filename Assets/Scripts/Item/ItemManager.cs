@@ -22,6 +22,8 @@ public class ItemManager : MonoBehaviour
     public ItemData itemData = new ItemData();
     public ScrollData scrollData = new ScrollData();
     public int PPC =99999;
+
+    private bool Init = false;
     private void Awake()
     {
         if(_instance != null && _instance != this)
@@ -31,8 +33,7 @@ public class ItemManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        GetItem();
-        GetScroll();
+        
     }
 
     public void UsePPC(int amount)
@@ -124,6 +125,12 @@ public class ItemManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!Init)
+            if (LoginManager.instance.PlayerID != 0)
+            {
+                GetItem();
+                GetScroll();
+                Init = true;
+            }
     }
 }

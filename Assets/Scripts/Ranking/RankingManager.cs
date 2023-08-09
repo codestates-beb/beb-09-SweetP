@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class RankingManager : MonoBehaviour
 {
     private static RankingManager _instance;
@@ -28,6 +28,7 @@ public class RankingManager : MonoBehaviour
     void Start()
     {
         GetRanking();
+        
     }
 
     // Update is called once per frame
@@ -47,7 +48,7 @@ public class RankingManager : MonoBehaviour
                 PlayerRecord playerRecord = new PlayerRecord();
                 playerRecord.player_id = recordArray.player_id;
                 playerRecord.player_score = recordArray.player_score;
-
+                if(playerRecord.player_score !=0)
                 playerRecords.Add(playerRecord);
             }
         }
@@ -59,6 +60,13 @@ public class RankingManager : MonoBehaviour
             delegate (string www)
             {
                 HandleRecordList(www);
+
+                SortPlayerRecordsByScore();
             });
+    }
+
+    private void SortPlayerRecordsByScore()
+    {
+        playerRecords = playerRecords.OrderBy(record => record.player_score).ToList();
     }
 }

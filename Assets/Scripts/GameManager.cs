@@ -54,11 +54,18 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoadedNPC;
     }
 
+
+
     private void OnSceneLoadedNPC(Scene scene, LoadSceneMode mode)
     {
         if(scene.name != "Game")
         {
             NPC.SetActive(false);
+        }
+
+        if (scene.name == "Game")
+        {
+            NPC.SetActive(true);
         }
     }
 
