@@ -6,6 +6,7 @@ using TMPro;
 using System.Numerics;
 using System.Threading.Tasks;
 using NFTStorage.JSONSerialization;
+using System;
 
 public class MarketNPC : MonoBehaviour
 {
@@ -189,7 +190,6 @@ public class MarketNPC : MonoBehaviour
         marketData.weapon_owner = LoginManager.instance.PlayerID;
         string jsonData2 = JsonUtility.ToJson(marketData);
         string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market"; // Change this to your specific API endpoint
-
         StartCoroutine(SaleWeapon(selectWeapon.weapon_id, marketData.weapon_cost));
 
         HTTPClient.instance.POST(url2, jsonData2, (response) =>
@@ -278,7 +278,7 @@ public class MarketNPC : MonoBehaviour
             Debug.Log($"BuyNftToken Contract Address: {Address}");
         }));
 
-        yield return StartCoroutine(PPCTokenContract.BalanceOfNo(SmartContractInteraction.userAccount.Address, (Token, ex) =>
+        yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
         {
             decimal BalanceToken = Token;
             Debug.Log($"Token Balance: {BalanceToken}");
@@ -289,7 +289,7 @@ public class MarketNPC : MonoBehaviour
 
     //@notion 무기 판매 등록
     //무기 판매 버튼을 누르면 시행되는 함수
-    public IEnumerator SaleWeapon(BigInteger tokenId, BigInteger price)
+    public IEnumerator SaleWeapon(BigInteger tokenId, decimal price)
     {
         yield return StartCoroutine(PPC721Contract.SaleNftToken(tokenId, price, (Address, ex) =>
         {

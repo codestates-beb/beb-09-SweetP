@@ -25,21 +25,23 @@ public class SmartContractInteraction : MonoBehaviour
         this.jsonFileName = jsonFileName;
         StartCoroutine(InstantiateContract());
     }
-    
+
     public IEnumerator InstantiateContract()
     {
         yield return GetAbiFromJsonFile();
-        if(string.IsNullOrEmpty(this.abi)) 
+        if (string.IsNullOrEmpty(this.abi))
         {
             Debug.Log("None of abi exists");
             yield break;
         }
-        if(string.IsNullOrEmpty(this.contractAddress)) {
+        if (string.IsNullOrEmpty(this.contractAddress))
+        {
             Debug.Log("None of contract address exists");
             yield break;
         }
-        
-        try {
+
+        try
+        {
             // string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4";
             string url = "http://127.0.0.1:8545";
             string privateKey = "5b4d0a80997d8816329efef5b803bffb9bdc758577a3ae10fef7839f53f1c987";
@@ -47,26 +49,27 @@ public class SmartContractInteraction : MonoBehaviour
             string privateKey3 = "41980a25576d8f1144b41ca42f90c5c64f8fad016036f4b5fa74acd561a6678b";
             //var wallet = new Wallet(seedPhrase, "");
             //var privateKey = wallet.GetAccount(0).PrivateKey;
-            
+
             userAccount = new Account(privateKey3);
             this.web3 = new Web3(userAccount, url);
             // 'this.web3' 필드에 'Web3' 인스턴스를 할당
             // ABI와 스마트 컨트랙트 주소로 스마트 컨트랙트 인스턴스 생성
             this.contract = this.web3.Eth.GetContract(this.abi, this.contractAddress);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             Debug.Log($"Error : {ex.Message}");
         }
         yield return null;
     }
 
-     private IEnumerator GetAbiFromJsonFile() 
-    {   
+    private IEnumerator GetAbiFromJsonFile()
+    {
         string path = "Assets/contracts/" + this.jsonFileName;
-        try 
+        try
         {
             // string path = Path.Combine(Application.dataPath, "contracts", jsonFileName);
-            if (!File.Exists(path)) 
+            if (!File.Exists(path))
             {
                 Debug.Log("File does not exist at: " + path);
                 yield break;
@@ -79,7 +82,7 @@ public class SmartContractInteraction : MonoBehaviour
 
             this.contractAddress = address.ToString();
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             Debug.Log($"Error: {ex.Message}");
         }

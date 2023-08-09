@@ -11,10 +11,11 @@ public class SweetpDexContract : MonoBehaviour{
 
     void Awake() {
         contractInstance = gameObject.AddComponent<SmartContractInteraction>();
+        Initialize();
     }
-    public void Initialize() 
+    public void Initialize()
     {
-        contractInstance.Init("SweetpDexContract.json");
+        contractInstance.Init("SweetpDexContract_gana.json");
     }
 
     public IEnumerator GetTokenBalance(Action<decimal, Exception> callback) {

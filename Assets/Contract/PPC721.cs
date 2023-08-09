@@ -138,7 +138,7 @@ public class PPC721 : MonoBehaviour
 
     //@notion 무기 판매 등록
     //무기 판매 버튼을 누르면 시행되는 함수
-    public IEnumerator SaleWeapon(BigInteger tokenId, BigInteger price)
+    public IEnumerator SaleWeapon(BigInteger tokenId, decimal price)
     {
         yield return StartCoroutine(PPC721Contract.SaleNftToken(tokenId, price, (Address, ex) =>
         {

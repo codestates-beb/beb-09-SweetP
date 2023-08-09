@@ -262,7 +262,7 @@ public class LoginManager : MonoBehaviour
 
     public IEnumerator BalanceOf()
     {
-        yield return StartCoroutine(PPCTokenContract.BalanceOfNo(SmartContractInteraction.userAccount.Address, (Token, ex) =>
+        yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
         {
             decimal BalanceToken = Token;
             Debug.Log($"Token Balance: {BalanceToken}");

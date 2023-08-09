@@ -4,17 +4,20 @@ using System;
 using Nethereum.Hex.HexTypes;
 using Nethereum.Web3;
 using Nethereum.RPC.Eth.DTOs;
+
 public class FrequentlyUsed : MonoBehaviour
 {
     // Start is called before the first frame update
 
 
-    public static IEnumerator SendTransaction(SmartContractInteraction contractInstance, string recipientAddress, decimal ethValue, string data, Action<string, Exception> callback) {
-         // Nounce 만들기
+    public static IEnumerator SendTransaction(SmartContractInteraction contractInstance, string recipientAddress, decimal ethValue, string data, Action<string, Exception> callback)
+    {
+        // Nounce 만들기
         string senderAddress = SmartContractInteraction.userAccount.Address;
         var nonceTask = contractInstance.web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAddress);
         yield return new WaitUntil(() => nonceTask.IsCompleted);
-        if(nonceTask.IsFaulted) {
+        if (nonceTask.IsFaulted)
+        {
             callback(null, nonceTask.Exception);
             yield break;
         }
@@ -22,7 +25,8 @@ public class FrequentlyUsed : MonoBehaviour
 
         // Transaction Input 생성
 
-        var transactionInput = new Nethereum.RPC.Eth.DTOs.TransactionInput() {
+        var transactionInput = new Nethereum.RPC.Eth.DTOs.TransactionInput()
+        {
             From = senderAddress,
             To = recipientAddress, // Set this to the contract address
             Value = new HexBigInteger(Web3.Convert.ToWei(ethValue)),
@@ -33,69 +37,81 @@ public class FrequentlyUsed : MonoBehaviour
         };
 
         // 트랜잭션 서명 및 전송
-        yield return SignAndTransferTransaction(contractInstance.web3, transactionInput, (contractAddress, err)=>{
-            if(contractAddress == null) {
+        yield return SignAndTransferTransaction(contractInstance.web3, transactionInput, (contractAddress, err) => {
+            if (contractAddress == null)
+            {
                 callback(null, err);
-            }else {
+            }
+            else
+            {
                 callback(contractAddress, null);
             }
         });
     }
 
-    public static IEnumerator SignAndTransferTransaction(Web3 web3, TransactionInput transactionInput, Action<string, Exception> callback) {
+    public static IEnumerator SignAndTransferTransaction(Web3 web3, TransactionInput transactionInput, Action<string, Exception> callback)
+    {
         //트랜잭션 서명
         var signedTransactionTask = web3.TransactionManager.SignTransactionAsync(transactionInput);
-        yield return new WaitUntil(()=> signedTransactionTask.IsCompleted);
-        if(signedTransactionTask.IsFaulted) {
+        yield return new WaitUntil(() => signedTransactionTask.IsCompleted);
+        if (signedTransactionTask.IsFaulted)
+        {
             callback(null, signedTransactionTask.Exception);
-        } else {
+        }
+        else
+        {
             var signedTransaction = signedTransactionTask.Result;
             // 서명된 트랜잭션 전송
             var sendTransactionTask = web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransaction);
-            
-            yield return new WaitUntil(()=> sendTransactionTask.IsCompleted);
-            if(sendTransactionTask.IsFaulted) {
+
+            yield return new WaitUntil(() => sendTransactionTask.IsCompleted);
+            if (sendTransactionTask.IsFaulted)
+            {
                 callback(null, sendTransactionTask.Exception);
-            } 
+            }
             // 트랜잭션이 제대로 Success 되었는지 반복해서 확인
-            yield return CheckTransactionSuccess(web3, sendTransactionTask.Result, (transactionAddress, err)=>{
-                if(transactionAddress == null) {
+            yield return CheckTransactionSuccess(web3, sendTransactionTask.Result, (transactionAddress, err) => {
+                if (transactionAddress == null)
+                {
                     callback(null, err);
-                }else {
+                }
+                else
+                {
                     callback(transactionAddress, null);
                 }
             });
         }
     }
 
-    public static IEnumerator CheckTransactionSuccess(Web3 web3, string transactionAddress, Action<string, Exception> callback) {
-        while (true) 
-            {
-                var receiptTask = web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionAddress);
-                yield return new WaitUntil(() => receiptTask.IsCompleted);
+    public static IEnumerator CheckTransactionSuccess(Web3 web3, string transactionAddress, Action<string, Exception> callback)
+    {
+        while (true)
+        {
+            var receiptTask = web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionAddress);
+            yield return new WaitUntil(() => receiptTask.IsCompleted);
 
-                if (receiptTask.IsFaulted)
+            if (receiptTask.IsFaulted)
+            {
+                callback(null, receiptTask.Exception);
+                yield break;
+            }
+
+            if (receiptTask.Result != null && receiptTask.Result.Status != null)
+            {
+                if (receiptTask.Result.Status.Value == 1) // Value 값이 1이면 Status가 Success 의미
                 {
-                    callback(null, receiptTask.Exception);
+                    callback(transactionAddress, null);
                     yield break;
                 }
-
-                if (receiptTask.Result != null && receiptTask.Result.Status != null)
+                else
                 {
-                    if (receiptTask.Result.Status.Value == 1) // Value 값이 1이면 Status가 Success 의미
-                    {
-                        callback(transactionAddress, null);
-                        yield break;
-                    }
-                    else
-                    {
-                        callback(null, receiptTask.Exception);
-                        Debug.Log(transactionAddress);
-                        yield break;
-                    }
+                    callback(null, receiptTask.Exception);
+                    Debug.Log(transactionAddress);
+                    yield break;
                 }
-
-                yield return new WaitForSeconds(0.5f); // Wait for 0.2 seconds before checking again
             }
+
+            yield return new WaitForSeconds(0.5f); // Wait for 0.2 seconds before checking again
+        }
     }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -957,6 +957,7 @@ GameObject:
   - component: {fileID: 655014742}
   - component: {fileID: 655014744}
   - component: {fileID: 655014743}
+  - component: {fileID: 655014745}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -1025,6 +1026,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 655014741}
   m_CullTransparentMesh: 1
+--- !u!114 &655014745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655014741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dad724896e98c1499fd2f1e465df83d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contractAddress: 
+  seedPhrase: inquiry vintage consider tell goat skill coffee across material seminar
+    fence chronic
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

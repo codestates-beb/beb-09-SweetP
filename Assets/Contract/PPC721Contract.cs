@@ -276,11 +276,13 @@ public class PPC721Contract : MonoBehaviour
 
     }
 
-    public IEnumerator SaleNftToken(BigInteger tokenId, BigInteger price, Action<string, Exception> callback)
+    public IEnumerator SaleNftToken(BigInteger tokenId, decimal price, Action<string, Exception> callback)
     {
         var function = this.contractInstance.contract.GetFunction("saleNftToken");
 
-        var data = function.GetData(tokenId, price);
+        BigInteger tokenprice = new BigInteger(price * (decimal)Math.Pow(10, 18));
+
+        var data = function.GetData(tokenId, tokenprice);
         decimal ethValue = 0;
 
         yield return FrequentlyUsed.SendTransaction(this.contractInstance, this.contractInstance.contractAddress, ethValue, data, (contractAddress, err) => {
