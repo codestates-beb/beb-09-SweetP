@@ -135,8 +135,8 @@ public class MarketNPC : MonoBehaviour
 
             string url = "https://breadmore.azurewebsites.net/api/Weapon_TB/" + weaponTB.weapon_id;
             string jsonData = JsonUtility.ToJson(weaponTB);
-
-            StartCoroutine(BuyWeapon(selectWeapon.weapon_id, selectMarket.marketData.weapon_cost));
+            print(selectMarket.marketData.weapon_id);
+            StartCoroutine(BuyWeapon(selectMarket.marketData.weapon_id, selectMarket.marketData.weapon_cost));
 
             HTTPClient.instance.PUT(url, jsonData, (response) =>
             {
@@ -187,7 +187,7 @@ public class MarketNPC : MonoBehaviour
         string jsonData2 = JsonUtility.ToJson(marketData);
         string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market"; // Change this to your specific API endpoint
 
-        StartCoroutine(SaleWeapon(selectWeapon.weapon_id,marketData.weapon_cost));
+        StartCoroutine(SaleWeapon(selectWeapon.weapon_id, marketData.weapon_cost));
 
         HTTPClient.instance.POST(url2, jsonData2, (response) =>
           {
@@ -205,9 +205,10 @@ public class MarketNPC : MonoBehaviour
                   WeaponManager.instance.Refresh();
                   WeaponManager.instance.GetWeaponList();
                   // Process the response here
-                  print($"sellweapon data : {response}");
+                  
 
                   string jsonData = JsonUtility.ToJson(selectWeapon);
+                  print($"sellweapon data : {jsonData}");
                   setIPFS(jsonData, selectWeapon.weapon_id);
 
               });
@@ -260,7 +261,7 @@ public class MarketNPC : MonoBehaviour
         print(amount);
         print("test");
         //@notion 무기를토큰으로 사기위한 721컨트랙트에 토큰꺼낼수 있는양 정함
-        yield return StartCoroutine(PPCTokenContract.Approve("0xb666d55294EfA8A8CCaCFdf1485e5D7484B92684", amount, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Approve("0x25aF60232F535b2E83409EDb1EeCFF38F8Bd0D42", amount, (Address, ex) =>
         {
             Debug.Log($"Contract Address: {Address}");
         }));

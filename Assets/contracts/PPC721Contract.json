@@ -140,25 +140,6 @@
 					"type": "uint256"
 				}
 			],
-			"name": "IsSale",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
 			"name": "NftPrice",
 			"outputs": [
 				{
@@ -297,25 +278,6 @@
 					"type": "uint256"
 				}
 			],
-			"name": "getIsSale",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_tokenId",
-					"type": "uint256"
-				}
-			],
 			"name": "getNftPrice",
 			"outputs": [
 				{
@@ -341,38 +303,6 @@
 					"internalType": "address",
 					"name": "",
 					"type": "address"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "getSaleNftTokenIds",
-			"outputs": [
-				{
-					"internalType": "string",
-					"name": "",
-					"type": "string"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_owner",
-					"type": "address"
-				}
-			],
-			"name": "getSaleNftTokenIdsByAddress",
-			"outputs": [
-				{
-					"internalType": "string",
-					"name": "",
-					"type": "string"
 				}
 			],
 			"stateMutability": "view",
@@ -669,19 +599,6 @@
 					"internalType": "uint256",
 					"name": "_tokenId",
 					"type": "uint256"
-				}
-			],
-			"name": "setIsSaleFalse",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_tokenId",
-					"type": "uint256"
 				},
 				{
 					"internalType": "uint256",
@@ -897,5 +814,5 @@
 			"type": "function"
 		}
 	],
-	"deployedAddress": "0x37349d72aD0214c650740e8fA7205D9a50e2E2Fc"
+	"deployedAddress": "0x25aF60232F535b2E83409EDb1EeCFF38F8Bd0D42"
 }

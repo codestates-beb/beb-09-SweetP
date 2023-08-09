@@ -176,9 +176,11 @@ public class UpgradeNPC : MonoBehaviour
         //@notion Testcode
         //yield return new WaitForSeconds(1f);
         //isTaskEnd = true;
+
+        print(upgradeData.GetCostForUpgrade(selectWeaponUpgrade));
         
         //@notion paytoken
-        yield return StartCoroutine(payToken("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", "0x30018fC76ca452C1522DD9C771017022df8b2321", 5));
+        yield return StartCoroutine(payToken(SmartContractInteraction.userAccount.Address, "0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", upgradeData.GetCostForUpgrade(selectWeaponUpgrade)));
 
         if (isTaskEnd)
         {
