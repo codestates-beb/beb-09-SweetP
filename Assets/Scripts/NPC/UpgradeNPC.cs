@@ -191,6 +191,7 @@ public class UpgradeNPC : MonoBehaviour
 
             if (Random.value < upgradeProb)
             {
+                ChangeNature(selectWeapon);
                 UpgradeSuccess(selectWeapon);
             }
             else
@@ -216,7 +217,7 @@ public class UpgradeNPC : MonoBehaviour
             ItemManager.instance.GetScroll();
 
 
-            ChangeNature(selectWeapon);
+            
             RefreshPanel();
 
             
@@ -236,8 +237,11 @@ public class UpgradeNPC : MonoBehaviour
     {
         if (weaponData.weapon_upgrade >= 10)
         {
-            int rand = Random.Range(0, 5);
-            weaponData.weapon_element = (WeaponNature)rand;
+            if (weaponData.weapon_element == 0)
+            {
+                int rand = Random.Range(1, 5);
+                weaponData.weapon_element = (WeaponNature)rand;
+            }
         }
     }
 

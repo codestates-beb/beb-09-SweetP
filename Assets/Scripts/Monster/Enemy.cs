@@ -395,6 +395,22 @@ public class Enemy : LivingEntity
                         case 1:
                             break;
                         case 2:
+                            print("hello");
+                            weaponTB.weapon_owner = LoginManager.instance.PlayerID;
+                            string staffBody = JsonUtility.ToJson(weaponTB);
+                            HTTPClient.instance.POST("https://breadmore.azurewebsites.net/api/Weapon_tb", staffBody, delegate (string www)
+                            {
+                                HandleWeaponTB(www, (weaponData) =>
+                                {
+                                    // 여기서 반환된 weaponData를 활용하여 원하는 작업 수행
+                                    // 예: Debug.Log(weaponData.weapon_id);
+
+                                    string jsonData = GetJsonWeaponData(weaponData);
+                                    print(jsonData);
+                                    setIPFS(jsonData);
+
+                                });
+                            });
                             break;
                     }
                 }
