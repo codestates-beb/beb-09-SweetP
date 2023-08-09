@@ -2887,8 +2887,9 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   healthText: {fileID: 0}
   deathClip: {fileID: 0}
-  hitClip: {fileID: 0}
-  attackClip: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
+  hitClip: {fileID: 8300000, guid: 208bb7a000fac47149649cb0f981f89e, type: 3}
+  swordClip: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
+  staffClip: {fileID: 8300000, guid: 390c48be7c62f42c198f05cf2324b98c, type: 3}
 --- !u!1 &8677651313769976788
 GameObject:
   m_ObjectHideFlags: 0

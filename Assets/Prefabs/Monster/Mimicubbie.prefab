@@ -523,6 +523,7 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   hitSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   dropSound: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
+  attackSound: {fileID: 8300000, guid: 4572cf39562ea494295cad99a2e31c38, type: 3}
   playerTransform: {fileID: 0}
   CantAction: 0
   damage: 80

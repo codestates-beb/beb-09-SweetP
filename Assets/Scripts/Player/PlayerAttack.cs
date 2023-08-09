@@ -35,16 +35,17 @@ public class PlayerAttack : MonoBehaviour
         {
             case 0:
                 break;
-
+                AudioSource.PlayClipAtPoint(Player.instance.swordClip, transform.position);
             case 1:
                 break;
 
             case 2:
                 objWeapon.GetComponent<Staff>().Shoot();
+                AudioSource.PlayClipAtPoint(Player.instance.staffClip, transform.position);
                 break;
 
         }
-        AudioSource.PlayClipAtPoint(Player.instance.attackClip, transform.position);
+        
 
         colliderWeapon.enabled = true;
         

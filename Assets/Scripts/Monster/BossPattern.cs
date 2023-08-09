@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BossPattern : MonoBehaviour
 {
+    public AudioClip patternSound;
+
     private Animator animator;
     private Enemy enemy;
 
@@ -16,6 +18,7 @@ public class BossPattern : MonoBehaviour
     public Color warningColor;
 
     private bool isPlayerInPattern = false;
+    
 
     private GameObject wedgeObject;
     private MeshFilter wedgeMeshFilter;
@@ -83,6 +86,7 @@ public class BossPattern : MonoBehaviour
             enemy.CantAction = true;
             // 패턴을 랜덤으로 선택하여 실행
             int randomPattern = Random.Range(1, 3); // 1 또는 2 중 랜덤한 패턴을 선택
+            
             switch (randomPattern)
             {
                 case 1:
@@ -324,6 +328,7 @@ public class BossPattern : MonoBehaviour
     {
         // 데미지를 입히는 기능을 구현 (예: 플레이어의 Health 컴포넌트를 조작)
         // 예시) 플레이어가 Health 컴포넌트를 가지고 있다고 가정
+        AudioSource.PlayClipAtPoint(patternSound, transform.position);
         LivingEntity playerEntity = GameObject.FindGameObjectWithTag("Player").GetComponent<LivingEntity>();
         if (playerEntity != null)
         {

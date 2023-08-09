@@ -20,7 +20,8 @@ public class Player : LivingEntity
     public TextMeshProUGUI healthText;
     public AudioClip deathClip;
     public AudioClip hitClip;
-    public AudioClip attackClip;
+    public AudioClip swordClip;
+    public AudioClip staffClip;
     private AudioSource playerAudioPlayer;
     private Animator playerAnimator;
     // Start is called before the first frame update

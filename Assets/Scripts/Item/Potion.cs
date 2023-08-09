@@ -6,6 +6,8 @@ public class Potion : MonoBehaviour
 {
     public int potion_count = 0;
     private const int potion_heal = 20;
+
+    public AudioClip potionClick;
     public void UsePotion()
     {
         //max hp DDDD;;
@@ -13,6 +15,7 @@ public class Potion : MonoBehaviour
 
         if (ItemManager.instance.itemData.player_potion > 0)
         {
+            SoundManager.instance.audioSource.PlayOneShot(potionClick);
             Player.instance.RestoreHealth(potion_heal);
             ItemManager.instance.itemData.player_potion--;
             UIManager.instance.RefreshPotionCount();

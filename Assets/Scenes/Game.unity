@@ -16475,6 +16475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potion_count: 0
+  potionClick: {fileID: 8300000, guid: e62b2911b30234982aa809e3922de6cf, type: 3}
 --- !u!1001 &632470937
 PrefabInstance:
   m_ObjectHideFlags: 0

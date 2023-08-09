@@ -33,7 +33,7 @@ public class Enemy : LivingEntity
     public AudioClip deathSound;
     public AudioClip hitSound;
     public AudioClip dropSound;
-
+    public AudioClip attackSound;
     private Animator enemyAnimator;
     private AudioSource enemyAudioPlayer;
     private Renderer enemyRenderer;
@@ -319,6 +319,7 @@ public class Enemy : LivingEntity
 
     void Attack()
     {
+        enemyAudioPlayer.PlayOneShot(attackSound);
         AttackRange.enabled = true;
     }
 
