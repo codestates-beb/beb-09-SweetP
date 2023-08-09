@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1024319088}
-  m_IndirectSpecularColor: {r: 0.5057802, g: 0.44179177, b: 0.45548594, a: 1}
+  m_IndirectSpecularColor: {r: 0.5057789, g: 0.44179046, b: 0.4554842, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5108,23 +5108,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8977513585822676999, guid: 8ed7a47fd4ede41f7a427f547aca316a, type: 3}
       propertyPath: monsterDataList.Array.data[0].baseHP
-      value: 20
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 8977513585822676999, guid: 8ed7a47fd4ede41f7a427f547aca316a, type: 3}
       propertyPath: monsterDataList.Array.data[1].baseHP
-      value: 2200
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 8977513585822676999, guid: 8ed7a47fd4ede41f7a427f547aca316a, type: 3}
       propertyPath: monsterDataList.Array.data[2].baseHP
-      value: 20
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 8977513585822676999, guid: 8ed7a47fd4ede41f7a427f547aca316a, type: 3}
       propertyPath: monsterDataList.Array.data[3].baseHP
-      value: 2200
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 8977513585822676999, guid: 8ed7a47fd4ede41f7a427f547aca316a, type: 3}
       propertyPath: monsterDataList.Array.data[4].baseHP
-      value: 20
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 8977513585822676999, guid: 8ed7a47fd4ede41f7a427f547aca316a, type: 3}
       propertyPath: monsterDataList.Array.data[0].baseSpeed

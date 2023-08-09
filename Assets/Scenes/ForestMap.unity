@@ -10333,42 +10333,42 @@ MonoBehaviour:
   - monsterType: 3
     spawnerPos: {fileID: 7076242749174815757}
     baseDamage: 120
-    baseHP: 6400
+    baseHP: 640
     baseSpeed: 1
     IsAlive: 0
     currentEnemyInstance: {fileID: 0}
   - monsterType: 2
     spawnerPos: {fileID: 768494573}
     baseDamage: 80
-    baseHP: 4700
+    baseHP: 470
     baseSpeed: 1
     IsAlive: 0
     currentEnemyInstance: {fileID: 0}
   - monsterType: 3
     spawnerPos: {fileID: 1643199053}
     baseDamage: 120
-    baseHP: 6400
+    baseHP: 640
     baseSpeed: 1
     IsAlive: 0
     currentEnemyInstance: {fileID: 0}
   - monsterType: 2
     spawnerPos: {fileID: 1957853799}
     baseDamage: 80
-    baseHP: 4700
+    baseHP: 470
     baseSpeed: 1
     IsAlive: 0
     currentEnemyInstance: {fileID: 0}
   - monsterType: 3
     spawnerPos: {fileID: 1417104338}
     baseDamage: 120
-    baseHP: 6400
+    baseHP: 640
     baseSpeed: 1
     IsAlive: 0
     currentEnemyInstance: {fileID: 0}
   - monsterType: 2
     spawnerPos: {fileID: 1342414337}
     baseDamage: 80
-    baseHP: 4700
+    baseHP: 470
     baseSpeed: 1
     IsAlive: 0
     currentEnemyInstance: {fileID: 0}
