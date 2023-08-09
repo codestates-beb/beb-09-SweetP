@@ -261,7 +261,7 @@ public class MarketNPC : MonoBehaviour
         print(amount);
         print("test");
         //@notion 무기를토큰으로 사기위한 721컨트랙트에 토큰꺼낼수 있는양 정함
-        yield return StartCoroutine(PPCTokenContract.Approve("0x25aF60232F535b2E83409EDb1EeCFF38F8Bd0D42", amount, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Approve("0x3Ed4eEbD59a4a71E255d7888e5C3A14AdB577114", amount, (Address, ex) =>
         {
             Debug.Log($"Contract Address: {Address}");
         }));
