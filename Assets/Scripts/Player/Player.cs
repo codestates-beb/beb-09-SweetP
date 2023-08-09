@@ -47,6 +47,7 @@ public class Player : LivingEntity
 
         //healthSlider
         healthSlider.gameObject.SetActive(true);
+        healthText.gameObject.SetActive(true);
         healthSlider.maxValue = startingHealth;
         healthSlider.value = health;
         healthText.text = healthSlider.value + "/" + healthSlider.maxValue;

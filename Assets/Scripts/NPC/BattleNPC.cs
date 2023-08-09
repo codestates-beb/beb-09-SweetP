@@ -44,7 +44,7 @@ public class BattleNPC : MonoBehaviour
 
     public void SelectRaidMapLeft()
     {
-        if (WeaponManager.instance.curruentWeaponData.weapon_atk < 120)
+        if (WeaponManager.instance.curruentWeaponData.weapon_atk + (WeaponManager.instance.curruentWeaponData.weapon_upgrade * 20) < 120)
             return;
 
         raidType = RaidType.Mushroom;
