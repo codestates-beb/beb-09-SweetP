@@ -10,7 +10,6 @@ public class WeaponAttack : MonoBehaviour
     {
         weaponData = new WeaponData();
         weaponData = WeaponManager.instance.curruentWeaponData;
-        weaponData.weapon_atk += (weaponData.weapon_upgrade * 20);
     }
 
     // Update is called once per frame
@@ -26,7 +25,7 @@ public class WeaponAttack : MonoBehaviour
             Vector3 hitPoint = other.ClosestPoint(transform.position);
             Vector3 hitNormal = transform.position - other.transform.position;
 
-            attackTarget.OnDamage(weaponData.weapon_atk, hitPoint, hitNormal);
+            attackTarget.OnDamage(weaponData.weapon_atk + (weaponData.weapon_upgrade * 20) , hitPoint, hitNormal);
             Debug.Log("Attack");
         }
     }

@@ -26,12 +26,28 @@ public class PlayerAttack : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
+        
     }
 
     private void AttackColliderOn()
     {
+        switch(WeaponManager.instance.curruentWeaponData.weapon_type)
+        {
+            case 0:
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+                objWeapon.GetComponent<Staff>().Shoot();
+                break;
+
+        }
         AudioSource.PlayClipAtPoint(Player.instance.attackClip, transform.position);
+
         colliderWeapon.enabled = true;
+        
     }
 
     private void AttackColliderOff()

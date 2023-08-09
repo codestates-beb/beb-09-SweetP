@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3163463368094511932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3163463368094511931}
+  - component: {fileID: 3163463368094511930}
+  - component: {fileID: 3163463368094511929}
+  - component: {fileID: 3163463368094511928}
+  - component: {fileID: 3163463368094511927}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3163463368094511931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163463368094511932}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 999.20715, y: 590.54224, z: 39.381836}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3163463368094511930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163463368094511932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8805867a3d7443e6af0eb994cc533ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryClip: {fileID: 8300000, guid: a0836dfbf9a9544218596e6528c2b3c6, type: 3}
+  Inventory: {fileID: 0}
+  goldText: {fileID: 0}
+  ppcText: {fileID: 0}
+  potionText: {fileID: 0}
+  WeaponSelectPanel: {fileID: 0}
+  WeaponInfoPanel: {fileID: 0}
+  weaponNameText: {fileID: 0}
+  weaponLevelText: {fileID: 0}
+  weaponATKText: {fileID: 0}
+  weaponHPText: {fileID: 0}
+  weaponNatureText: {fileID: 0}
+  weaponDurText: {fileID: 0}
+  WeaponImage: {fileID: 0}
+  ContractPanel: {fileID: 0}
+  ContractNPCNameText: {fileID: 0}
+  ShopPanel: {fileID: 0}
+  BattlePanel: {fileID: 0}
+  MarketPanel: {fileID: 0}
+  UpgradePanel: {fileID: 0}
+  IsContract: 0
+  IsOpenPanel: 0
+  GroundPanel: {fileID: 0}
+  RaidPanel: {fileID: 0}
+  ItemCostText: {fileID: 0}
+  ItemCountText: {fileID: 0}
+  MyGoldText: {fileID: 0}
+  UpgradeWeapon: {fileID: 0}
+  UpgradeScroll: {fileID: 0}
+  PPCText: {fileID: 0}
+  CurrentUpgrade: {fileID: 0}
+  NextUpgrade: {fileID: 0}
+  DecideOn: {fileID: 0}
+  DecideOff: {fileID: 0}
+  Buy: {fileID: 0}
+  Sell: {fileID: 0}
+  My: {fileID: 0}
+  Select: {fileID: 0}
+  UnSelect: {fileID: 0}
+  BuyPanel: {fileID: 0}
+  material: {fileID: 2100000, guid: 78cb6104fddad4ad68788a7bc902dba7, type: 2}
+--- !u!114 &3163463368094511929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163463368094511932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abaafa3ef22644f3b9ef93c03c4cf0d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Potion: {fileID: 511394809553849972, guid: 68de98d899585b7469e0fb40a0fcbc56, type: 3}
+  Jewel: {fileID: -2017180686013814547, guid: 68de98d899585b7469e0fb40a0fcbc56, type: 3}
+  Gold: {fileID: 6894959200297336742, guid: 68de98d899585b7469e0fb40a0fcbc56, type: 3}
+  Sword: {fileID: -3852048915034395436, guid: 68de98d899585b7469e0fb40a0fcbc56, type: 3}
+  Bow: {fileID: 5578961487720705195, guid: 68de98d899585b7469e0fb40a0fcbc56, type: 3}
+  Magic: {fileID: -6734359058404186919, guid: 68de98d899585b7469e0fb40a0fcbc56, type: 3}
+  Scroll: {fileID: 21300000, guid: 166b89c253b5c5f42823a753d2db9770, type: 3}
+  NullIcon: {fileID: 21300000, guid: 90ded0611e490aa4ba6961afbfc2280d, type: 3}
+--- !u!114 &3163463368094511928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163463368094511932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc9a8e6afa85493aa8206fdd88b4e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponInventory: {fileID: 0}
+  itemInventory: {fileID: 0}
+  weaponSelectPanel: {fileID: 0}
+  itemSelectPanel: {fileID: 0}
+  marketWeaponPanel: {fileID: 0}
+--- !u!82 &3163463368094511927
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163463368094511932}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

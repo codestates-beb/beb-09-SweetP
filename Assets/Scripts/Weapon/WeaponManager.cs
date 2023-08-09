@@ -132,18 +132,19 @@ public class WeaponManager : MonoBehaviour
 
     public void EquipWeapon(WeaponData weaponData)
     {
+        if (PlayerAttack.instance.pivotWeaponR.transform.childCount > 0)
+        {
+            Destroy(PlayerAttack.instance.pivotWeaponR.GetChild(0).gameObject);
+        }
+        GameObject weapon = new GameObject();
         curruentWeaponData = weaponData;
+
+
         switch (curruentWeaponData.weapon_type)
         {
+
             case 0:
-                GameObject weapon = Instantiate(Sword, PlayerAttack.instance.pivotWeaponR);
-
-                PlayerAttack.instance.objWeapon = PlayerAttack.instance.pivotWeaponR.GetChild(0).gameObject;
-                PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
-
-                PlayerAttack.instance.colliderWeapon.enabled = false;
-                PlayerAttack.instance.IsWeaponEquip = true;
-                Player.instance.ChangeHealthWithWeapon();
+                weapon = Instantiate(Sword, PlayerAttack.instance.pivotWeaponR);
                 break;
 
             //bow
@@ -152,8 +153,17 @@ public class WeaponManager : MonoBehaviour
 
             //magic
             case 2:
+                weapon = Instantiate(Magic, PlayerAttack.instance.pivotWeaponR);
                 break;
         }
+
+        PlayerAttack.instance.objWeapon = weapon;
+
+        PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
+
+        PlayerAttack.instance.colliderWeapon.enabled = false;
+        PlayerAttack.instance.IsWeaponEquip = true;
+        Player.instance.ChangeHealthWithWeapon();
     }
 
     public void WeaponUse(WeaponData currentWeapon)

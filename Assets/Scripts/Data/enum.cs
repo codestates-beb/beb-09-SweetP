@@ -24,6 +24,13 @@ public enum ScrollType
     Legendary,
     Length
 }
+
+public enum WeaponType
+{
+    Sword,
+    Bow,
+    Staff
+}
 public static class Consts
 {
     public const string BASE_URL = "https://breadmore.azurewebsites.net/api";
