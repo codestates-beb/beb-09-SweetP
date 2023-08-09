@@ -62,6 +62,15 @@ public class ItemData
 }
 
 [Serializable]
+public class ScrollData
+{
+    public int player_id;
+    public int normal;
+    public int unique;
+    public int legendary;
+}
+
+[Serializable]
 public class MonsterData
 {
     public MonsterType monsterType;
@@ -81,14 +90,6 @@ public class MonsterData
 public class ItemCost
 {
     public int potion = 120;
-}
-
-[Serializable]
-public class ScrollData
-{
-    public ScrollType scrollType;
-    public int count;
-    public int IncreseProb;
 }
 
 [Serializable]

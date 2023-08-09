@@ -19,10 +19,10 @@ public class ItemManager : MonoBehaviour
         }
 
     }
-
+    public int IncreseProb;
     public ItemData itemData = new ItemData();
+    public ScrollData scrollData = new ScrollData();
     public int PPC =99999;
-    public List<ScrollData> scrollDataList = new List<ScrollData>();
     private void Awake()
     {
         if(_instance != null && _instance != this)
@@ -44,11 +44,16 @@ public class ItemManager : MonoBehaviour
     private void HandleItemData(string jsonData)
     {
         ItemData _itemData = JsonUtility.FromJson<ItemData>(jsonData);
-        itemData.player_id = _itemData.player_id;
-        itemData.player_gold = _itemData.player_gold;
-        itemData.player_potion = _itemData.player_potion;
+        itemData = _itemData;
         
     }
+
+    private void HandleScrollData(string jsonData)
+    {
+        ScrollData _scrollData = JsonUtility.FromJson<ScrollData>(jsonData);
+        scrollData = _scrollData;
+    }
+
 
     public void GetItem()
     {
@@ -60,10 +65,19 @@ public class ItemManager : MonoBehaviour
 
     public void GetScroll()
     {
-        for(int i=0; i<scrollDataList.Count; i++)
+        HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/Player_Scroll/" + LoginManager.instance.PlayerID, delegate (string www)
         {
-            scrollDataList[i].count = 5;
-        }
+            HandleScrollData(www);
+        });
+    }
+
+    public void InitScroll()
+    {
+        string jsonData = JsonUtility.ToJson(scrollData);
+        HTTPClient.instance.PUT("https://breadmore.azurewebsites.net/api/Player_Scroll/" + LoginManager.instance.PlayerID, jsonData, delegate (string www)
+        {
+           
+        });
     }
 
     public void ChangeGold(int gold)
@@ -76,6 +90,24 @@ public class ItemManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(itemData);
         string url = "https://breadmore.azurewebsites.net/api/Player_Data/" + LoginManager.instance.PlayerID;
         HTTPClient.instance.PUT(url, jsonData, delegate (string www) { });
+    }
+
+    public int RetrunScrollProb(ScrollType scrollType)
+    {
+        switch (scrollType)
+        {
+            case (ScrollType)0:
+                IncreseProb = 0;
+                break;
+            case (ScrollType)1:
+                IncreseProb = 10;
+                break;
+            case (ScrollType)2:
+                IncreseProb = 20;
+                break;
+        }
+
+        return IncreseProb;
     }
 
     public void PutItem()

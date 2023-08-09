@@ -43,10 +43,6 @@ public class ActionController : MonoBehaviour
 
         marketWeaponPanel.ClearWeapon();
 
-        itemInventory.ClearItem();
-
-        itemSelectPanel.ClearItem();
-
     }
 
     public async Task Init()
@@ -60,12 +56,11 @@ public class ActionController : MonoBehaviour
             marketWeaponPanel.AcquireWeapon(WeaponManager.instance.weaponDataList[i]);
         }
 
-        for (int i = 0; i < ItemManager.instance.scrollDataList.Count; i++)
-        {
-            itemInventory.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
+        
+            itemInventory.AcquireScroll();
 
-            itemSelectPanel.AcquireScroll(ItemManager.instance.scrollDataList[i], ItemManager.instance.scrollDataList[i].count);
-        }
+            itemSelectPanel.AcquireScroll();
+        
     }
 
     private async void Start()

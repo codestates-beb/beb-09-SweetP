@@ -345,17 +345,17 @@ public class Enemy : LivingEntity
                     switch (scrollDropTables[i].scrollType)
                     {
                         case (ScrollType)0:
-                            ItemManager.instance.scrollDataList[0].count++;
+                            ItemManager.instance.scrollData.normal++;
                             break;
                         case (ScrollType)1:
-                            ItemManager.instance.scrollDataList[1].count++;
+                            ItemManager.instance.scrollData.unique++;
                             break;
                         case (ScrollType)2:
-                            ItemManager.instance.scrollDataList[2].count++;
+                            ItemManager.instance.scrollData.legendary++;
                             break;
-
                     }
-                    
+                    ItemManager.instance.InitScroll();
+                    ItemManager.instance.GetScroll();
                 }
             }
 

@@ -27,6 +27,7 @@ public class UpgradeNPC : MonoBehaviour
     private ObjectEventSystem eventSystem;
     private UpgradeData upgradeData;
     private bool isTaskEnd = false;
+    private ScrollType scrollType;
     // Start is called before the first frame update
     void Start()
     {
@@ -114,12 +115,13 @@ public class UpgradeNPC : MonoBehaviour
         ItemSlot itemSlot = button.GetComponent<ItemSlot>();
         ScrollSelectPanel.SetActive(false);
 
-        if (itemSlot.scrollData.count != 0)
+        if (itemSlot.scrollData != null)
         {
             IsScrollSelect = true;
             UIManager.instance.UpgradeScroll.sprite = itemSlot.itemImage.sprite;
             selectScroll = itemSlot.scrollData;
-            selectIncreaseProb = selectScroll.IncreseProb;
+            scrollType = itemSlot.scrollType;
+            selectIncreaseProb = ItemManager.instance.RetrunScrollProb(itemSlot.scrollType);
         }
 
         
@@ -175,6 +177,22 @@ public class UpgradeNPC : MonoBehaviour
                 UpgradeFail(selectWeapon);
             }
             ItemManager.instance.UsePPC(upgradeData.GetCostForUpgrade(selectWeaponUpgrade));
+            switch (scrollType)
+            {
+                case ScrollType.Normal:
+                    ItemManager.instance.scrollData.normal--;
+                    break;
+
+                case ScrollType.Unique:
+                    ItemManager.instance.scrollData.unique--;
+                    break;
+
+                case ScrollType.Legendary:
+                    ItemManager.instance.scrollData.legendary--;
+                    break;
+            }
+            ItemManager.instance.InitScroll();
+            ItemManager.instance.GetScroll();
 
 
             ChangeNature(selectWeapon);
