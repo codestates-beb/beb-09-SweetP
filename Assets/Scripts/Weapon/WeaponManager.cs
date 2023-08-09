@@ -33,7 +33,7 @@ public class WeaponManager : MonoBehaviour
 
     public WeaponData curruentWeaponData;
     private bool currentWeaponCheck = false;
-
+    private bool Init = false;
     public GameObject Sword;
     public GameObject Bow;
     public GameObject Magic;
@@ -49,8 +49,7 @@ public class WeaponManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        Refresh();
-        GetWeaponList();
+        
 
         //SceneManager.sceneLoaded += OnSeneLoaded;
 
@@ -62,7 +61,13 @@ public class WeaponManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(!Init)
+        if (LoginManager.instance.PlayerID != 0)
+        {
+            Refresh();
+            GetWeaponList();
+                Init = true;
+        }
     }
 
     public void Refresh()
