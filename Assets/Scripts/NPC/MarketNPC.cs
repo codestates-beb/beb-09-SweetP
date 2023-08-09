@@ -138,7 +138,7 @@ public class MarketNPC : MonoBehaviour
 
             string url = "https://breadmore.azurewebsites.net/api/Weapon_TB/" + weaponTB.weapon_id;
             string jsonData = JsonUtility.ToJson(weaponTB);
-            print(selectMarket.marketData.weapon_id);
+            print($"price {selectMarket.marketData.weapon_cost}");
             StartCoroutine(BuyWeapon(selectMarket.marketData.weapon_id, selectMarket.marketData.weapon_cost));
 
             HTTPClient.instance.PUT(url, jsonData, (response) =>
@@ -190,7 +190,7 @@ public class MarketNPC : MonoBehaviour
         string jsonData2 = JsonUtility.ToJson(marketData);
         string url2 = "https://breadmore.azurewebsites.net/api/Weapon_Market"; // Change this to your specific API endpoint
 
-        //StartCoroutine(SaleWeapon(selectWeapon.weapon_id, marketData.weapon_cost));
+        StartCoroutine(SaleWeapon(selectWeapon.weapon_id, marketData.weapon_cost));
 
         HTTPClient.instance.POST(url2, jsonData2, (response) =>
           {
@@ -266,6 +266,7 @@ public class MarketNPC : MonoBehaviour
     {
         print(tokenId);
         print(amount);
+        //decimal amount_ten = amount * 10;
         print("test");
         //@notion 무기를토큰으로 사기위한 721컨트랙트에 토큰꺼낼수 있는양 정함
         yield return StartCoroutine(PPCTokenContract.Approve("0x55BFe17d92C87218BFDc341C97007C66dF466740", amount, (Address, ex) =>
