@@ -136,7 +136,7 @@ public class MarketNPC : MonoBehaviour
             string url = "https://breadmore.azurewebsites.net/api/Weapon_TB/" + weaponTB.weapon_id;
             string jsonData = JsonUtility.ToJson(weaponTB);
 
-            StartCoroutine(BuyWeapon(selectWeapon.weapon_id));
+            StartCoroutine(BuyWeapon(selectWeapon.weapon_id, selectMarket.marketData.weapon_cost));
 
             HTTPClient.instance.PUT(url, jsonData, (response) =>
             {
@@ -254,10 +254,10 @@ public class MarketNPC : MonoBehaviour
     //@notion 무기거래
     //무기 거래 상세 페이지 들어가서 buy버튼을 누르면 시행되는 함수
 
-    public IEnumerator BuyWeapon(BigInteger tokenId)
+    public IEnumerator BuyWeapon(BigInteger tokenId, decimal amount)
     {
         //@notion 무기를토큰으로 사기위한 721컨트랙트에 토큰꺼낼수 있는양 정함
-        yield return StartCoroutine(PPCTokenContract.Approve("0xb666d55294EfA8A8CCaCFdf1485e5D7484B92684", 20, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Approve("0xb666d55294EfA8A8CCaCFdf1485e5D7484B92684", amount, (Address, ex) =>
         {
             Debug.Log($"Contract Address: {Address}");
         }));
@@ -329,7 +329,7 @@ public class MarketNPC : MonoBehaviour
             string uploadedCID = uploadResponse.value.cid;
             string ipfsUrl = "https://" + uploadedCID + ".ipfs.nftstorage.link/";
             Debug.Log("Uploaded CID: " + uploadedCID);
-            //StartCoroutine(UpdateDnft(tokenId, ipfsUrl));
+            StartCoroutine(UpdateDnft(tokenId, ipfsUrl));
             // 이제 uploadedCID를 사용하여 IPFS 네트워크에서 데이터를 가져오거나 공유할 수 있습니다.
 
         }
