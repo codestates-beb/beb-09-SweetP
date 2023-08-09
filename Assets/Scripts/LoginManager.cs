@@ -58,7 +58,7 @@ public class LoginManager : MonoBehaviour
     public GameObject loginPanel;
     public GameObject loginButton;
     public TMP_InputField inputLoginAddress;
-
+    public GameObject connectWalletLoading;
 
     private void Awake()
     {
@@ -106,11 +106,12 @@ public class LoginManager : MonoBehaviour
         PlayerAddress = inputLoginAddress.text;
 
         HTTPClient.instance.StartSpinner();
+        connectWalletLoading.SetActive(true);
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/player_tb/address/" + PlayerAddress, delegate (string www)
         {
             HandleData(www);
 
-            PlayerNameText.text = "Player Name : " + PlayerName;
+            PlayerNameText.text = PlayerName;
             loginButton.SetActive(false);
             loginPanel.SetActive(false);
             newAccountButton.SetActive(false);
@@ -214,6 +215,7 @@ public class LoginManager : MonoBehaviour
         yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
         {
             Debug.Log($"SetToken Contract Address: {Address}");
+            connectWalletLoading.SetActive(false);
             HTTPClient.instance.EndSpinner();
         }));
     }
