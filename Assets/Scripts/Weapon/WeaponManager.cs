@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class WeaponManager : MonoBehaviour
 {
     private static WeaponManager _instance;
@@ -51,6 +51,8 @@ public class WeaponManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Refresh();
         GetWeaponList();
+        SceneManager.sceneLoaded += OnSeneLoaded;
+
     }
     void Start()
     {
@@ -259,6 +261,10 @@ public class WeaponManager : MonoBehaviour
         }
 
         return null;
+    }
+    private void OnSeneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        EquipWeapon(curruentWeaponData);
     }
 
 }
