@@ -54,6 +54,10 @@ public class Player : LivingEntity
 
     public void ChangeHealthWithWeapon()
     {
+        if (!dead)
+        {
+            return;
+        }
         health = WeaponManager.instance.curruentWeaponData.weapon_hp + (WeaponManager.instance.curruentWeaponData.weapon_upgrade * 20);
         healthSlider.maxValue = health;
         healthSlider.value = health;
@@ -63,6 +67,10 @@ public class Player : LivingEntity
     // 체력 회복
     public override void RestoreHealth(float newHealth)
     {
+        if (!dead)
+        {
+            return;
+        }
         // LivingEntity의 RestoreHealth() 실행 (체력 증가)
         base.RestoreHealth(newHealth);
 
