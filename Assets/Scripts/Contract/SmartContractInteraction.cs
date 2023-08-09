@@ -14,8 +14,9 @@ public class SmartContractInteraction : MonoBehaviour
     public string contractAddress;
     public static Account userAccount;
     public Nethereum.Contracts.Contract contract;
-    public string seedPhrase = "enough foil lawsuit tired replace pact awesome win autumn leisure armed pattern";
-    //public string seedPhrase = "inquiry vintage consider tell goat skill coffee across material seminar fence chronic";
+    // public string seedPhrase = "enough foil lawsuit tired replace pact awesome win autumn leisure armed pattern";
+    public static string adminAddress = "0x30018fC76ca452C1522DD9C771017022df8b2321";
+    public string seedPhrase = "inquiry vintage consider tell goat skill coffee across material seminar fence chronic";
 
 
     // Init함수는 jsonfile 이름으로 해당 컨트렉트 abi 가져온 후 abi와 contract 주소를 바탕으로 contract 인스턴스화 하는 과정이다.

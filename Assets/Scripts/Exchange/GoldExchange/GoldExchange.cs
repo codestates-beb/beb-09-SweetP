@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Text.Json;
 
 public class GoldExchange : MonoBehaviour
 {
@@ -73,19 +74,20 @@ public class GoldExchange : MonoBehaviour
     {
         inputY.interactable = false;
         if(swapSymbol == "Gold") {
-            inputXBalance.text = ItemManager.instance.itemData.player_id.ToString("N0") + " Gold";
+            inputXBalance.text = ItemManager.instance.itemData.player_gold.ToString("N0") + " Gold";
             inputYBalance.text = sweetpDex.tokenBalance.ToString("N0")  + " PPC";
         }
         else if (swapSymbol == "PPC") {
             inputXBalance.text = sweetpDex.tokenBalance.ToString("N0")  + " PPC";
-            inputYBalance.text = ItemManager.instance.itemData.player_id.ToString("N0")  + " Gold";
+            inputYBalance.text = ItemManager.instance.itemData.player_gold.ToString("N0")  + " Gold";
         }
     }
 
     public void Enter() {
         mainUI.localPosition = Vector2.zero;
-        swapSymbol = "Gold";
-        toogleSwap = true;
+        inputX.text = "";
+        // swapSymbol = "Gold";
+        // toogleSwap = true;
         StartCoroutine(sweetpDex.SetInfo());
     }
 
@@ -123,7 +125,39 @@ public class GoldExchange : MonoBehaviour
     }
 
     private IEnumerator Swap() {
+        bool isGotProblem = false;
         StartCoroutine(sweetpDex.SetInfo());
+        HTTPClient.instance.StartSpinner();
+        if(swapSymbol == "PPC") {
+            yield return sweetpDex.tokenContract.Transfer(SmartContractInteraction.adminAddress, XBalance, (result, err) =>{
+                if(err != null) {
+                    Debug.Log(err);
+                    isGotProblem = true;
+                }
+                else {
+                    inputX.text = "";
+                    StartCoroutine(sweetpDex.SetInfo());
+                }
+                
+            });
+            if(isGotProblem) yield break;
+            ItemData data = ItemManager.instance.itemData;
+            data.player_gold += YBalance;
+            // string body = JsonUtility.ToJson(playerRecord);
+            string jsonPayload = JsonUtility.ToJson(data);
+            Debug.Log(jsonPayload);
+            HTTPClient.instance.PUT($"https://breadmore.azurewebsites.net/api/Player_Data/{LoginManager.instance.PlayerID}", jsonPayload, (result)=>{
+                Debug.Log(result);
+                HTTPClient.instance.EndSpinner();
+            });
+        }
+        HTTPClient.instance.EndSpinner();
+// {
+//   "player_id": 0,
+//   "player_gold": 0,
+//   "player_potion": 0
+// }
+        
         yield return null;
     }
 }
