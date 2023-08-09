@@ -1365,6 +1365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 6400
+  currentTime: 0
   PPC721Contract: {fileID: 0}
   body: 
   healthBarPrefab: {fileID: 4567375823041889851, guid: 723129fde90c8418a9147324ebbcfb83, type: 3}
@@ -1376,7 +1377,8 @@ MonoBehaviour:
   targetEntity: {fileID: 0}
   hitEffect: {fileID: 3742246115982174996}
   deathSound: {fileID: 0}
-  hitSound: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  dropSound: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
   playerTransform: {fileID: 0}
   CantAction: 0
   damage: 120

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 public class Enemy : LivingEntity
 {
+    
+
     public float currentTime;
 
     //@notion 컨트랙트 컴포넌트
@@ -30,6 +32,7 @@ public class Enemy : LivingEntity
     public ParticleSystem hitEffect;
     public AudioClip deathSound;
     public AudioClip hitSound;
+    public AudioClip dropSound;
 
     private Animator enemyAnimator;
     private AudioSource enemyAudioPlayer;
@@ -336,6 +339,7 @@ public class Enemy : LivingEntity
             {
                 if (Random.value < (scrollDropTables[i].dropProb / 100))
                 {
+                    enemyAudioPlayer.PlayOneShot(dropSound);
                     switch (scrollDropTables[i].scrollType)
                     {
                         case (ScrollType)0:
@@ -345,11 +349,11 @@ public class Enemy : LivingEntity
                             ItemManager.instance.scrollDataList[1].count++;
                             break;
                         case (ScrollType)2:
-
                             ItemManager.instance.scrollDataList[2].count++;
                             break;
 
                     }
+                    
                 }
             }
 
@@ -366,6 +370,7 @@ public class Enemy : LivingEntity
             {
                 if (Random.value < (weaponDropTables[i].dropProb / 100))
                 {
+                    enemyAudioPlayer.PlayOneShot(dropSound);
                     switch (weaponDropTables[i].weapon_type)
                     {
                         case 0:

@@ -5,6 +5,9 @@ using TMPro;
 
 public class NPCBase : MonoBehaviour, INPC
 {
+    private AudioSource audioSource;
+    public AudioClip helloClip;
+    public AudioClip byeClip;
     public Transform playerStartPosition;
     public Transform player;
     private Animator animator;
@@ -19,6 +22,8 @@ public class NPCBase : MonoBehaviour, INPC
     public bool IsContract = false;
     public virtual void OnContract()
     {
+        audioSource.PlayOneShot(helloClip);
+        SoundManager.instance.InitializeButtons();
         ContractPanel.SetActive(false);
         ThisNPCPanel.SetActive(true);
     }
@@ -26,6 +31,7 @@ public class NPCBase : MonoBehaviour, INPC
 
     public virtual void OffContract()
     {
+        audioSource.PlayOneShot(byeClip);
         ThisNPCPanel.SetActive(false);
         UIManager.instance.IsOpenPanel = false;
     }
@@ -71,6 +77,9 @@ public class NPCBase : MonoBehaviour, INPC
     // Start is called before the first frame update
     void Start()
     {
+
+        audioSource = GetComponent<AudioSource>();
+
         Transform playerParentTransform = playerStartPosition.transform.Find("PlayerParent(Clone)");
         player = playerParentTransform.Find("Player");
         

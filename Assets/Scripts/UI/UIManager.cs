@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
         }
     }
     private bool IsInventory = false;
+    private AudioSource audioSource;
+    public AudioClip inventoryClip;
     private ObjectEventSystem eventSystem;
     [Header("Inventory")]
     public GameObject Inventory;
@@ -103,6 +105,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         //UI
         RefreshPotionCount();
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
@@ -155,7 +158,7 @@ public class UIManager : MonoBehaviour
 
     private async void OnInventorySetActiveChanged(object sender, System.EventArgs e)
     {
-        
+        audioSource.PlayOneShot(inventoryClip);
         goldText.text = ItemManager.instance.itemData.player_gold.ToString();
         ppcText.text = ItemManager.instance.PPC.ToString();
 

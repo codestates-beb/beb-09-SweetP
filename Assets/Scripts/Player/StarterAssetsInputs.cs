@@ -7,6 +7,7 @@ namespace StarterAssets
 {
 	public class StarterAssetsInputs : MonoBehaviour
 	{
+		private AudioSource audioSource;
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;

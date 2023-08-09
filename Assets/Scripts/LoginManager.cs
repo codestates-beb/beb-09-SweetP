@@ -31,10 +31,8 @@ public class LoginManager : MonoBehaviour
     public PPC721Contract PPC721Contract;
 
     //@IPFS
-    string fullPath;
     public NFTStorage.NFTStorageClient NSC;
 
-    public string body;
     private MetaDataWeapon metaDataWeapon;
 
     public TextMeshProUGUI PlayerNameText;
@@ -61,6 +59,7 @@ public class LoginManager : MonoBehaviour
     public GameObject loginButton;
     public TMP_InputField inputLoginAddress;
 
+
     private void Awake()
     {
         PPC721Contract = GetComponent<PPC721Contract>();
@@ -76,18 +75,18 @@ public class LoginManager : MonoBehaviour
 
     private void Update()
     {
-        if (HTTPClient.instance.IsSpinner)
-        {
-            inGameButton.GetComponent<Button>().enabled = false;
-            loginButton.GetComponent<Button>().enabled = false;
-            newAccountButton.GetComponent<Button>().enabled = false;
-        }
-        else
-        {
-            inGameButton.GetComponent<Button>().enabled = true;
-            loginButton.GetComponent<Button>().enabled = true;
-            newAccountButton.GetComponent<Button>().enabled = true;
-        }
+        //if (HTTPClient.instance.IsSpinner)
+        //{
+        //    inGameButton.GetComponent<Button>().enabled = false;
+        //    loginButton.GetComponent<Button>().enabled = false;
+        //    newAccountButton.GetComponent<Button>().enabled = false;
+        //}
+        //else
+        //{
+        //    inGameButton.GetComponent<Button>().enabled = true;
+        //    loginButton.GetComponent<Button>().enabled = true;
+        //    newAccountButton.GetComponent<Button>().enabled = true;
+        //}
     }
 
     private void HandleData(string jsonData)
@@ -105,6 +104,8 @@ public class LoginManager : MonoBehaviour
             return;
         }
         PlayerAddress = inputLoginAddress.text;
+
+        HTTPClient.instance.StartSpinner();
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/player_tb/address/" + PlayerAddress, delegate (string www)
         {
             HandleData(www);
@@ -213,6 +214,7 @@ public class LoginManager : MonoBehaviour
         yield return StartCoroutine(PPC721Contract.SetToken("0x6A68CBa31DD3d3AC89a297DDFe0207BdE49Ed3c6", (Address, ex) =>
         {
             Debug.Log($"SetToken Contract Address: {Address}");
+            HTTPClient.instance.EndSpinner();
         }));
     }
 
