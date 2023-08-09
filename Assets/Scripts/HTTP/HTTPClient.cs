@@ -187,9 +187,7 @@ public class HTTPClient : MonoBehaviour
 
     private IEnumerator WaitForRequest(string url, string input, Action<string> callback)
     {
-        GameObject canvas = GameObject.Find("Canvas");
-        //spinner = Instantiate(progressSpinner, canvas.transform);
-        //spinner.SetActive(true);
+        print(url + "//// "+input);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(input);
 
         using (UnityWebRequest www = new UnityWebRequest(url, "POST"))
@@ -199,7 +197,6 @@ public class HTTPClient : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-            //Destroy(spinner);
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
