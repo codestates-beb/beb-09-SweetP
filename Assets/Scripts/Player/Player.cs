@@ -54,10 +54,11 @@ public class Player : LivingEntity
 
     public void ChangeHealthWithWeapon()
     {
-        if (!dead)
+        if (dead)
         {
             return;
         }
+        print("change");
         health = WeaponManager.instance.curruentWeaponData.weapon_hp + (WeaponManager.instance.curruentWeaponData.weapon_upgrade * 20);
         healthSlider.maxValue = health;
         healthSlider.value = health;
@@ -67,7 +68,7 @@ public class Player : LivingEntity
     // 체력 회복
     public override void RestoreHealth(float newHealth)
     {
-        if (!dead)
+        if (dead)
         {
             return;
         }
@@ -82,7 +83,7 @@ public class Player : LivingEntity
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitDirection)
     {
         // LivingEntity의 OnDamage() 실행(데미지 적용)
-        if (!dead)
+        if (dead)
         {
             //hit sound 
             playerAudioPlayer.PlayOneShot(hitClip);

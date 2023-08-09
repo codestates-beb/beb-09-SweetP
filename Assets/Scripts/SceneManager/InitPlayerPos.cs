@@ -1,33 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InitPlayerPos : MonoBehaviour
 {
     public GameObject player;
-    private Transform playerParent;
+    public Transform playerTransform;
+    public NPCBase[] NPCs;
+
     public void SetPlayerPosition(Vector3 position)
     {
         transform.position = position;
     }
-
-
-    
-    // Start is called before the first frame update
+    // Update is called once per frame
     void Start()
     {
-        Instantiate(player, transform);
-
-        //Transform player = playerParent.Find("Player");
-
-        ////pos = transform.position;
-        //player.position = transform.position;
-        //player.rotation = transform.rotation;
+        GameObject gameObject = Instantiate(player, transform);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //SetPlayerPosition(pos);
+     
     }
 }

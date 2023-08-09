@@ -59,8 +59,8 @@ public class EquipSlot : MonoBehaviour
     {
         if (weaponData.weapon_id != 0)
         {
+            print("slot eqip");
             WeaponManager.instance.EquipWeapon(weaponData);
-            
         }
     }
     public void ClearSlot()

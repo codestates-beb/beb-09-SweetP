@@ -161,6 +161,7 @@ public class WeaponManager : MonoBehaviour
                 break;
         }
 
+        
         PlayerAttack.instance.objWeapon = weapon;
         PlayerAttack.instance.objWeapon.GetComponent<MeshRenderer>().material = upgradeColor[weaponData.weapon_upgrade / 2];
         PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
@@ -168,6 +169,7 @@ public class WeaponManager : MonoBehaviour
         UpgradeParticle(weaponData, PlayerAttack.instance.objWeapon);
         PlayerAttack.instance.colliderWeapon.enabled = false;
         PlayerAttack.instance.IsWeaponEquip = true;
+        print("test");
         Player.instance.ChangeHealthWithWeapon();
     }
 
