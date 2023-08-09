@@ -268,7 +268,8 @@ public class Enemy : LivingEntity
         enemyAnimator.SetTrigger("Die");
         enemyAudioPlayer.PlayOneShot(deathSound);
         healthSlider.gameObject.SetActive(false);
-        ItemManager.instance.itemData.player_gold += dropGold;
+        ItemManager.instance.ChangeGold(dropGold);
+        
         WeaponManager.instance.WeaponUse(WeaponManager.instance.curruentWeaponData);
 
         InvisiableEnemy();

@@ -65,6 +65,19 @@ public class ItemManager : MonoBehaviour
             scrollDataList[i].count = 5;
         }
     }
+
+    public void ChangeGold(int gold)
+    {
+        itemData.player_gold += gold;
+        RefreshPlayerData();
+    }
+
+    public void RefreshPlayerData() {
+        string jsonData = JsonUtility.ToJson(itemData);
+        string url = "https://breadmore.azurewebsites.net/api/Player_Data/" + LoginManager.instance.PlayerID;
+        HTTPClient.instance.PUT(url, jsonData, delegate (string www) { });
+    }
+
     public void PutItem()
     {
         
