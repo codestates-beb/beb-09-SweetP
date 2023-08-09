@@ -22,6 +22,8 @@ public class WeaponManager : MonoBehaviour
             return _instance;
         }
     }
+    public List<Material> upgradeColor = new List<Material>();
+    public List<GameObject> upgradeParticle = new List<GameObject>();
 
     public List<WeaponData> weaponDataList = new List<WeaponData>();
     private class WeaponTBArray
@@ -158,9 +160,10 @@ public class WeaponManager : MonoBehaviour
         }
 
         PlayerAttack.instance.objWeapon = weapon;
-
+        PlayerAttack.instance.objWeapon.GetComponent<MeshRenderer>().material = upgradeColor[weaponData.weapon_upgrade / 2];
         PlayerAttack.instance.colliderWeapon = PlayerAttack.instance.objWeapon.GetComponent<BoxCollider>();
 
+        UpgradeParticle(weaponData, PlayerAttack.instance.objWeapon);
         PlayerAttack.instance.colliderWeapon.enabled = false;
         PlayerAttack.instance.IsWeaponEquip = true;
         Player.instance.ChangeHealthWithWeapon();
@@ -193,6 +196,26 @@ public class WeaponManager : MonoBehaviour
 
     }
 
+    public void UpgradeParticle(WeaponData weaponData ,GameObject objWeapon)
+    {
+        
+
+        switch (weaponData.weapon_element)
+        {
+            case WeaponNature.Fire:
+                GameObject particleFire = Instantiate(upgradeParticle[0], objWeapon.transform);
+                break;
+            case WeaponNature.Water:
+                GameObject particleWater = Instantiate(upgradeParticle[0], objWeapon.transform);
+                break;
+            case WeaponNature.Thunder:
+                GameObject particleThunder = Instantiate(upgradeParticle[0], objWeapon.transform);
+                break;
+            case WeaponNature.Earth:
+                GameObject particleEarth = Instantiate(upgradeParticle[0], objWeapon.transform);
+                break;
+        }
+    }
     public void createWeapon()
     {
         switch (curruentWeaponData.weapon_type)
