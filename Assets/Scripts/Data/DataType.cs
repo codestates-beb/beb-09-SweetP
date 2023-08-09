@@ -17,7 +17,7 @@ public class PlayerData
     public int player_gold;
     public int player_potion;
 }
-
+[Serializable]
 public class PlayerRecord
 {
     public int player_id;

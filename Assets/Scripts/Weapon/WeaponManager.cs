@@ -52,7 +52,7 @@ public class WeaponManager : MonoBehaviour
         Refresh();
         GetWeaponList();
 
-        SceneManager.sceneLoaded += OnSeneLoaded;
+        //SceneManager.sceneLoaded += OnSeneLoaded;
 
     }
     void Start()

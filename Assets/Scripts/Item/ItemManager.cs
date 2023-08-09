@@ -17,7 +17,6 @@ public class ItemManager : MonoBehaviour
             }
             return _instance;
         }
-
     }
     public int IncreseProb;
     public ItemData itemData = new ItemData();
