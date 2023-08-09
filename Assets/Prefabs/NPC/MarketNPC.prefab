@@ -5613,6 +5613,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PPC721Contract: {fileID: 0}
   PPCTokenContract: {fileID: 0}
+  NSC: {fileID: 0}
+  body: 
   selectWeaponImage: {fileID: 0}
   levelText: {fileID: 0}
   healthText: {fileID: 0}
