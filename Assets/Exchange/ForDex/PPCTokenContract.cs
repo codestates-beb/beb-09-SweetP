@@ -122,6 +122,7 @@ public class PPCTokenContract : MonoBehaviour
             if (contractAddress == null)
             {
                 callback(null, err);
+                Debug.Log(err);
             }
             else
             {

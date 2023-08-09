@@ -5,6 +5,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.Web3;
 using Nethereum.RPC.Eth.DTOs;
 
+
 public class FrequentlyUsed : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -85,14 +86,15 @@ public class FrequentlyUsed : MonoBehaviour
 
     public static IEnumerator CheckTransactionSuccess(Web3 web3, string transactionAddress, Action<string, Exception> callback)
     {
+
         while (true)
         {
             var receiptTask = web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionAddress);
             yield return new WaitUntil(() => receiptTask.IsCompleted);
-
             if (receiptTask.IsFaulted)
             {
                 callback(null, receiptTask.Exception);
+
                 yield break;
             }
 
