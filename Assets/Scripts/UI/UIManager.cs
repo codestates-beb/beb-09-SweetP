@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
         }
     }
     private bool IsInventory = false;
+    private bool IsRanking = false;
+
     private AudioSource audioSource;
     public AudioClip inventoryClip;
     private ObjectEventSystem eventSystem;
@@ -82,6 +84,9 @@ public class UIManager : MonoBehaviour
     public Image UnSelect;
     public GameObject BuyPanel;
 
+    [Header("Ranking")]
+    public GameObject RankingPanel;
+    
     [Header("Monster")]
     public Material material;
     private void Awake()
@@ -180,21 +185,21 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (IsInventory)
-            {
-                Inventory.SetActive(false);
-                IsInventory = false;
+            IsInventory = !IsInventory;
+            Inventory.SetActive(IsInventory);
 
+            if (!IsRanking)
+                GameManager.instance.IsUI = IsInventory;
+            
+        }
 
-                GameManager.instance.IsUI = false;
-            }
-            else
-            {
-                Inventory.SetActive(true);
-                IsInventory = true;
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            IsRanking = !IsRanking;
+            RankingPanel.SetActive(IsRanking);
 
-                GameManager.instance.IsUI = true;
-            }
+            if (!IsInventory)
+                GameManager.instance.IsUI = IsInventory;
         }
     }
 }
