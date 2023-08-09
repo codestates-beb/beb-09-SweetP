@@ -51,12 +51,12 @@ public class WeaponManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Refresh();
         GetWeaponList();
+
         SceneManager.sceneLoaded += OnSeneLoaded;
 
     }
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -264,6 +264,7 @@ public class WeaponManager : MonoBehaviour
     }
     private void OnSeneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if(curruentWeaponData.weapon_id !=0)
         EquipWeapon(curruentWeaponData);
     }
 
