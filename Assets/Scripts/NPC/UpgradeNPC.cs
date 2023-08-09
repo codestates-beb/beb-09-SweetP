@@ -113,6 +113,27 @@ public class UpgradeNPC : MonoBehaviour
     public void CloseItemSelect(Button button)
     {
         ItemSlot itemSlot = button.GetComponent<ItemSlot>();
+        switch (itemSlot.scrollType)
+        {
+            case ScrollType.Normal:
+                if (ItemManager.instance.scrollData.normal<=0)
+                {
+                    return;
+                }
+                break;
+            case ScrollType.Unique:
+                if (ItemManager.instance.scrollData.unique <= 0)
+                {
+                    return;
+                }
+                break;
+            case ScrollType.Legendary:
+                if (ItemManager.instance.scrollData.legendary <= 0)
+                {
+                    return;
+                }
+                break;
+        }
         ScrollSelectPanel.SetActive(false);
 
         if (itemSlot.scrollData != null)

@@ -136,6 +136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnergyBallPrefab: {fileID: -9078900359700103755, guid: 30541c01d6d204e15ae5bd6deb500529, type: 3}
   BulletFirePosition: {fileID: 1563010623562427145}
+  playerStartTransform: {fileID: 0}
+  playerParentTransform: {fileID: 0}
   playerTransform: {fileID: 0}
   damage: 0
 --- !u!1 &4247346298165568794
