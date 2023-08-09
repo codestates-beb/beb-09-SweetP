@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Numerics;
 using System.Threading.Tasks;
+using NFTStorage.JSONSerialization;
 
 public class MarketNPC : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public class MarketNPC : MonoBehaviour
     //@notion 컨트랙트 컴포넌트
     public PPC721Contract PPC721Contract;
     public PPCTokenContract PPCTokenContract;
+
+    //@IPFS
+    string fullPath;
+    public NFTStorage.NFTStorageClient NSC;
+    public string body;
+    private MetaDataWeapon metaDataWeapon;
 
     private bool IsBuy = false;
     private bool IsSell = false;
@@ -201,7 +208,8 @@ public class MarketNPC : MonoBehaviour
                   print($"sellweapon data : {response}");
 
                   string jsonData = JsonUtility.ToJson(selectWeapon);
-                  
+                  setIPFS(jsonData, selectWeapon.weapon_id);
+
               });
 
 
@@ -258,6 +266,12 @@ public class MarketNPC : MonoBehaviour
             Debug.Log($"Contract Address: {Address}");
         }));
 
+        yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
+        {
+            decimal BalanceToken = Token;
+            Debug.Log($"Token Balance: {BalanceToken}");
+        }));
+
     }
 
 
@@ -297,6 +311,33 @@ public class MarketNPC : MonoBehaviour
         {
             Debug.Log($"UpdataNFT Contract Address: {Address}");
         }));
+    }
+
+    private async void setIPFS(string www, BigInteger tokenId)
+    {
+        metaDataWeapon.weaponData = JsonUtility.FromJson<WeaponData>(www);
+        metaDataWeapon.image = "https://bafkreiezrpaxfumy7rbv4234krmboniyyuh5unnved2tf5btgfo7hy76iq.ipfs.nftstorage.link/";
+        metaDataWeapon.name = "SweetP Weapon";
+        print(metaDataWeapon.weaponData.weapon_id);
+
+        string jsonData = JsonUtility.ToJson(metaDataWeapon);
+        print("json: " + jsonData);
+        NFTStorageUploadResponse uploadResponse = await ImplementNFTStorage.instance.NSC.UploadDataFromJsonHttpClient(jsonData);
+
+        if (uploadResponse != null && uploadResponse.ok)
+        {
+            string uploadedCID = uploadResponse.value.cid;
+            string ipfsUrl = "https://" + uploadedCID + ".ipfs.nftstorage.link/";
+            Debug.Log("Uploaded CID: " + uploadedCID);
+            //StartCoroutine(UpdateDnft(tokenId, ipfsUrl));
+            // 이제 uploadedCID를 사용하여 IPFS 네트워크에서 데이터를 가져오거나 공유할 수 있습니다.
+
+        }
+        else
+        {
+            Debug.Log("Error uploading JSON data or retrieving CID.");
+            HTTPClient.instance.EndSpinner();
+        }
     }
 
 

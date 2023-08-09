@@ -29,6 +29,7 @@ public class LoginManager : MonoBehaviour
     }
     //@notion 컨트랙트 컴포넌트
     public PPC721Contract PPC721Contract;
+    public PPCTokenContract PPCTokenContract;
 
     //@IPFS
     public NFTStorage.NFTStorageClient NSC;
@@ -62,6 +63,7 @@ public class LoginManager : MonoBehaviour
 
     private void Awake()
     {
+        PPCTokenContract = GetComponent<PPCTokenContract>();
         PPC721Contract = GetComponent<PPC721Contract>();
         DontDestroyOnLoad(gameObject);
     }
@@ -69,6 +71,7 @@ public class LoginManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        PPCTokenContract.Initialize();
         metaDataWeapon = new MetaDataWeapon();
         //test user
     }
@@ -115,6 +118,7 @@ public class LoginManager : MonoBehaviour
             loginPanel.SetActive(false);
             newAccountButton.SetActive(false);
         });
+        StartCoroutine(BalanceOf());
         StartCoroutine(setToken());
 
 
@@ -234,7 +238,7 @@ public class LoginManager : MonoBehaviour
             string uploadedCID = uploadResponse.value.cid;
             string ipfsUrl = "https://" + uploadedCID + ".ipfs.nftstorage.link/";
             Debug.Log("Uploaded CID: " + uploadedCID);
-            StartCoroutine(MintNFT("0x30018fC76ca452C1522DD9C771017022df8b2321", ipfsUrl));
+            StartCoroutine(MintNFT(SmartContractInteraction.userAccount.Address, ipfsUrl));
             // 이제 uploadedCID를 사용하여 IPFS 네트워크에서 데이터를 가져오거나 공유할 수 있습니다.
 
         }
@@ -251,6 +255,15 @@ public class LoginManager : MonoBehaviour
         {
             Debug.Log($"MintNFT Contract Address: {Address}");
             HTTPClient.instance.EndSpinner();
+        }));
+    }
+
+    public IEnumerator BalanceOf()
+    {
+        yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
+        {
+            decimal BalanceToken = Token;
+            Debug.Log($"Token Balance: {BalanceToken}");
         }));
     }
 }

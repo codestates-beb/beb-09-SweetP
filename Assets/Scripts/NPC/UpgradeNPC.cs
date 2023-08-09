@@ -231,7 +231,7 @@ public class UpgradeNPC : MonoBehaviour
         print("task on");
         isTaskEnd = false;
 
-        yield return StartCoroutine(PPCTokenContract.Approve("0x52923645D1a2706c3B40C3F1Dc6AA170f7BEf10D", amount, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Approve("0x37349d72aD0214c650740e8fA7205D9a50e2E2Fc", amount, (Address, ex) =>
         {
             Debug.Log($"Approve Contract Address: {Address}");
         }));
@@ -240,6 +240,13 @@ public class UpgradeNPC : MonoBehaviour
         {
             Debug.Log($"PPCTransferFrom Contract Address: {Address}");
         }));
+
+        yield return StartCoroutine(PPCTokenContract.BalanceOf(SmartContractInteraction.userAccount.Address, (Token, ex) =>
+        {
+            decimal BalanceToken = Token;
+            Debug.Log($"Token Balance: {BalanceToken}");
+        }));
+
         print("task off");
         isTaskEnd = true;
     }
