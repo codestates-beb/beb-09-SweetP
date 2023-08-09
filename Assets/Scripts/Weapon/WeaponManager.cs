@@ -51,12 +51,12 @@ public class WeaponManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Refresh();
         GetWeaponList();
-        SceneManager.sceneLoaded += OnSeneLoaded;
+      
 
     }
     void Start()
     {
-
+        SceneManager.sceneLoaded += OnSeneLoaded;
     }
 
     // Update is called once per frame

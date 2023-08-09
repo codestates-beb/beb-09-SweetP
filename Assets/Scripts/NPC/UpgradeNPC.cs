@@ -180,7 +180,7 @@ public class UpgradeNPC : MonoBehaviour
         print(upgradeData.GetCostForUpgrade(selectWeaponUpgrade));
         
         //@notion paytoken
-        yield return StartCoroutine(payToken(SmartContractInteraction.userAccount.Address, "0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", upgradeData.GetCostForUpgrade(selectWeaponUpgrade)));
+        yield return StartCoroutine(payToken(upgradeData.GetCostForUpgrade(selectWeaponUpgrade)));
 
         if (isTaskEnd)
         {
@@ -271,12 +271,12 @@ public class UpgradeNPC : MonoBehaviour
         selectWeaponUpgrade = selectWeapon.weapon_upgrade;
     }
 
-    public IEnumerator payToken(string sender, string recipient, decimal amount)
+    public IEnumerator payToken(decimal amount)
     {
         print("task on");
         isTaskEnd = false;
 
-        yield return StartCoroutine(PPCTokenContract.Transfer("5b4d0a80997d8816329efef5b803bffb9bdc758577a3ae10fef7839f53f1c987", amount, (Address, ex) =>
+        yield return StartCoroutine(PPCTokenContract.Transfer("0x176feB0F409cecFd3362CD4C10fF730814368EfE", amount, (Address, ex) =>
         {
             Debug.Log($"PPCTransferFrom Contract Address: {Address}");
         }));

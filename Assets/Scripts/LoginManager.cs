@@ -192,20 +192,20 @@ public class LoginManager : MonoBehaviour
             print("new account!");
             newPlayerInfo = HandleNewAccountInfo(www);
 
-            //print(www);
-            //HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/weapon_tb/owner/" + newPlayerInfo.player_id,
-            //delegate (string result)
-            //{
-            //    HandleWeaponTB(result, (weaponData)=>
-            //    {
-            //        print("weapon "+weaponData);
-            //        newWeaponJsonData = JsonUtility.ToJson(weaponData);
-            //        print(newWeaponJsonData);
-            //        setIPFS(newWeaponJsonData);
+            print(www);
+            HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/weapon_tb/owner/" + newPlayerInfo.player_id,
+            delegate (string result)
+            {
+                HandleWeaponTB(result, (weaponData)=>
+                {
+                    print("weapon "+weaponData);
+                    newWeaponJsonData = JsonUtility.ToJson(weaponData);
+                    print(newWeaponJsonData);
+                    setIPFS(newWeaponJsonData);
 
-            //    });
+                });
                 
-            //});
+            });
 
         });
 
