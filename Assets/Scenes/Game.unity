@@ -47089,6 +47089,10 @@ PrefabInstance:
       propertyPath: weaponSelectPanel
       value: 
       objectReference: {fileID: 1509606643}
+    - target: {fileID: 3163463368094511929, guid: 060c8b9e0b23545d0a0825018974921d, type: 3}
+      propertyPath: Jewel
+      value: 
+      objectReference: {fileID: 21300000, guid: 98b10751aeed3416894a5202c000961e, type: 3}
     - target: {fileID: 3163463368094511930, guid: 060c8b9e0b23545d0a0825018974921d, type: 3}
       propertyPath: My
       value: 

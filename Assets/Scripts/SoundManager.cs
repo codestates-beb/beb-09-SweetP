@@ -39,7 +39,7 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        SceneManager.sceneLoaded += OnSeneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         audioSource = GetComponent<AudioSource>();
         //InitializeButtons();
@@ -69,19 +69,23 @@ public class SoundManager : MonoBehaviour
         buttons.Clear();
         buttons.AddRange(foundButtons);
 
-        foreach(Button button in buttons)
+        foreach (Button button in buttons)
         {
-            button.onClick.AddListener(() => PlayerCLickSound());
+            AddClickSoundEvent(button);
         }
     }
 
-    private void PlayerCLickSound()
+    private void AddClickSoundEvent(Button button)
     {
-        audioSource.PlayOneShot(buttonClick);
-        InitializeButtons();
+        button.onClick.AddListener(() => PlayClickSound());
     }
 
-    private void OnSeneLoaded(Scene scene, LoadSceneMode mode)
+    private void PlayClickSound()
+    {
+        audioSource.PlayOneShot(buttonClick);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         InitializeButtons();
     }
