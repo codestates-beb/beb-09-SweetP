@@ -256,6 +256,9 @@ public class MarketNPC : MonoBehaviour
 
     public IEnumerator BuyWeapon(BigInteger tokenId, decimal amount)
     {
+        print(tokenId);
+        print(amount);
+        print("test");
         //@notion 무기를토큰으로 사기위한 721컨트랙트에 토큰꺼낼수 있는양 정함
         yield return StartCoroutine(PPCTokenContract.Approve("0xb666d55294EfA8A8CCaCFdf1485e5D7484B92684", amount, (Address, ex) =>
         {
