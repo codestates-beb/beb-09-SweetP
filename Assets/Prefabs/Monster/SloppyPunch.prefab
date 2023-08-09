@@ -143,6 +143,9 @@ MonoBehaviour:
   - weapon_type: 0
     dropProb: 0.00001
     dropWeaponUpgrade: 0
+  - weapon_type: 2
+    dropProb: 0.00001
+    dropWeaponUpgrade: 0
 --- !u!54 &1465658036677690186
 Rigidbody:
   m_ObjectHideFlags: 0

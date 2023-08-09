@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class Player : LivingEntity
 {
     private static Player _instance;
@@ -98,6 +99,12 @@ public class Player : LivingEntity
 
         //animator trigger
         playerAnimator.SetTrigger("Die");
+
+        Invoke("LoadGame", 2f);
     }
 
+    private void LoadGame()
+    {
+        LoadingManager.LoadScene("Game");
+    }
 }

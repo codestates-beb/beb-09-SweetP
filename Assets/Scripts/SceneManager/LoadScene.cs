@@ -25,6 +25,5 @@ public class LoadScene : MonoBehaviour
     {
         LoadingManager.LoadScene("Simulation");
     }
-
     
 }
