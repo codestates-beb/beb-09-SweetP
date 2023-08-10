@@ -24,7 +24,7 @@ public class WeaponManager : MonoBehaviour
     }
     public List<Material> upgradeColor = new List<Material>();
     public List<GameObject> upgradeParticle = new List<GameObject>();
-
+    public List<GameObject> staffParticle = new List<GameObject>();
     public List<WeaponData> weaponDataList = new List<WeaponData>();
     private class WeaponTBArray
     {

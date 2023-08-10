@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnergyBall : MonoBehaviour
 {
     public float damage;
+    public WeaponNature element;
     public Vector3 pos;
     public float speed = 5f;
     public Transform playerTransform;
@@ -34,6 +35,8 @@ public class EnergyBall : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         direction = playerTransform.forward;
         distanceThisFrame = speed * Time.deltaTime;
+        element = WeaponManager.instance.curruentWeaponData.weapon_element;
+        UpgradeParticle();
     }
 
     // Update is called once per frame
@@ -44,8 +47,25 @@ public class EnergyBall : MonoBehaviour
             rigidbody.velocity = direction * speed;
             hasFire = true;
         }
+    }
 
-        
 
+    public void UpgradeParticle()
+    {
+        switch (element)
+        {
+            case WeaponNature.Fire:
+                GameObject particleFire = Instantiate(WeaponManager.instance.staffParticle[0], transform);
+                break;
+            case WeaponNature.Water:
+                GameObject particleWater = Instantiate(WeaponManager.instance.staffParticle[1], transform);
+                break;
+            case WeaponNature.Thunder:
+                GameObject particleThunder = Instantiate(WeaponManager.instance.staffParticle[2], transform);
+                break;
+            case WeaponNature.Earth:
+                GameObject particleEarth = Instantiate(WeaponManager.instance.staffParticle[3], transform);
+                break;
+        }
     }
 }

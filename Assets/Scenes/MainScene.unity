@@ -353,6 +353,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
+      propertyPath: staffParticle.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
       propertyPath: upgradeColor.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 01c5f20b522c744cbb41d18ded4a34ae, type: 2}
@@ -396,6 +400,22 @@ PrefabInstance:
       propertyPath: upgradeParticle.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
+      propertyPath: staffParticle.Array.data[0]
+      value: 
+      objectReference: {fileID: 1983304606179768987, guid: d164802a825064a42935c77399c66691, type: 3}
+    - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
+      propertyPath: staffParticle.Array.data[1]
+      value: 
+      objectReference: {fileID: 205582447128379181, guid: 30485393c9662441c9283a8390f08701, type: 3}
+    - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
+      propertyPath: staffParticle.Array.data[2]
+      value: 
+      objectReference: {fileID: 5762848329493771316, guid: 890bfae19646841e5b7edee6374a2309, type: 3}
+    - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
+      propertyPath: staffParticle.Array.data[3]
+      value: 
+      objectReference: {fileID: 32625663143062737, guid: 6152032a7952d4630af989b5de005525, type: 3}
     - target: {fileID: 5115219272410838382, guid: 3b432ef5ef92d40f0acc64ffc218c212, type: 3}
       propertyPath: upgradeParticle.Array.data[0]
       value: 

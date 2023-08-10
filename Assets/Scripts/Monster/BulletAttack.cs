@@ -13,10 +13,10 @@ public class BulletAttack : MonoBehaviour
     {
         Bullet bullet = BulletPrefab;
         bullet.damage = damage;
-
+        Vector3 pos = BulletFirePosition.position;
         if (enemy.targetEntity != null && !enemy.targetEntity.dead)
             bullet.SetTarget(enemy.targetEntity.transform.position);
-        Instantiate(bullet, BulletFirePosition);
+        Instantiate(bullet, pos, Quaternion.identity);
     }
 
     // Start is called before the first frame update
