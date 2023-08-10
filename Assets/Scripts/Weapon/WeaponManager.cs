@@ -211,13 +211,13 @@ public class WeaponManager : MonoBehaviour
                 GameObject particleFire = Instantiate(upgradeParticle[0], objWeapon.transform);
                 break;
             case WeaponNature.Water:
-                GameObject particleWater = Instantiate(upgradeParticle[0], objWeapon.transform);
+                GameObject particleWater = Instantiate(upgradeParticle[1], objWeapon.transform);
                 break;
             case WeaponNature.Thunder:
-                GameObject particleThunder = Instantiate(upgradeParticle[0], objWeapon.transform);
+                GameObject particleThunder = Instantiate(upgradeParticle[2], objWeapon.transform);
                 break;
             case WeaponNature.Earth:
-                GameObject particleEarth = Instantiate(upgradeParticle[0], objWeapon.transform);
+                GameObject particleEarth = Instantiate(upgradeParticle[3], objWeapon.transform);
                 break;
         }
     }
