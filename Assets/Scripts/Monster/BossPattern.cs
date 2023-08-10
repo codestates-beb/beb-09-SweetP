@@ -33,9 +33,10 @@ public class BossPattern : MonoBehaviour
     private void Start()
     {
         enemy = gameObject.GetComponent<Enemy>();
+        enemy.Setup(enemy.startingHealth, enemy.damage, 1f, Color.white);
         enemy.isBoss = true;
         enemy.currentTimeForScore = Time.time;
-
+        
         animator = GetComponent<Animator>();
 
         warningColor = new Color(1f, 0f, 0f, 0.5f);

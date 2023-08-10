@@ -37,6 +37,8 @@ public class EnergyBall : MonoBehaviour
         distanceThisFrame = speed * Time.deltaTime;
         element = WeaponManager.instance.curruentWeaponData.weapon_element;
         UpgradeParticle();
+
+        Destroy(gameObject, 3f);
     }
 
     // Update is called once per frame

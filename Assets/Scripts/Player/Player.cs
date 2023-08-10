@@ -38,7 +38,7 @@ public class Player : LivingEntity
         healthText = healthTextTransform.GetComponent<TextMeshProUGUI>();
         playerAudioPlayer = GetComponent<AudioSource>();
         playerAnimator = GetComponent<Animator>();
-        WeaponManager.instance.EquipWeapon(WeaponManager.instance.curruentWeaponData);
+        
     }
 
     protected override void OnEnable()
@@ -47,11 +47,10 @@ public class Player : LivingEntity
         base.OnEnable();
 
         //healthSlider
+        WeaponManager.instance.EquipWeapon(WeaponManager.instance.curruentWeaponData);
         healthSlider.gameObject.SetActive(true);
         healthText.gameObject.SetActive(true);
-        healthSlider.maxValue = startingHealth;
-        healthSlider.value = health;
-        healthText.text = healthSlider.value + "/" + healthSlider.maxValue;
+        ChangeHealthWithWeapon();
     }
 
     public void ChangeHealthWithWeapon()

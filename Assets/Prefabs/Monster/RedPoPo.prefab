@@ -5589,13 +5589,13 @@ MonoBehaviour:
   dropGoldMax: 31
   scrollDropTables:
   - scrollType: 0
-    dropProb: 0.0001
+    dropProb: 15
   weaponDropTables:
   - weapon_type: 0
-    dropProb: 0.0000001
+    dropProb: 5
     dropWeaponUpgrade: 0
   - weapon_type: 2
-    dropProb: 0.00001
+    dropProb: 2
     dropWeaponUpgrade: 0
 --- !u!54 &8357626478391633622
 Rigidbody:
