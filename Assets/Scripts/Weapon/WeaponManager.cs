@@ -37,7 +37,9 @@ public class WeaponManager : MonoBehaviour
     public GameObject Sword;
     public GameObject Bow;
     public GameObject Magic;
-
+    private bool testCheck = false;
+    private bool IsGameStart = false;
+    private Scene scene;
     // Start is called before the first frame update
 
     private void Awake()
@@ -49,9 +51,6 @@ public class WeaponManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        
-
-        //SceneManager.sceneLoaded += OnSeneLoaded;
 
     }
     void Start()
@@ -68,6 +67,7 @@ public class WeaponManager : MonoBehaviour
             GetWeaponList();
                 Init = true;
         }
+        
     }
 
     public void Refresh()
@@ -100,8 +100,6 @@ public class WeaponManager : MonoBehaviour
                 GetWeaponData(weapon_id);
                 count++;
             }
-            
-            
         }
         else
         {
@@ -207,8 +205,6 @@ public class WeaponManager : MonoBehaviour
 
     public void UpgradeParticle(WeaponData weaponData ,GameObject objWeapon)
     {
-        
-
         switch (weaponData.weapon_element)
         {
             case WeaponNature.Fire:
@@ -268,11 +264,6 @@ public class WeaponManager : MonoBehaviour
         }
 
         return null;
-    }
-    private void OnSeneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if(curruentWeaponData.weapon_id !=0)
-        EquipWeapon(curruentWeaponData);
     }
 
 }

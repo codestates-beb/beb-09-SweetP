@@ -38,6 +38,7 @@ public class Player : LivingEntity
         healthText = healthTextTransform.GetComponent<TextMeshProUGUI>();
         playerAudioPlayer = GetComponent<AudioSource>();
         playerAnimator = GetComponent<Animator>();
+        WeaponManager.instance.EquipWeapon(WeaponManager.instance.curruentWeaponData);
     }
 
     protected override void OnEnable()
