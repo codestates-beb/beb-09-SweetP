@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 512, y: 512}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1884100557931201185
 CanvasRenderer:
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1448af3842dc742beb46d0204e06f477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TweenTime: 1.5
+  TweenTime: 0.2
   TweenHeight: 100
   animationCurve:
     serializedVersion: 2
