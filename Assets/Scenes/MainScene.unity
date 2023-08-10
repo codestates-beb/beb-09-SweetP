@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1053,7 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7302b194d0ce345a88a426d0e222269c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressSpinner: {fileID: 7593214434758039823, guid: 6b48cf077816b4658af67d8d65894ab5, type: 3}
+  progressSpinner: {fileID: 1884100557931201189, guid: 53dd318d5533449018354fb4b504d473, type: 3}
   spinner: {fileID: 0}
   IsSpinner: 0
 --- !u!4 &529212010

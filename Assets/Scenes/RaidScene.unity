@@ -9809,6 +9809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d86f4d4a96c42388fed0c8923264c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
 --- !u!65 &5048774913740716919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9981,27 +9982,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 999999
+  <health>k__BackingField: 0
+  <dead>k__BackingField: 0
   currentTime: 0
   PPC721Contract: {fileID: 0}
   body: 
   healthBarPrefab: {fileID: 4567375823041889851, guid: 723129fde90c8418a9147324ebbcfb83, type: 3}
   healthSlider: {fileID: 0}
+  healthBarInstance: {fileID: 0}
   whatIsTarget:
-    serializedVersion: 2
     m_Bits: 64
   AttackRange: {fileID: 5048774913740716919}
   targetEntity: {fileID: 0}
+  pathFinder: {fileID: 0}
   hitEffect: {fileID: 5048774913203882679}
   deathSound: {fileID: 0}
   hitSound: {fileID: 0}
   dropSound: {fileID: 0}
   attackSound: {fileID: 0}
+  enemyAnimator: {fileID: 0}
+  enemyAudioPlayer: {fileID: 0}
+  enemyRenderer: {fileID: 0}
   playerTransform: {fileID: 0}
   CantAction: 0
+  inDistance: 0
+  isChase: 1
+  isAttack: 0
   damage: 12
   timeBetAttack: 0.5
   attackDistance: 5
+  lastAttackTime: 0
   isBoss: 0
+  score: 0
   currentTimeForScore: 0
   dropGold: 31
   dropGoldMin: 31

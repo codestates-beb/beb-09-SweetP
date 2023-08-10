@@ -78,18 +78,7 @@ public class LoginManager : MonoBehaviour
 
     private void Update()
     {
-        //if (HTTPClient.instance.IsSpinner)
-        //{
-        //    inGameButton.GetComponent<Button>().enabled = false;
-        //    loginButton.GetComponent<Button>().enabled = false;
-        //    newAccountButton.GetComponent<Button>().enabled = false;
-        //}
-        //else
-        //{
-        //    inGameButton.GetComponent<Button>().enabled = true;
-        //    loginButton.GetComponent<Button>().enabled = true;
-        //    newAccountButton.GetComponent<Button>().enabled = true;
-        //}
+
     }
 
     private void HandleData(string jsonData)
