@@ -11,7 +11,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 public class PPC721Contract : MonoBehaviour
 {
     public SmartContractInteraction contractInstance;
-
+    //public string seedPhrase;
     void Awake()
     {
         contractInstance = gameObject.AddComponent<SmartContractInteraction>();
@@ -21,6 +21,7 @@ public class PPC721Contract : MonoBehaviour
 
     public void Initialize()
     {
+        //contractInstance.seedPhrase = seedPhrase;
         contractInstance.Init("PPC721Contract.json");
     }
 

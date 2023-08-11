@@ -835,6 +835,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contractInstance: {fileID: 0}
+  seedPhrase: inquiry vintage consider tell goat skill coffee across material seminar
+    fence chronic
 --- !u!1 &350260311
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,6 @@ public class PPCTokenContract : MonoBehaviour
     public SmartContractInteraction contractInstance;
     public decimal tokenBalance;
     public decimal ethBalance;
-
     void Awake()
     {
         contractInstance = gameObject.AddComponent<SmartContractInteraction>();
@@ -21,7 +20,6 @@ public class PPCTokenContract : MonoBehaviour
 
     public void Initialize()
     {
-
         contractInstance.Init("PPCTokenContract.json");
     }
 
