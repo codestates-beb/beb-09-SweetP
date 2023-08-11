@@ -1,11 +1,9 @@
 using System.Collections;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Text.Json;
 
 
 public class GoldExchange : MonoBehaviour

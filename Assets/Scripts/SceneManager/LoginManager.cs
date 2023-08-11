@@ -102,15 +102,17 @@ public class LoginManager : MonoBehaviour
         HTTPClient.instance.GET("https://breadmore.azurewebsites.net/api/player_tb/address/" + PlayerAddress, delegate (string www)
         {
             HandleData(www);
-
             PlayerNameText.text = PlayerName;
             loginButton.SetActive(false);
             loginPanel.SetActive(false);
             newAccountButton.SetActive(false);
+
+            //connectWalletLoading.SetActive(false);
+            //HTTPClient.instance.EndSpinner();
         });
+
         StartCoroutine(BalanceOf());
         StartCoroutine(setToken());
-
 
     }
 

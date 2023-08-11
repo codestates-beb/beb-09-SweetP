@@ -57,6 +57,7 @@ public class HTTPClient : MonoBehaviour
     {
         if (IsSpinner)
         {
+            print("dest");
             Destroy(spinner);
             IsSpinner = false;
         }
