@@ -58,7 +58,6 @@ public class MarketNPC : MonoBehaviour
 
     public MarketSlot selectMarket;
 
-    private bool isCoroutineRunning = false;
 
     private void Awake()
     {

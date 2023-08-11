@@ -180,8 +180,6 @@ public class UIManager : MonoBehaviour
     public void RefreshPotionCount()
     {
         potionText.text = ItemManager.instance.itemData.player_potion.ToString();
-        string url = "";
-        string body = "";
         //HTTPClient.instance.PUT(url, body, delegate (string www) { });
     }
     // Update is called once per frame

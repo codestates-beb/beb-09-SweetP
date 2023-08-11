@@ -37,9 +37,6 @@ public class WeaponManager : MonoBehaviour
     public GameObject Sword;
     public GameObject Bow;
     public GameObject Magic;
-    private bool testCheck = false;
-    private bool IsGameStart = false;
-    private Scene scene;
     // Start is called before the first frame update
 
     private void Awake()

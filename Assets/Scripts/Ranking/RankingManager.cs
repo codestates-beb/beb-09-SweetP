@@ -40,7 +40,6 @@ public class RankingManager : MonoBehaviour
     private void HandleRecordList(string jsonData)
     {
         PlayerRecordArray playerRecordArray = JsonUtility.FromJson<PlayerRecordArray>("{\"records\":" + jsonData + "}");
-        int count = 0;
         if(playerRecordArray != null && playerRecordArray.records != null)
         {
             foreach(var recordArray in playerRecordArray.records)
