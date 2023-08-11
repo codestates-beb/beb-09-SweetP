@@ -207,7 +207,7 @@ public class LoginManager : MonoBehaviour
 
     public IEnumerator setToken()
     {
-        yield return StartCoroutine(PPC721Contract.SetToken("0x5d30473E389af6d2ce46EA8dF08393F1298743a9", (Address, ex) =>
+        yield return StartCoroutine(PPC721Contract.SetToken("0x3184D2460214AD38281A04217AA9427115726D63", (Address, ex) =>
         {
             Debug.Log($"SetToken Contract Address: {Address}");
             connectWalletLoading.SetActive(false);

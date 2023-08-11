@@ -176,7 +176,7 @@ public class GoldExchange : MonoBehaviour
         if(swapSymbol == "Gold") {
             if(data.player_gold < XBalance) yield break;
 
-            yield return tokenContract.transferFromSpecified("0x176feB0F409cecFd3362CD4C10fF730814368EfE", SmartContractInteraction.userAccount.Address, YBalance, (result, err) =>{
+            yield return tokenContract.transferFromSpecified("0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8", SmartContractInteraction.userAccount.Address, YBalance, (result, err) =>{
                 /*
                 if(err != null) {
                         Debug.Log(err);
@@ -206,7 +206,7 @@ public class GoldExchange : MonoBehaviour
             });
         }
         else if(swapSymbol == "PPC") {
-            yield return sweetpDex.tokenContract.transferFromSpecified(SmartContractInteraction.userAccount.Address, "0x176feB0F409cecFd3362CD4C10fF730814368EfE",  XBalance, (result, err) =>{
+            yield return sweetpDex.tokenContract.transferFromSpecified(SmartContractInteraction.userAccount.Address, "0xE503081665f268c99ff22F45Df5FC8f3A21Ef0C8",  XBalance, (result, err) =>{
                 if(err != null) {
                     Debug.Log(err);
                     isGotProblem = true;

@@ -22,7 +22,7 @@ public class PPCTokenContract : MonoBehaviour
     public void Initialize()
     {
 
-        contractInstance.Init("PPCTokenContract_gana.json");
+        contractInstance.Init("PPCTokenContract.json");
     }
 
     public IEnumerator BalanceOf(string account, Action<decimal, Exception> callback)

@@ -15,7 +15,9 @@ public class SmartContractInteraction : MonoBehaviour
     public static Account userAccount;
     public Nethereum.Contracts.Contract contract;
     //public string seedPhrase = "enough foil lawsuit tired replace pact awesome win autumn leisure armed pattern";
+    public string seedPhrase1 = "inquiry vintage consider tell goat skill coffee across material seminar fence chronic";
     public string seedPhrase = "inquiry vintage consider tell goat skill coffee across material seminar fence chronic";
+    public string seedPhrase2 = "warrior proud menu member puppy pet match spin burger bicycle ticket pitch";
 
 
     // Init함수는 jsonfile 이름으로 해당 컨트렉트 abi 가져온 후 abi와 contract 주소를 바탕으로 contract 인스턴스화 하는 과정이다.
@@ -42,16 +44,12 @@ public class SmartContractInteraction : MonoBehaviour
 
         try
         {
-            // string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4";
-            string url = "http://127.0.0.1:8545";
-            string privateKey = "5b4d0a80997d8816329efef5b803bffb9bdc758577a3ae10fef7839f53f1c987";
-            string privateKey2 = "c1ee916e10ea495eba17f52d13549b52f8059a33f78c3ee43ceadec3a697cf07";
-            string privateKey3 = "41980a25576d8f1144b41ca42f90c5c64f8fad016036f4b5fa74acd561a6678b";
-            string privateKey4 = "f7c682537e6335680d96b8612e248b2ceaca6f3a7ca3a8b87b0f222924db98d0";
-            //var wallet = new Wallet(seedPhrase, "");
-            //var privateKey = wallet.GetAccount(0).PrivateKey;
+            string url = "https://sepolia.infura.io/v3/7bcccb589f144d16a1b7871c29fdc6a4";
+         
+            var wallet = new Wallet(seedPhrase, "");
+            var privateKey = wallet.GetAccount(0).PrivateKey;
 
-            userAccount = new Account(privateKey4);
+            userAccount = new Account(privateKey);
             this.web3 = new Web3(userAccount, url);
             // 'this.web3' 필드에 'Web3' 인스턴스를 할당
             // ABI와 스마트 컨트랙트 주소로 스마트 컨트랙트 인스턴스 생성

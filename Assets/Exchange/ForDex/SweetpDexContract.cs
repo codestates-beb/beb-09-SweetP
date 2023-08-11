@@ -15,7 +15,7 @@ public class SweetpDexContract : MonoBehaviour{
     }
     public void Initialize()
     {
-        contractInstance.Init("SweetpDexContract_gana.json");
+        contractInstance.Init("SweetpDexContract.json");
     }
 
     public IEnumerator GetTokenBalance(Action<decimal, Exception> callback) {
