@@ -302,7 +302,7 @@ public class Enemy : LivingEntity
 
             int maxScore = _playerRecord.player_score;
 
-            if (maxScore > score)
+            if (maxScore ==0 || maxScore > score)
             {
                 PlayerRecord playerRecord = new PlayerRecord();
                 playerRecord.player_id = LoginManager.instance.PlayerID;
